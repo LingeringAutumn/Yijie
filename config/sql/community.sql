@@ -2,6 +2,7 @@
 CREATE TABLE posts (
                        id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '帖子ID，主键，自增',
                        user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
+                       title VARCHAR(255) NOT NULL COMMENT '帖子标题，最多 255 个字符',
                        content TEXT NOT NULL COMMENT '帖子内容，不能为空',
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
