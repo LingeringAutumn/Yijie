@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # MySQL 服务，提供关系型数据库，用于存储结构化数据
+  yijie-mysql:
+    container_name: yijie-mysql
+    image: mysql:9.0.1
+    # restart: always
+    env_file:
+      - "./env/mysql.env"
+    ports:
+      - "3306:3306"
+    networks:
+      - yijie
+    volumes:
+      - ../config/sql:/docker-entrypoint-initdb.d
+      - ./data/mysql:/var/lib/mysql
+
+
+  # Redis 服务，用于缓存、会话管理等，提供键值存储功能
+  yijie-redis:
+    container_name: redis
+    image: redis:bookworm
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+    env_file:
+      - "./env/redis.env"
+    networks:
+      - yijie
+
+  etcd:
+    image: quay.io/coreos/etcd:latest
+    container_name: etcd
+    restart: always
+    command: >
+      etcd --name my-etcd 
+           --data-dir /etcd-data 
+           --advertise-client-urls http://0.0.0.0:2379 
+           --listen-client-urls http://0.0.0.0:2379
+    ports:
+      - "2379:2379"
+    volumes:
+      - etcd_data:/etcd-data
+    networks:
+      - kitex_network
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    restart: always
+    environment:
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_BROKER_ID: 1
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - kitex_network
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    restart: always
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    ports:
+      - "2181:2181"
+    networks:
+      - kitex_network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+    networks:
+      - kitex_network
+
+  go-kitex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-kitex
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+      - kafka
+    networks:
+      - kitex_network
+
+networks:
+  kitex_network:
+
+volumes:
+  mysql_data:
+  redis_data:
+  etcd_data:

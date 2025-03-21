@@ -1,15 +1,16 @@
 -- 用户表，存储用户基本信息
 CREATE TABLE users (
                        id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID，主键，自增',
-                       username VARCHAR(40) UNIQUE NOT NULL COMMENT '用户名，唯一，最多 10 个中文字符或 30 个英文字符',
+                       username VARCHAR(30) UNIQUE NOT NULL COMMENT '用户名，最多 10 个中文字符或 30 个英文字符',
                        email VARCHAR(100) UNIQUE NOT NULL COMMENT '用户邮箱，唯一，最大长度 100',
                        phone VARCHAR(11) UNIQUE COMMENT '手机号，唯一，11 位数字，可为空',
                        password_hash VARCHAR(255) NOT NULL COMMENT '密码哈希值，存储加密后的密码',
                        avatar_url TEXT COMMENT '用户头像 URL，可为空',
                        bio TEXT COMMENT '个人简介，可为空',
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '账号创建时间',
-                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '账号更新时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户基本信息表';
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '账号更新时间',
+                       deleted_at TIMESTAMP NULL COMMENT '账号删除时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户基本信息表';
 
 -- 关注/拉黑表
 CREATE TABLE relationships (
@@ -53,10 +54,11 @@ CREATE TABLE posts (
                        user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
                        title VARCHAR(255) NOT NULL COMMENT '帖子标题，最多 255 个字符',
                        content TEXT NOT NULL COMMENT '帖子内容，不能为空',
-                       image_urls JSON COMMENT '帖子图片 URL 数组，可为空，支持多张图片',
+                       image_urls JSON COMMENT '帖子图片 URL 数组，可为空',
                        visibility ENUM('public', 'friends', 'private') DEFAULT 'public' COMMENT '可见性：公开、好友可见、私密',
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                       deleted_at TIMESTAMP NULL COMMENT '删除时间',
                        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户帖子表';
 
@@ -68,22 +70,27 @@ CREATE TABLE reactions (
                            comment_id BIGINT COMMENT '评论ID，关联 comments 表，可为空',
                            reaction_type ENUM('like', 'love', 'haha', 'wow', 'sad', 'angry') NOT NULL COMMENT '反应类型',
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                           deleted_at TIMESTAMP NULL COMMENT '删除时间',
                            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                            FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-                           FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户反应表，支持不同类型的点赞和情绪';
+                           FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+                           CHECK (post_id IS NOT NULL OR comment_id IS NOT NULL)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户反应表';
 
 -- 社区评论表，存储用户对帖子或评论的评论
 CREATE TABLE comments (
                           id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '评论ID，主键，自增',
-                          post_id BIGINT COMMENT '帖子ID，关联 posts 表，可为空（如果是对评论的回复）',
-                          parent_comment_id BIGINT COMMENT '父评论ID，关联 comments 表，可为空（如果是对帖子评论）',
+                          post_id BIGINT COMMENT '帖子ID，关联 posts 表，可为空',
+                          parent_comment_id BIGINT COMMENT '父评论ID，关联 comments 表，可为空',
                           user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
                           content TEXT NOT NULL COMMENT '评论内容，不能为空',
-                          status ENUM('normal', 'hidden') DEFAULT 'normal' COMMENT '评论状态：正常、屏蔽',
+                          status ENUM('normal', 'hidden') DEFAULT 'normal' COMMENT '评论状态',
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                          deleted_at TIMESTAMP NULL COMMENT '删除时间',
                           FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-                          FOREIGN KEY (parent_comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+                          FOREIGN KEY (parent_comment_id) REFERENCES comments(id) ON DELETE SET NULL,
                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='帖子和评论的评论表';
 
@@ -118,6 +125,8 @@ CREATE TABLE teams (
                        description TEXT COMMENT '团队简介，可为空',
                        creator_id BIGINT NOT NULL COMMENT '创建者用户ID，关联 users 表',
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '团队创建时间',
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                       deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间'
                        FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队基本信息表';
 
@@ -146,10 +155,11 @@ CREATE TABLE generated_interfaces (
                                       views INT DEFAULT 0 COMMENT '浏览次数',
                                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                      deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间'
                                       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AI 生成的前端代码存储表';
 -- 索引优化
-CREATE INDEX idx_posts_user ON posts(user_id);
+CREATE INDEX idx_posts_user ON posts(user_id,created_at DESC);
 CREATE INDEX idx_comments_post ON comments(post_id);
 CREATE INDEX idx_comments_parent ON comments(parent_comment_id);
 CREATE INDEX idx_reactions_user ON reactions(user_id);
