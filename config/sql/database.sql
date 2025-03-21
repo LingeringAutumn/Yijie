@@ -12,19 +12,6 @@ CREATE TABLE users (
                        deleted_at TIMESTAMP NULL COMMENT '账号删除时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户基本信息表';
 
--- 关注/拉黑表
-CREATE TABLE relationships (
-                               id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '关系ID，主键，自增',
-                               user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
-                               target_id BIGINT NOT NULL COMMENT '目标用户ID，关联 users 表',
-                               status ENUM('follow', 'block', 'mute') NOT NULL DEFAULT 'follow' COMMENT '关系状态：关注、拉黑、静音',
-                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                               FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                               FOREIGN KEY (target_id) REFERENCES users(id) ON DELETE CASCADE,
-                               UNIQUE KEY uniq_user_target (user_id, target_id),
-                               INDEX idx_relationships_target (target_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户关系表，支持关注和拉黑';
-
 -- 会员表，存储用户的会员信息
 CREATE TABLE memberships (
                              id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '会员ID，主键，自增',
@@ -48,6 +35,43 @@ CREATE TABLE points (
                         INDEX idx_updated_at (updated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户积分表';
 
+-- 团队表，存储团队基本信息
+CREATE TABLE teams (
+                       id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '团队ID，主键，自增',
+                       name VARCHAR(100) UNIQUE NOT NULL COMMENT '团队名称，唯一',
+                       description TEXT COMMENT '团队简介，可为空',
+                       creator_id BIGINT NOT NULL COMMENT '创建者用户ID，关联 users 表',
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '团队创建时间',
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                       deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间',
+                       FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队基本信息表';
+
+-- 团队成员表
+CREATE TABLE team_members (
+                              id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '团队成员ID，主键，自增',
+                              team_id BIGINT NOT NULL COMMENT '团队ID，关联 teams 表',
+                              user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
+                              role ENUM('admin', 'member') NOT NULL DEFAULT 'member' COMMENT '团队角色',
+                              status ENUM('active', 'pending', 'removed') DEFAULT 'active' COMMENT '成员状态，pending 代表待审核',
+                              joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
+                              FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
+                              FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队成员表';
+
+-- 关注/拉黑表
+CREATE TABLE relationships (
+                               id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '关系ID，主键，自增',
+                               user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
+                               target_id BIGINT NOT NULL COMMENT '目标用户ID，关联 users 表',
+                               status ENUM('follow', 'block', 'mute') NOT NULL DEFAULT 'follow' COMMENT '关系状态：关注、拉黑、静音',
+                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                               FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                               FOREIGN KEY (target_id) REFERENCES users(id) ON DELETE CASCADE,
+                               UNIQUE KEY uniq_user_target (user_id, target_id),
+                               INDEX idx_relationships_target (target_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户关系表，支持关注和拉黑';
+
 -- 社区帖子表，用户发布的帖子
 CREATE TABLE posts (
                        id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '帖子ID，主键，自增',
@@ -61,22 +85,6 @@ CREATE TABLE posts (
                        deleted_at TIMESTAMP NULL COMMENT '删除时间',
                        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户帖子表';
-
--- 反应表（取代 likes，支持不同的点赞类型）
-CREATE TABLE reactions (
-                           id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '反应ID，主键，自增',
-                           user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
-                           post_id BIGINT COMMENT '帖子ID，关联 posts 表，可为空',
-                           comment_id BIGINT COMMENT '评论ID，关联 comments 表，可为空',
-                           reaction_type ENUM('like', 'love', 'haha', 'wow', 'sad', 'angry') NOT NULL COMMENT '反应类型',
-                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                           deleted_at TIMESTAMP NULL COMMENT '删除时间',
-                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                           FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-                           FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
-                           CHECK (post_id IS NOT NULL OR comment_id IS NOT NULL)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户反应表';
 
 -- 社区评论表，存储用户对帖子或评论的评论
 CREATE TABLE comments (
@@ -93,6 +101,22 @@ CREATE TABLE comments (
                           FOREIGN KEY (parent_comment_id) REFERENCES comments(id) ON DELETE SET NULL,
                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='帖子和评论的评论表';
+
+-- 反应表（取代 likes，支持不同的点赞类型）
+CREATE TABLE reactions (
+                           id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '反应ID，主键，自增',
+                           user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
+                           post_id BIGINT COMMENT '帖子ID，关联 posts 表，可为空',
+                           comment_id BIGINT COMMENT '评论ID，关联 comments 表，可为空',
+                           reaction_type ENUM('like', 'love', 'haha', 'wow', 'sad', 'angry') NOT NULL COMMENT '反应类型',
+                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                           deleted_at TIMESTAMP NULL COMMENT '删除时间',
+                           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                           FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+                           FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+                           CHECK (post_id IS NOT NULL OR comment_id IS NOT NULL)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户反应表';
 
 -- 私信消息表
 CREATE TABLE messages (
@@ -118,30 +142,6 @@ CREATE TABLE user_activity_logs (
                                     INDEX idx_target_id (target_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户活动日志表';
 
--- 团队表，存储团队基本信息
-CREATE TABLE teams (
-                       id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '团队ID，主键，自增',
-                       name VARCHAR(100) UNIQUE NOT NULL COMMENT '团队名称，唯一',
-                       description TEXT COMMENT '团队简介，可为空',
-                       creator_id BIGINT NOT NULL COMMENT '创建者用户ID，关联 users 表',
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '团队创建时间',
-                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                       deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间'
-                       FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队基本信息表';
-
--- 团队成员表
-CREATE TABLE team_members (
-                              id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '团队成员ID，主键，自增',
-                              team_id BIGINT NOT NULL COMMENT '团队ID，关联 teams 表',
-                              user_id BIGINT NOT NULL COMMENT '用户ID，关联 users 表',
-                              role ENUM('admin', 'member') NOT NULL DEFAULT 'member' COMMENT '团队角色',
-                              status ENUM('active', 'pending', 'removed') DEFAULT 'active' COMMENT '成员状态，pending 代表待审核',
-                              joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '加入时间',
-                              FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
-                              FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队成员表';
-
 -- AI 生成界面存储表
 CREATE TABLE generated_interfaces (
                                       id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '生成界面ID，主键，自增',
@@ -155,11 +155,12 @@ CREATE TABLE generated_interfaces (
                                       views INT DEFAULT 0 COMMENT '浏览次数',
                                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                                      deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间'
+                                      deleted_at TIMESTAMP DEFAULT NULL COMMENT '删除时间',
                                       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AI 生成的前端代码存储表';
+
 -- 索引优化
-CREATE INDEX idx_posts_user ON posts(user_id,created_at DESC);
+CREATE INDEX idx_posts_user ON posts(user_id, created_at);
 CREATE INDEX idx_comments_post ON comments(post_id);
 CREATE INDEX idx_comments_parent ON comments(parent_comment_id);
 CREATE INDEX idx_reactions_user ON reactions(user_id);
