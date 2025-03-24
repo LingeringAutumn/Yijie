@@ -3,6 +3,7 @@ module Yijie
 go 1.23
 
 require (
+	github.com/apache/thrift v0.21.0
 	github.com/bytedance/gopkg v0.1.1
 	github.com/cloudwego/hertz v0.9.6
 )

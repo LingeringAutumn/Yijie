@@ -56,14 +56,14 @@ kitex-gen-%:
 	@ go mod tidy
 
 # 生成 Hertz 文件
-.PHONY:new-hz
-new-hz:
-	hz new -idl ${IDL_PATH}/api.thrift
+.PHONY:new-hz-%
+new-hz-%:
+	hz new -idl ${IDL_PATH}/api/$*.thrift
 
-# 更新基于 Hertz 的脚手架
-.PHONY: hz-gen-api
-hz-gen-api:
-	hz update -idl ${IDL_PATH}/api.thrift
+# 生成基于 Hertz 的脚手架
+.PHONY: hz-%
+hz-%:
+	hz update -idl ${IDL_PATH}/api/$*.thrift
 
 # 清除所有的构建产物
 .PHONY: clean
