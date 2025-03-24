@@ -1,0 +1,82 @@
+services:
+  # Redis 服务，用于缓存、会话管理等，提供键值存储功能
+  yijie-redis:
+    container_name: yijie-redis
+    image: redis:bookworm
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+    env_file:
+      - "./env/redis.env"
+    networks:
+      - yijie
+
+  # MySQL 服务，提供关系型数据库，用于存储结构化数据
+  yijie-mysql:
+    container_name: yijie-mysql
+    image: mysql:9.0.1
+    # restart: always
+    env_file:
+      - "./env/mysql.env"
+    ports:
+      - "3306:3306"
+    networks:
+      - yijie
+    volumes:
+      - ../config/sql:/docker-entrypoint-initdb.d
+      - ./data/mysql:/var/lib/mysql
+
+
+  # etcd 服务，分布式键值存储系统，用于服务发现、配置管理
+  yijie-etcd:
+    container_name: yijie-etcd
+    image: quay.io/coreos/etcd:v3.5.5
+    restart: always
+    ports:
+      - 2379:2379
+      - 2380:2380
+    env_file:
+      - "./env/etcd.env"
+    volumes:
+      - ./script:/script
+      - ../config:/config
+      - ./data/etcd:/etcd-data
+    networks:
+      - yijie
+    entrypoint: [ "sh", "-c", "chmod +x /script/etcd-monitor.sh && /script/etcd-monitor.sh & exec etcd" ]
+
+  # Kafka 服务，分布式流处理平台，用于构建实时数据管道和流应用
+  kafka:
+    container_name: yijie-kafka
+    image: bitnami/kafka:latest
+    restart: always
+    user: root
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    env_file:
+      - ./env/kafka.env
+    volumes:
+      - ./data/kafka:/bitnami/kafka
+    networks:
+      - yijie
+
+  # Kafka UI 服务，为 Kafka 提供可视化管理和监控界面
+  kafka-ui:
+    container_name: yijie-kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    restart: always
+    ports:
+      - "9091:8080"
+    env_file:
+      - ./env/kafka-ui.env
+    networks:
+      - yijie
+
+networks:
+  yijie:
+    driver: bridge
+    name: yijie
+
