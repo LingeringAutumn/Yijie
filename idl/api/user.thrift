@@ -1,7 +1,6 @@
 namespace go api.user
 include "../model.thrift"
 
-//
 struct RegisterRequest {
     1: required string name
     2: required string password
