@@ -1,0 +1,86 @@
+server:
+  private-key: | # PKCS#8
+    -----BEGIN PRIVATE KEY-----
+    MC4CAQAwBQYDK2VwBCIEIJi1JE7fq4xFZTXiOWvK9PDEDVIOgsF0dMF46BMgT9jY
+    -----END PRIVATE KEY-----
+  public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MCowBQYDK2VwAyEAe8QtuyTwO7YgDmZegsPpPPGuMZkjg6209OoArIOVOz0=
+    -----END PUBLIC KEY-----
+  version: "1.0"
+  name: "Yijie"
+  log-level: "INFO" # OPTIONS: TRACE, DEBUG, INFO(default), NOTICE, WARN, ERROR, FATAL
+
+defaultUser:
+  account: ""
+  password: ""
+
+snowflake:
+  datacenter-id: 0
+
+
+redis:
+  addr: 127.0.0.1:6379
+  password: Yijie
+
+mysql:
+  addr: 127.0.0.1:3306
+  database: Yijie
+  username: Yijie
+  password: Yijie
+  charset: utf8mb4
+
+kafka:
+  address: 127.0.0.1:9092
+  network: tcp
+  user: yijie
+  password: yijie-password
+
+minio:
+  addr: 127.0.0.1:9001
+  accesskeyid: yijie
+  secretkey: yijie
+
+services:
+  gateway:
+    name: gateway
+    load-balance: false
+    # TODO 先在本地跑
+    addr:
+      - 127.0.0.1:20001
+
+  user:
+    name: user
+    load-balance: false
+    addr:
+      - 0.0.0.0:20002
+
+  profile:
+    name: profile
+    load-balance: false
+    addr:
+      - 0.0.0.0:20003
+
+  community:
+    name: community
+    load-balance: false
+    addr:
+      - 0.0.0.0:20004
+
+  interface:
+    name: interface
+    load-balance: false
+    addr:
+      - 0.0.0.0:20005
+
+  chat:
+    name: chat
+    load-balance: false
+    addr:
+      - 0.0.0.0:20006
+
+  group:
+    name: group
+    load-balance: false
+    addr:
+      - 0.0.0.0:20007
