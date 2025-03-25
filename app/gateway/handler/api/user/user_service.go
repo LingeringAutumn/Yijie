@@ -4,40 +4,151 @@ package user
 
 import (
 	"context"
+	"log"
 
-	user "Yijie/app/gateway/model/api/user"
+	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
+	// hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
+	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
+	kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
+	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
 // Register .
 // @router api/v1/user/register [POST]
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.RegisterRequest
+	var req api.RegisterRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
 
-	resp := new(user.RegisterResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.RegisterRPC(ctx, &user.RegisterRequest{
+		Username: req.Name,
+		Password: req.Password,
+		Email:    req.Email,
+		Phone:    req.Phone,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }
 
 // Login .
 // @router api/v1/user/login [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.LoginRequest
+	var req api.LoginRequest
+	// 尝试将请求数据绑定到 req 结构体，并进行数据验证
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		// 如果绑定或验证过程中出现错误，调用 pack.RespError 函数返回错误响应
+		// errno.ParamVerifyError 是预定义的参数验证错误类型，WithError 方法将具体错误信息附加到该错误类型上
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
+		return
+	}
+	// 调用 rpc.LoginRPC 函数进行远程过程调用，尝试登录
+	// 将请求中的用户名和密码传递给 LoginRequest 结构体
+	resp, err := rpc.LoginRPC(ctx, &user.LoginRequest{
+		Username: req.Name,
+		Password: req.Password,
+	})
+	if err != nil {
+		// 如果 RPC 调用过程中出现错误，调用 pack.RespError 函数返回错误响应
+		pack.RespError(c, err)
+		return
+	}
+	// 调用 utils.CreateAllToken 函数为登录成功的用户创建访问令牌和刷新令牌
+	// resp.User.UserId 是登录成功后返回的用户 ID
+	accessToken, refreshToken, err := utils.CreateAllToken(resp.User.UserId)
+	if err != nil {
+		// 如果创建令牌过程中出现错误，调用 pack.RespError 函数返回错误响应
+		pack.RespError(c, err)
 		return
 	}
 
-	resp := new(user.LoginResponse)
+	// 设置响应头，将生成的访问令牌添加到响应头中
+	// constants.AccessTokenHeader 是预定义的访问令牌响应头名称
+	c.Header(constants.AccessTokenHeader, accessToken)
+	// 设置响应头，将生成的刷新令牌添加到响应头中
+	// constants.RefreshTokenHeader 是预定义的刷新令牌响应头名称
+	c.Header(constants.RefreshTokenHeader, refreshToken)
 
-	c.JSON(consts.StatusOK, resp)
+	// 调用 pack.RespData 函数将登录成功的响应数据（resp）返回给客户端
+	// 这个函数会将响应数据进行格式化，例如转换为 JSON 格式，并设置合适的 HTTP 状态码
+	pack.RespData(c, resp)
+}
+
+// UpdateProfile .
+// @router api/v1/user/profile/update [PUT]
+func UpdateProfile(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req api.UpdateUserProfileRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
+		return
+	}
+	log.Printf(">>>> Handler绑定 req: %+v", req)
+
+	var avatarData []byte
+	avatarFile, err := c.FormFile("avatar")
+	if err == nil {
+		if _, ok := utils.CheckImageFileType(avatarFile); !ok {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		}
+		avatarData, err = utils.FileToBytes(avatarFile)
+		if err != nil {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		}
+	}
+	userProfile := kmodel.UserProfileReq{
+		Username: req.UserProfileReq.Username,
+		Email:    req.UserProfileReq.Email,
+		Phone:    req.UserProfileReq.Phone,
+		Bio:      req.UserProfileReq.Bio,
+	}
+	log.Printf(">>>> 构造 userProfile: %+v", userProfile)
+	resp, err := rpc.UpdateUserProfileRPC(ctx, &user.UpdateUserProfileRequest{
+		Uid:            req.UID,
+		UserProfileReq: &userProfile,
+		Avatar:         avatarData,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
+}
+
+// GetProfile .
+// @router api/v1/user/profile/get [GET]
+func GetProfile(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req api.GetUserProfileRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
+		return
+	}
+
+	resp, err := rpc.GetUserProfileRPC(ctx, &user.GetUserProfileRequest{
+		Uid: req.UID,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }

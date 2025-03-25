@@ -1,0 +1,116 @@
+server:
+  private-key: | # PKCS#8
+    -----BEGIN PRIVATE KEY-----
+    MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCzDXx5if0+0AfL
+    OZWr4+koT9L+DraGBtXyYowt/ZjufTkrR5kGyZLhA6zRgObO/2bIkJ43VON0anwG
+    g3u9TCV7WER98g46gCGx7aYTRw4XL9ckpcZJ01TbVaoAS5sSiC9an4WsriUCeg3X
+    7RGhZsR9mRWYL79jPY2Sogr4t7gOb+Z0AuUsQAyU2ChfdhwRvYBLhOAfzJJlj08A
+    NaOXvQYpQCNytaSNA1e5x7iOw6licUC87CbkJ/4ylpIQvK3A99ejCBWq9wA0nuJI
+    UE/mGnib/lYHu9xAlzi34dUXIdl3FvXD+6wPEznavOs0croi21sPZo5eJrB5/YBv
+    0bXjuAD7AgMBAAECggEAX0z0TbRWaFJNc6uIsF60QNKL2NF38Mo+oa42MlxiQ72+
+    6fxHxMcROFa+axwSvWZPDL18mLLEBbiPnt/owo5+/LG0ctydGiIMzSlSVbxiEZFT
+    D5x0d+LVrZBg1ZtoRGrb2X5CpfBinnjcWWtDEQcj2j3aso/nbCjc64j4Ef2nJ3cf
+    wGBXe0jLBAm6BqIQjPEpnJ2c9ILmgAW4C0zUKXFkhkk+S8G+42UIcFTKiJA87Piy
+    RBqwTLKJzAoT81KmGiU6Oq6r51NItzSgHTNAchKlbUN6N83434ciaEov0zKo7Yr3
+    NtpGnuWwA0FKHnKp4gZHksd91azam8vgnKNFobdloQKBgQDeDDalTSWBb+2xf7L6
+    CTrDjwKCSC3ysz9L6wYCPuVJ/N6cIeu+XF+rEn74Id1aYRUrZ/JUwBRemCDt1ukZ
+    KCOyaOBN1cPl11GPbLu15HWkP6vNQtjx01rIhZ+Qy2qTZ7cF+EyHsyAaN7NT0TiT
+    XhUJSpulkcNUywLFIhUAWindaQKBgQDObkjtC8RaDf97nMkc5zkUJVS4kQEqNOMO
+    a+IIBJ+P9yU2UJF1EpCJFBkot7zGAZFmTg40qiANWNH3cLBMctFECX2znwOiQ9cn
+    1m7hrzBvq3l6nCsGKD/JC/0h3ZU4O1nau+Tw46knd9DSO96aGpEVxZAPfvEO2pHW
+    2cCCPrRKwwKBgEAzndU7sh1zxHEu8AvVgVUr01jiD879vs5vnOQnVVqIL8FLGYOH
+    5+1pwqZx/DN2oI1VV77jbsBPEi5SlkE81t1t73Tx2tto318t3DRiYxVjh4Qo0NtS
+    9gvGfvV5q04Fjei++zm9NAoAkuwoMUiCymhOVySPOcAZlqpzCUl5yGMJAoGAaF6s
+    MmWDpgBzzpzLtfhWDJB/UD3IN/27WvxCsMkdn51WTCraEDYNq7Dks4iKQhZi3DXU
+    yt3FDNp+djucd1qJ4Xtm+Z0JKk5ghvzM3QBFXgB1j/9LZXaOIWkVV7z/iAnB+WyM
+    aRrB2Hmks9afSozqE/bqSltlJ5xsphM8WN25LB8CgYBAXiU7gkd0wckH8VZXZomM
+    gjVMtH//2WOvFXHh8MxJBhpaRY/DoIksLg3c67DTI5qxGnthAI0Jc+4mSHcOTAg5
+    xfSk/j/Yzy7LIVvd3ioabWCuCw7HZid/mTNIFUe1CiwEqTVDnt6zNHrpdcTSpsNT
+    rKPto3HFdxs8eM8q8vtKhw==
+    -----END PRIVATE KEY-----
+  public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsw18eYn9PtAHyzmVq+Pp
+    KE/S/g62hgbV8mKMLf2Y7n05K0eZBsmS4QOs0YDmzv9myJCeN1TjdGp8BoN7vUwl
+    e1hEffIOOoAhse2mE0cOFy/XJKXGSdNU21WqAEubEogvWp+FrK4lAnoN1+0RoWbE
+    fZkVmC+/Yz2NkqIK+Le4Dm/mdALlLEAMlNgoX3YcEb2AS4TgH8ySZY9PADWjl70G
+    KUAjcrWkjQNXuce4jsOpYnFAvOwm5Cf+MpaSELytwPfXowgVqvcANJ7iSFBP5hp4
+    m/5WB7vcQJc4t+HVFyHZdxb1w/usDxM52rzrNHK6IttbD2aOXiawef2Ab9G147gA
+    +wIDAQAB
+    -----END PUBLIC KEY-----
+  version: "1.0"
+  name: "Yijie"
+  log-level: "INFO" # OPTIONS: TRACE, DEBUG, INFO(default), NOTICE, WARN, ERROR, FATAL
+
+defaultUser:
+  account: ""
+  password: ""
+
+snowflake:
+  datacenter-id: 0
+
+
+redis:
+  addr: 127.0.0.1:6379
+  password: Yijie
+
+mysql:
+  addr: 127.0.0.1:3306
+  database: Yijie
+  username: Yijie
+  password: Yijie
+  charset: utf8mb4
+
+kafka:
+  broker: 127.0.0.1:9092                # Kafka 服务地址
+  topic: yijie                          # 上传任务的主题名（生产者/消费者都用它）
+  consumer_group: upload-task-group    # 消费者组名（每个消费者进程唯一）
+  max_connections: 100                 # 最大并发连接数（一般够用）
+  max_qps: 1000                        # 最大每秒请求数（可用于限流）
+  auto_offset_reset: earliest          # 新消费者读取历史消息（推荐 earliest）
+  sasl_user: yijie                     # Kafka SASL 认证用户名（如服务端配置了）
+  sasl_password: yijie-password        # Kafka SASL 认证密码
+
+
+minio:
+  addr: 127.0.0.1:9001
+  accesskeyid: yijie
+  secretkey: yijie
+
+services:
+  gateway:
+    name: gateway
+    load-balance: false
+    # TODO 先在本地跑,上云的话地址后面改
+    addr:
+      - 127.0.0.1:20001
+
+  user:
+    name: user
+    load-balance: false
+    addr:
+      - 0.0.0.0:20002
+
+  video:
+    name: video
+    load-balance: false
+    addr:
+      - 0.0.0.0:20003
+      -
+  comment:
+    name: comment
+    load-balance: false
+    addr:
+      - 0.0.0.0:20004
+
+  user_behaviour:
+    name: user_behaviour
+    load-balance: false
+    addr:
+      - 0.0.0.0:20005
+
+  chat:
+    name: chat
+    load-balance: false
+    addr:
+      - 0.0.0.0:20006

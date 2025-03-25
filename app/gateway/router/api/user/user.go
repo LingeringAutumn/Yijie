@@ -3,8 +3,12 @@
 package user
 
 import (
-	user "Yijie/app/gateway/handler/api/user"
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"net/http"
+
+	user "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user"
 )
 
 /*
@@ -18,6 +22,9 @@ func Register(r *server.Hertz) {
 
 	root := r.Group("/", rootMw()...)
 	{
+		root.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+			ctx.String(http.StatusOK, "pong")
+		})
 		_api := root.Group("/api", _apiMw()...)
 		{
 			_v1 := _api.Group("/v1", _v1Mw()...)
@@ -25,6 +32,11 @@ func Register(r *server.Hertz) {
 				_user := _v1.Group("/user", _userMw()...)
 				_user.POST("/login", append(_loginMw(), user.Login)...)
 				_user.POST("/register", append(_registerMw(), user.Register)...)
+				{
+					_profile := _user.Group("/profile", _profileMw()...)
+					_profile.GET("/get", append(_getprofileMw(), user.GetProfile)...)
+					_profile.PUT("/update", append(_updateprofileMw(), user.UpdateProfile)...)
+				}
 			}
 		}
 	}

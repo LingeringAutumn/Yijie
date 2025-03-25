@@ -4,6 +4,8 @@ package user
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/mw"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -32,6 +34,34 @@ func _loginMw() []app.HandlerFunc {
 }
 
 func _registerMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _profileMw() []app.HandlerFunc {
+	// your code...
+	return []app.HandlerFunc{
+		mw.Auth(),
+	}
+}
+
+// TODO 这里需要鉴权吗？
+func _getuserprofileMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updateuserprofileMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getprofileMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updateprofileMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

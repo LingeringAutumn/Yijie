@@ -48,23 +48,27 @@ services:
     entrypoint: [ "sh", "-c", "chmod +x /script/etcd-monitor.sh && /script/etcd-monitor.sh & exec etcd" ]
 
   # Kafka 服务，分布式流处理平台，用于构建实时数据管道和流应用
-  kafka:
+  yijie-kafka:
     container_name: yijie-kafka
     image: bitnami/kafka:latest
     restart: always
     user: root
     ports:
       - "9092:9092"
-      - "9093:9093"
     env_file:
-      - ./env/kafka.env
+      - ./env/kafka.env   # ✅ 使用外部 env 文件
     volumes:
-      - ./data/kafka:/bitnami/kafka
+      - ./data/kafka-data:/bitnami/kafka/data
     networks:
       - yijie
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-  # Kafka UI 服务，为 Kafka 提供可视化管理和监控界面
-  kafka-ui:
+  # Kafka UI 服务
+  yijie-kafka-ui:
     container_name: yijie-kafka-ui
     image: provectuslabs/kafka-ui:latest
     restart: always
@@ -75,8 +79,23 @@ services:
     networks:
       - yijie
 
+  yijie-minio:
+    container_name: yijie-minio
+    image: quay.io/minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"  # 添加控制台端口
+    env_file:
+      - ./env/minio.env
+    volumes:
+      - ./data/minio-data:/data
+    networks:
+      - yijie
+    command: server /data --console-address ":9000" --address ":9001"
+
+
 networks:
   yijie:
-    driver: bridge
+    driver: bridge # 默认使用桥接网络
     name: yijie
 
