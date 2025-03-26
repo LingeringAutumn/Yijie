@@ -1,6 +1,7 @@
 namespace go api.user
 include "../model.thrift"
 
+// 注册
 struct RegisterRequest {
     1: required string name
     2: required string password
@@ -11,6 +12,7 @@ struct RegisterResponse {
     1: required i64 uid;
 }
 
+// 登陆
 struct LoginRequest {
     1: required string name
     2: required string password
@@ -20,10 +22,30 @@ struct LoginResponse {
     1: model.UserInfo user,
 }
 
+// 更新个人信息
+struct UpdateUserProfileRequest{
+    1: required i64 uid,
+    2: required model.UserProfile userProfile,
+}
+
+struct UpdateUserProfileResponse{
+    1:required model.UserProfile userProfile,
+}
+
+// 获取个人信息
+struct GetUserProfileRequest{
+    1: required i64 uid,
+}
+
+struct GetUserProfileResponse{
+    1:required model.UserProfile userProfile,
+}
 
 
 
 service UserService {
     RegisterResponse Register(1: RegisterRequest req)(api.post = "api/v1/user/register"),
     LoginResponse Login(1: LoginRequest req)(api.post = "api/v1/user/login")
+    UpdateUserProfileResponse UpdateUserProfile(1:UpdateUserProfileRequest req)(api.put="api/v1/user/profile/update")
+    GetUserProfileResponse GetUserProfile(1:GetUserProfileRequest req)(api.get="api/v1/user/profile/get")
 }

@@ -3,7 +3,7 @@
 package router
 
 import (
-	api_user "Yijie/app/gateway/router/api/user"
+	api_user "github.com/LingeringAutumn/Yijie/app/gateway/router/api/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

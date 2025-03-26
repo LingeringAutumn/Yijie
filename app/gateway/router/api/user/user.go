@@ -3,7 +3,7 @@
 package user
 
 import (
-	user "Yijie/app/gateway/handler/api/user"
+	user "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -25,6 +25,11 @@ func Register(r *server.Hertz) {
 				_user := _v1.Group("/user", _userMw()...)
 				_user.POST("/login", append(_loginMw(), user.Login)...)
 				_user.POST("/register", append(_registerMw(), user.Register)...)
+				{
+					_profile := _user.Group("/profile", _profileMw()...)
+					_profile.GET("/get", append(_getuserprofileMw(), user.GetUserProfile)...)
+					_profile.PUT("/update", append(_updateuserprofileMw(), user.UpdateUserProfile)...)
+				}
 			}
 		}
 	}
