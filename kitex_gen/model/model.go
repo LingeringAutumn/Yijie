@@ -3,6 +3,7 @@
 package model
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 )
@@ -190,4 +191,186 @@ func (p *LoginData) Field1DeepEqual(src int64) bool {
 
 var fieldIDToName_LoginData = map[int16]string{
 	1: "userId",
+}
+
+type UserProfile struct {
+	Username        string `thrift:"username,1" frugal:"1,default,string" json:"username"`
+	Email           string `thrift:"email,2" frugal:"2,default,string" json:"email"`
+	Phone           string `thrift:"phone,3" frugal:"3,default,string" json:"phone"`
+	Avatar          []byte `thrift:"avatar,4" frugal:"4,default,binary" json:"avatar"`
+	Bio             string `thrift:"bio,5" frugal:"5,default,string" json:"bio"`
+	MembershipLevel int64  `thrift:"membershipLevel,6" frugal:"6,default,i64" json:"membershipLevel"`
+	Point           int64  `thrift:"point,7" frugal:"7,default,i64" json:"point"`
+	Team            string `thrift:"team,8" frugal:"8,default,string" json:"team"`
+}
+
+func NewUserProfile() *UserProfile {
+	return &UserProfile{}
+}
+
+func (p *UserProfile) InitDefault() {
+}
+
+func (p *UserProfile) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *UserProfile) GetEmail() (v string) {
+	return p.Email
+}
+
+func (p *UserProfile) GetPhone() (v string) {
+	return p.Phone
+}
+
+func (p *UserProfile) GetAvatar() (v []byte) {
+	return p.Avatar
+}
+
+func (p *UserProfile) GetBio() (v string) {
+	return p.Bio
+}
+
+func (p *UserProfile) GetMembershipLevel() (v int64) {
+	return p.MembershipLevel
+}
+
+func (p *UserProfile) GetPoint() (v int64) {
+	return p.Point
+}
+
+func (p *UserProfile) GetTeam() (v string) {
+	return p.Team
+}
+func (p *UserProfile) SetUsername(val string) {
+	p.Username = val
+}
+func (p *UserProfile) SetEmail(val string) {
+	p.Email = val
+}
+func (p *UserProfile) SetPhone(val string) {
+	p.Phone = val
+}
+func (p *UserProfile) SetAvatar(val []byte) {
+	p.Avatar = val
+}
+func (p *UserProfile) SetBio(val string) {
+	p.Bio = val
+}
+func (p *UserProfile) SetMembershipLevel(val int64) {
+	p.MembershipLevel = val
+}
+func (p *UserProfile) SetPoint(val int64) {
+	p.Point = val
+}
+func (p *UserProfile) SetTeam(val string) {
+	p.Team = val
+}
+
+func (p *UserProfile) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserProfile(%+v)", *p)
+}
+
+func (p *UserProfile) DeepEqual(ano *UserProfile) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Phone) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Avatar) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Bio) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.MembershipLevel) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.Point) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.Team) {
+		return false
+	}
+	return true
+}
+
+func (p *UserProfile) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Email, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Phone, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field4DeepEqual(src []byte) bool {
+
+	if bytes.Compare(p.Avatar, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Bio, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field6DeepEqual(src int64) bool {
+
+	if p.MembershipLevel != src {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field7DeepEqual(src int64) bool {
+
+	if p.Point != src {
+		return false
+	}
+	return true
+}
+func (p *UserProfile) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.Team, src) != 0 {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_UserProfile = map[int16]string{
+	1: "username",
+	2: "email",
+	3: "phone",
+	4: "avatar",
+	5: "bio",
+	6: "membershipLevel",
+	7: "point",
+	8: "team",
 }

@@ -4,8 +4,12 @@ package user
 
 import (
 	"context"
+	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
+	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
+	"github.com/LingeringAutumn/Yijie/pkg/errno"
 
-	user "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
+	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -14,30 +18,37 @@ import (
 // @router api/v1/user/register [POST]
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.RegisterRequest
+	var req api.RegisterRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
 
-	resp := new(user.RegisterResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.RegisterRPC(ctx, &user.RegisterRequest{
+		Username: req.Name,
+		Password: req.Password,
+		Email:    req.Email,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }
 
 // Login .
 // @router api/v1/user/login [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.LoginRequest
+	var req api.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
 
-	resp := new(user.LoginResponse)
+	resp := new(api.LoginResponse)
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -46,14 +57,14 @@ func Login(ctx context.Context, c *app.RequestContext) {
 // @router api/v1/user/profile/update [PUT]
 func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.UpdateUserProfileRequest
+	var req api.UpdateUserProfileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
 
-	resp := new(user.UpdateUserProfileResponse)
+	resp := new(api.UpdateUserProfileResponse)
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -62,14 +73,14 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 // @router api/v1/user/profile/get [GET]
 func GetUserProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.GetUserProfileRequest
+	var req api.GetUserProfileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
 
-	resp := new(user.GetUserProfileResponse)
+	resp := new(api.GetUserProfileResponse)
 
 	c.JSON(consts.StatusOK, resp)
 }

@@ -27,6 +27,20 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"UpdateUserProfile": kitex.NewMethodInfo(
+		updateUserProfileHandler,
+		newUserServiceUpdateUserProfileArgs,
+		newUserServiceUpdateUserProfileResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"GetUserProfile": kitex.NewMethodInfo(
+		getUserProfileHandler,
+		newUserServiceGetUserProfileArgs,
+		newUserServiceGetUserProfileResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -129,6 +143,42 @@ func newUserServiceLoginResult() interface{} {
 	return user.NewUserServiceLoginResult()
 }
 
+func updateUserProfileHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceUpdateUserProfileArgs)
+	realResult := result.(*user.UserServiceUpdateUserProfileResult)
+	success, err := handler.(user.UserService).UpdateUserProfile(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUpdateUserProfileArgs() interface{} {
+	return user.NewUserServiceUpdateUserProfileArgs()
+}
+
+func newUserServiceUpdateUserProfileResult() interface{} {
+	return user.NewUserServiceUpdateUserProfileResult()
+}
+
+func getUserProfileHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetUserProfileArgs)
+	realResult := result.(*user.UserServiceGetUserProfileResult)
+	success, err := handler.(user.UserService).GetUserProfile(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetUserProfileArgs() interface{} {
+	return user.NewUserServiceGetUserProfileArgs()
+}
+
+func newUserServiceGetUserProfileResult() interface{} {
+	return user.NewUserServiceGetUserProfileResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -154,6 +204,26 @@ func (p *kClient) Login(ctx context.Context, req *user.LoginRequest) (r *user.Lo
 	_args.Req = req
 	var _result user.UserServiceLoginResult
 	if err = p.c.Call(ctx, "Login", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateUserProfile(ctx context.Context, req *user.UpdateUserProfileRequest) (r *user.UpdateUserProfileResponse, err error) {
+	var _args user.UserServiceUpdateUserProfileArgs
+	_args.Req = req
+	var _result user.UserServiceUpdateUserProfileResult
+	if err = p.c.Call(ctx, "UpdateUserProfile", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserProfile(ctx context.Context, req *user.GetUserProfileRequest) (r *user.GetUserProfileResponse, err error) {
+	var _args user.UserServiceGetUserProfileArgs
+	_args.Req = req
+	var _result user.UserServiceGetUserProfileResult
+	if err = p.c.Call(ctx, "GetUserProfile", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
