@@ -3,9 +3,12 @@
 package user
 
 import (
+	"Yijie/app/gateway/pack"
+	"Yijie/pkg/errno"
 	"context"
+	"net/rpc"
 
-	user "Yijie/app/gateway/model/api/user"
+	api "Yijie/app/gateway/model/api/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -14,14 +17,14 @@ import (
 // @router api/v1/user/register [POST]
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.RegisterRequest
+	var req api.RegisterRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c,errno.ParamVerifyError.WithError(err))
 		return
 	}
 
-	resp := new(user.RegisterResponse)
+	resp,err:= rpc.RegisterRPC(ctx,&user.)
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -30,14 +33,14 @@ func Register(ctx context.Context, c *app.RequestContext) {
 // @router api/v1/user/login [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.LoginRequest
+	var req api.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
 
-	resp := new(user.LoginResponse)
+	resp := new(api.LoginResponse)
 
 	c.JSON(consts.StatusOK, resp)
 }

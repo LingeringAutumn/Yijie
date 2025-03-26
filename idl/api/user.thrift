@@ -17,8 +17,10 @@ struct LoginRequest {
 }
 
 struct LoginResponse {
-    2: model.UserInfo user,
+    1: model.UserInfo user,
 }
+
+
 
 
 service UserService {

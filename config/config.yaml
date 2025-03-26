@@ -76,7 +76,7 @@ services:
   gateway:
     name: gateway
     load-balance: false
-    # TODO 先在本地跑
+    # TODO 先在本地跑,上云的话地址后面改
     addr:
       - 127.0.0.1:20001
 
