@@ -42,3 +42,9 @@ const (
 	RedisConnectFailed = 60000 + iota
 	RedisKeyNotExist
 )
+
+// 文件传输错误
+const (
+	UploadFileFailed = 70000 + iota
+	FileSaveFailed
+)

@@ -4,15 +4,16 @@ package user
 
 import (
 	"context"
+	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
+	hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
+	kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-
-	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 // Register .
@@ -43,20 +44,43 @@ func Register(ctx context.Context, c *app.RequestContext) {
 func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req api.LoginRequest
+	// 尝试将请求数据绑定到 req 结构体，并进行数据验证
 	err = c.BindAndValidate(&req)
 	if err != nil {
+		// 如果绑定或验证过程中出现错误，调用 pack.RespError 函数返回错误响应
+		// errno.ParamVerifyError 是预定义的参数验证错误类型，WithError 方法将具体错误信息附加到该错误类型上
 		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
+	// 调用 rpc.LoginRPC 函数进行远程过程调用，尝试登录
+	// 将请求中的用户名和密码传递给 LoginRequest 结构体
 	resp, err := rpc.LoginRPC(ctx, &user.LoginRequest{
 		Username: req.Name,
 		Password: req.Password,
 	})
 	if err != nil {
+		// 如果 RPC 调用过程中出现错误，调用 pack.RespError 函数返回错误响应
 		pack.RespError(c, err)
 		return
 	}
-	accessToken, refreshToken, err := utils.CreateToken()
+	// 调用 utils.CreateAllToken 函数为登录成功的用户创建访问令牌和刷新令牌
+	// resp.User.UserId 是登录成功后返回的用户 ID
+	accessToken, refreshToken, err := utils.CreateAllToken(resp.User.UserId)
+	if err != nil {
+		// 如果创建令牌过程中出现错误，调用 pack.RespError 函数返回错误响应
+		pack.RespError(c, err)
+		return
+	}
+
+	// 设置响应头，将生成的访问令牌添加到响应头中
+	// constants.AccessTokenHeader 是预定义的访问令牌响应头名称
+	c.Header(constants.AccessTokenHeader, accessToken)
+	// 设置响应头，将生成的刷新令牌添加到响应头中
+	// constants.RefreshTokenHeader 是预定义的刷新令牌响应头名称
+	c.Header(constants.RefreshTokenHeader, refreshToken)
+
+	// 调用 pack.RespData 函数将登录成功的响应数据（resp）返回给客户端
+	// 这个函数会将响应数据进行格式化，例如转换为 JSON 格式，并设置合适的 HTTP 状态码
 	pack.RespData(c, resp)
 }
 
@@ -67,13 +91,45 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 	var req api.UpdateUserProfileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
+	var avatarData []byte
+	avatarFile, err := c.FormFile("avatar")
+	if err == nil {
+		if _, ok := utils.CheckImageFileType(avatarFile); !ok {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		}
+		avatarData, err = utils.FileToByteStream(avatarFile)
+		if err == nil {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		} else if len(req.UserProfile.Avatar) == 0 {
+			avatarData = nil
+		}
+	}
 
-	resp := new(api.UpdateUserProfileResponse)
+	userProfile := kmodel.UserProfile{
+		Username:        req.UserProfile.Username,
+		Email:           req.UserProfile.Email,
+		Phone:           req.UserProfile.Phone,
+		Avatar:          avatarData,
+		Bio:             req.UserProfile.Bio,
+		MembershipLevel: req.UserProfile.MembershipLevel,
+		Point:           req.UserProfile.Point,
+		Team:            req.UserProfile.Team,
+	}
+	resp, err := rpc.UpdateUserProfileRPC(ctx, &user.UpdateUserProfileRequest{
+		Uid:         req.UID,
+		UserProfile: &userProfile,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 
-	c.JSON(consts.StatusOK, resp)
 }
 
 // GetUserProfile .
@@ -83,11 +139,16 @@ func GetUserProfile(ctx context.Context, c *app.RequestContext) {
 	var req api.GetUserProfileRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
 
-	resp := new(api.GetUserProfileResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.GetUserProfileRPC(ctx, &user.GetUserProfileRequest{
+		Uid: req.UID,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }

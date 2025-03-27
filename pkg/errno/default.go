@@ -16,3 +16,8 @@ var (
 
 	InternalServiceError = NewErrNo(InternalServiceErrorCode, "internal server error")
 )
+
+var (
+	FileUploadError = NewErrNo(UploadFileFailed, "uploaded file is not exist")
+	// FileSaveError   = NewErrNo(FileSaveFailed, "uploaded file is not exist")
+)
