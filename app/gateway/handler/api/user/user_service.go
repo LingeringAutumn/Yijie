@@ -8,6 +8,7 @@ import (
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -44,13 +45,19 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var req api.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
-
-	resp := new(api.LoginResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.LoginRPC(ctx, &user.LoginRequest{
+		Username: req.Name,
+		Password: req.Password,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	accessToken, refreshToken, err := utils.CreateToken()
+	pack.RespData(c, resp)
 }
 
 // UpdateUserProfile .

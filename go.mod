@@ -11,6 +11,7 @@ require (
 	github.com/cloudwego/hertz v0.9.6
 	github.com/cloudwego/kitex v0.12.3
 	github.com/fsnotify/fsnotify v1.8.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/kitex-contrib/obs-opentelemetry v0.2.9
 	github.com/kitex-contrib/registry-etcd v0.2.6
 	github.com/spf13/viper v1.20.0

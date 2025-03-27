@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
+	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
@@ -32,5 +33,71 @@ func RegisterRPC(ctx context.Context, req *user.RegisterRequest) (response *api.
 	}
 	response = &api.RegisterResponse{UID: resp.UserID}
 	return response, nil
+}
 
+func LoginRPC(ctx context.Context, req *user.LoginRequest) (response *api.LoginResponse, err error) {
+	resp, err := userClient.Login(ctx, req)
+	if err != nil {
+		logger.Fatal("LoginRPC: RPC called failed: %v", err.Error())
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+	if !utils.IsSuccess(resp.Base) {
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+
+	response = &api.LoginResponse{
+		User: &model.UserInfo{
+			UserId: resp.User.UserId,
+			Name:   resp.User.Name,
+		},
+	}
+	return response, nil
+}
+
+func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileRequest) (response *api.UpdateUserProfileResponse, err error) {
+	resp, err := userClient.UpdateUserProfile(ctx, req)
+	if err != nil {
+		logger.Fatal("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+	if !utils.IsSuccess(resp.Base) {
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+	response = &api.UpdateUserProfileResponse{
+		UserProfile: &model.UserProfile{
+			Username:        resp.UserProfile.Username,
+			Email:           resp.UserProfile.Email,
+			Phone:           resp.UserProfile.Phone,
+			Avatar:          resp.UserProfile.Avatar,
+			Bio:             resp.UserProfile.Bio,
+			MembershipLevel: resp.UserProfile.MembershipLevel,
+			Point:           resp.UserProfile.Point,
+			Team:            resp.UserProfile.Team,
+		},
+	}
+	return response, nil
+}
+
+func GetUserProfileRPC(ctx context.Context, req *user.GetUserProfileRequest) (response *api.GetUserProfileResponse, err error) {
+	resp, err := userClient.GetUserProfile(ctx, req)
+	if err != nil {
+		logger.Fatal("GetUserProfile: RPC called failed: %v", err.Error())
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+	if !utils.IsSuccess(resp.Base) {
+		return nil, errno.InternalServiceError.WithError(err)
+	}
+	response = &api.GetUserProfileResponse{
+		UserProfile: &model.UserProfile{
+			Username:        resp.UserProfile.Username,
+			Email:           resp.UserProfile.Email,
+			Phone:           resp.UserProfile.Phone,
+			Avatar:          resp.UserProfile.Avatar,
+			Bio:             resp.UserProfile.Bio,
+			MembershipLevel: resp.UserProfile.MembershipLevel,
+			Point:           resp.UserProfile.Point,
+			Team:            resp.UserProfile.Team,
+		},
+	}
+	return response, nil
 }

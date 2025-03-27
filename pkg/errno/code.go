@@ -16,13 +16,15 @@ const (
 
 // 鉴权错误
 const (
-	AuthInvalidCode             = 30000 + iota // 鉴权失败
-	AuthAccessExpiredCode                      // 访问令牌过期
-	AuthRefreshExpiredCode                     // 刷新令牌过期
-	AuthNoTokenCode                            // 没有 token
-	AuthNoOperatePermissionCode                // 没有操作权限
-	AuthMissingTokenCode                       // 缺少 token
-	IllegalOperatorCode                        // 不合格的操作(比如传入 payment status时传入了一个不存在的 status)
+	AuthInvalidCode         = 30000 + iota // 鉴权失败
+	AuthPraiseKeyFailedCode                // token生成失败
+	AuthSignKeyFailedCode
+	AuthAccessExpiredCode       // 访问令牌过期
+	AuthRefreshExpiredCode      // 刷新令牌过期
+	AuthNoTokenCode             // 没有 token
+	AuthNoOperatePermissionCode // 没有操作权限
+	AuthMissingTokenCode        // 缺少 token
+	IllegalOperatorCode         // 不合格的操作(比如传入 payment status时传入了一个不存在的 status)
 )
 
 // 内部错误,服务级别的错误
