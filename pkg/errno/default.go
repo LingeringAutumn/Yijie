@@ -13,8 +13,9 @@ var (
 	AuthAccessExpired       = NewErrNo(AuthAccessExpiredCode, "token expiration")
 	AuthNoToken             = NewErrNo(AuthNoTokenCode, "lack of token")
 	AuthNoOperatePermission = NewErrNo(AuthNoOperatePermissionCode, "No permission to operate")
-
-	InternalServiceError = NewErrNo(InternalServiceErrorCode, "internal server error")
+	OSOperationError        = NewErrNo(OSOperateErrorCode, "os operation failed") // 系统操作失败
+	IOOperationError        = NewErrNo(IOOperateErrorCode, "io operation failed") // 输入输出失败
+	InternalServiceError    = NewErrNo(InternalServiceErrorCode, "internal server error")
 )
 
 var (

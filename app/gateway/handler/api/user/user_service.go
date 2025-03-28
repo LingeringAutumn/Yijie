@@ -5,7 +5,7 @@ package user
 import (
 	"context"
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
-	hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
+	// hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
 	kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
@@ -101,7 +101,7 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 			pack.RespError(c, errno.FileUploadError.WithError(err))
 			return
 		}
-		avatarData, err = utils.FileToByteStream(avatarFile)
+		avatarData, err = utils.FileToBytes(avatarFile)
 		if err == nil {
 			pack.RespError(c, errno.FileUploadError.WithError(err))
 			return

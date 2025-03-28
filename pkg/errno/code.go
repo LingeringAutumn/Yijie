@@ -35,6 +35,8 @@ const (
 	InternalNetworkErrorCode                 // 网络错误
 	InternalKafkaErrorCode                   // kafka 错误
 	InternalRPCErrorCode
+	OSOperateErrorCode
+	IOOperateErrorCode
 )
 
 // config错误
