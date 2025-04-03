@@ -17,7 +17,7 @@ require (
 	github.com/kitex-contrib/registry-etcd v0.2.6
 	github.com/spf13/viper v1.20.0
 	github.com/spf13/viper/remote v1.20.0
-	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697
+	gorm.io/gorm v1.25.12
 )
 
 require (
@@ -68,6 +68,8 @@ require (
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
@@ -119,6 +121,7 @@ require (
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 	google.golang.org/api v0.215.0 // indirect
+	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241209162323-e6fa225c2576 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241223144023-3abc09e42ca8 // indirect
 	google.golang.org/grpc v1.67.3 // indirect

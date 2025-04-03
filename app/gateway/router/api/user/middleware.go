@@ -3,6 +3,7 @@
 package user
 
 import (
+	"github.com/LingeringAutumn/Yijie/app/gateway/mw"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -38,7 +39,9 @@ func _registerMw() []app.HandlerFunc {
 
 func _profileMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		mw.Auth(),
+	}
 }
 
 func _getuserprofileMw() []app.HandlerFunc {
