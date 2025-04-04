@@ -374,3 +374,71 @@ var fieldIDToName_UserProfile = map[int16]string{
 	7: "point",
 	8: "team",
 }
+
+type Image struct {
+	ImageId  int64  `thrift:"imageId,1,required" frugal:"1,required,i64" json:"imageId"`
+	ImageUrl string `thrift:"imageUrl,2,required" frugal:"2,required,string" json:"imageUrl"`
+}
+
+func NewImage() *Image {
+	return &Image{}
+}
+
+func (p *Image) InitDefault() {
+}
+
+func (p *Image) GetImageId() (v int64) {
+	return p.ImageId
+}
+
+func (p *Image) GetImageUrl() (v string) {
+	return p.ImageUrl
+}
+func (p *Image) SetImageId(val int64) {
+	p.ImageId = val
+}
+func (p *Image) SetImageUrl(val string) {
+	p.ImageUrl = val
+}
+
+func (p *Image) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("Image(%+v)", *p)
+}
+
+func (p *Image) DeepEqual(ano *Image) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.ImageId) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.ImageUrl) {
+		return false
+	}
+	return true
+}
+
+func (p *Image) Field1DeepEqual(src int64) bool {
+
+	if p.ImageId != src {
+		return false
+	}
+	return true
+}
+func (p *Image) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.ImageUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_Image = map[int16]string{
+	1: "imageId",
+	2: "imageUrl",
+}

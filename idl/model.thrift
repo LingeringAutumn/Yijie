@@ -24,3 +24,8 @@ struct UserProfile {
     7: i64 point,
     8: string team,
 }
+
+struct Image{
+    1:required i64 imageId,
+    2:required string imageUrl,
+}
