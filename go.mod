@@ -17,6 +17,7 @@ require (
 	github.com/kitex-contrib/registry-etcd v0.2.6
 	github.com/spf13/viper v1.20.0
 	github.com/spf13/viper/remote v1.20.0
+	golang.org/x/net v0.33.0
 	gorm.io/gorm v1.25.12
 )
 
@@ -114,7 +115,6 @@ require (
 	golang.org/x/arch v0.2.0 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63 // indirect
-	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.25.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect

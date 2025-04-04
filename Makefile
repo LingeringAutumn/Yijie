@@ -122,3 +122,37 @@ ifndef BUILD_ONLY
 	@tmux send-keys -t yijie-$(service).0 'export SERVICE=$(service) && bash ./docker/script/entrypoint.sh' C-m
 	@tmux select-pane -t yijie-$(service).1
 endif
+
+
+# 格式化代码，我们使用 gofumpt，是 fmt 的严格超集
+.PHONY: fmt
+fmt:
+	gofumpt -l -w .
+
+# 优化 import 顺序结构
+.PHONY: import
+import:
+	goimports -w -local github.com/LingeringAutumn .
+
+# 检查可能的错误
+.PHONY: vet
+vet:
+	go vet ./...
+
+# 代码格式校验
+.PHONY: lint
+lint:
+	golangci-lint run --config=./.golangci.yml --tests --allow-parallel-runners --sort-results --show-stats --print-resources-usage
+
+# 检查依赖漏洞
+.PHONY: vulncheck
+vulncheck:
+	govulncheck ./...
+
+.PHONY: tidy
+tidy:
+	go mod tidy
+
+# 一键修正规范并执行代码检查，同时运行 license 检查
+.PHONY: verify
+verify:  vet fmt import lint vulncheck tidy

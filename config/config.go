@@ -1,8 +1,8 @@
 package config
 
 import (
-	"Yijie/pkg/constants"
 	"errors"
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/bytedance/gopkg/util/logger"
 	"os"
 
