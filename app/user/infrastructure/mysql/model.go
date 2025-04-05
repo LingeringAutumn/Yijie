@@ -22,8 +22,8 @@ type UserProfile struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
-	// TODO 有点怀疑这里
-	Avatar          string `json:"avatar"`
+	// TODO 有点怀疑这里(Avatar里存的应该是头像图片的imageId）
+	Avatar          int64  `json:"avatar"`
 	Bio             string `json:"bio"`
 	MembershipLevel int64  `json:"member"`
 	Point           int64  `json:"point"`

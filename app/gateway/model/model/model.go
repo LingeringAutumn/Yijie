@@ -518,7 +518,7 @@ type UserProfile struct {
 	Username        string `thrift:"username,1" form:"username" json:"username" query:"username"`
 	Email           string `thrift:"email,2" form:"email" json:"email" query:"email"`
 	Phone           string `thrift:"phone,3" form:"phone" json:"phone" query:"phone"`
-	Avatar          []byte `thrift:"avatar,4" form:"avatar" json:"avatar" query:"avatar"`
+	Avatar          int64  `thrift:"avatar,4" form:"avatar" json:"avatar" query:"avatar"`
 	Bio             string `thrift:"bio,5" form:"bio" json:"bio" query:"bio"`
 	MembershipLevel int64  `thrift:"membershipLevel,6" form:"membershipLevel" json:"membershipLevel" query:"membershipLevel"`
 	Point           int64  `thrift:"point,7" form:"point" json:"point" query:"point"`
@@ -544,7 +544,7 @@ func (p *UserProfile) GetPhone() (v string) {
 	return p.Phone
 }
 
-func (p *UserProfile) GetAvatar() (v []byte) {
+func (p *UserProfile) GetAvatar() (v int64) {
 	return p.Avatar
 }
 
@@ -618,7 +618,7 @@ func (p *UserProfile) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -721,11 +721,11 @@ func (p *UserProfile) ReadField3(iprot thrift.TProtocol) error {
 }
 func (p *UserProfile) ReadField4(iprot thrift.TProtocol) error {
 
-	var _field []byte
-	if v, err := iprot.ReadBinary(); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		_field = []byte(v)
+		_field = v
 	}
 	p.Avatar = _field
 	return nil
@@ -880,10 +880,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 func (p *UserProfile) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("avatar", thrift.STRING, 4); err != nil {
+	if err = oprot.WriteFieldBegin("avatar", thrift.I64, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteBinary([]byte(p.Avatar)); err != nil {
+	if err := oprot.WriteI64(p.Avatar); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

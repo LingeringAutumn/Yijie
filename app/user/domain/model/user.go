@@ -21,7 +21,7 @@ type UserProfile struct {
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 	// TODO 有点怀疑这里
-	Avatar          []byte `json:"avatar"`
+	Avatar          int64  `json:"avatar"`
 	Bio             string `json:"bio"`
 	MembershipLevel int64  `json:"member"`
 	Point           int64  `json:"point"`

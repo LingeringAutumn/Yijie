@@ -3,7 +3,6 @@
 package model
 
 import (
-	"bytes"
 	"fmt"
 	"strings"
 )
@@ -197,7 +196,7 @@ type UserProfile struct {
 	Username        string `thrift:"username,1" frugal:"1,default,string" json:"username"`
 	Email           string `thrift:"email,2" frugal:"2,default,string" json:"email"`
 	Phone           string `thrift:"phone,3" frugal:"3,default,string" json:"phone"`
-	Avatar          []byte `thrift:"avatar,4" frugal:"4,default,binary" json:"avatar"`
+	Avatar          int64  `thrift:"avatar,4" frugal:"4,default,i64" json:"avatar"`
 	Bio             string `thrift:"bio,5" frugal:"5,default,string" json:"bio"`
 	MembershipLevel int64  `thrift:"membershipLevel,6" frugal:"6,default,i64" json:"membershipLevel"`
 	Point           int64  `thrift:"point,7" frugal:"7,default,i64" json:"point"`
@@ -223,7 +222,7 @@ func (p *UserProfile) GetPhone() (v string) {
 	return p.Phone
 }
 
-func (p *UserProfile) GetAvatar() (v []byte) {
+func (p *UserProfile) GetAvatar() (v int64) {
 	return p.Avatar
 }
 
@@ -251,7 +250,7 @@ func (p *UserProfile) SetEmail(val string) {
 func (p *UserProfile) SetPhone(val string) {
 	p.Phone = val
 }
-func (p *UserProfile) SetAvatar(val []byte) {
+func (p *UserProfile) SetAvatar(val int64) {
 	p.Avatar = val
 }
 func (p *UserProfile) SetBio(val string) {
@@ -328,9 +327,9 @@ func (p *UserProfile) Field3DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *UserProfile) Field4DeepEqual(src []byte) bool {
+func (p *UserProfile) Field4DeepEqual(src int64) bool {
 
-	if bytes.Compare(p.Avatar, src) != 0 {
+	if p.Avatar != src {
 		return false
 	}
 	return true

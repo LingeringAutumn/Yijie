@@ -465,7 +465,7 @@ func (p *UserProfile) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField4(buf[offset:])
 				offset += l
 				if err != nil {
@@ -597,13 +597,12 @@ func (p *UserProfile) FastReadField3(buf []byte) (int, error) {
 func (p *UserProfile) FastReadField4(buf []byte) (int, error) {
 	offset := 0
 
-	var _field []byte
-	if v, l, err := thrift.Binary.ReadBinary(buf[offset:]); err != nil {
+	var _field int64
+	if v, l, err := thrift.Binary.ReadI64(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-
-		_field = []byte(v)
+		_field = v
 	}
 	p.Avatar = _field
 	return offset, nil
@@ -672,12 +671,12 @@ func (p *UserProfile) FastWrite(buf []byte) int {
 func (p *UserProfile) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
+		offset += p.fastWriteField4(buf[offset:], w)
 		offset += p.fastWriteField6(buf[offset:], w)
 		offset += p.fastWriteField7(buf[offset:], w)
 		offset += p.fastWriteField1(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
-		offset += p.fastWriteField4(buf[offset:], w)
 		offset += p.fastWriteField5(buf[offset:], w)
 		offset += p.fastWriteField8(buf[offset:], w)
 	}
@@ -724,8 +723,8 @@ func (p *UserProfile) fastWriteField3(buf []byte, w thrift.NocopyWriter) int {
 
 func (p *UserProfile) fastWriteField4(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
-	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 4)
-	offset += thrift.Binary.WriteBinaryNocopy(buf[offset:], w, []byte(p.Avatar))
+	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.I64, 4)
+	offset += thrift.Binary.WriteI64(buf[offset:], p.Avatar)
 	return offset
 }
 
@@ -781,7 +780,7 @@ func (p *UserProfile) field3Length() int {
 func (p *UserProfile) field4Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += thrift.Binary.BinaryLengthNocopy([]byte(p.Avatar))
+	l += thrift.Binary.I64Length()
 	return l
 }
 

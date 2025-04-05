@@ -12,6 +12,21 @@ CREATE TABLE users (
                        deleted_at TIMESTAMP NULL COMMENT '账号删除时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户基本信息表';
 
+
+-- 图片表，存储用户上传的图片信息
+CREATE TABLE `images` (
+                          `id` BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '图片ID，主键，自增',
+                          `uid` BIGINT NOT NULL COMMENT '用户ID，关联 users 表，标识图片的上传用户',
+                          `url` VARCHAR(255) NOT NULL COMMENT '图片地址，存储图片在存储服务上的访问URL',
+                          `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '图片上传时间',
+                          `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '图片信息更新时间',
+                          `deleted_at` TIMESTAMP NULL COMMENT '图片逻辑删除时间，若为NULL表示图片未被删除',
+                          FOREIGN KEY (`uid`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+                          INDEX idx_images_uid (`uid`),
+                          INDEX idx_images_created_at (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户图片信息表';
+
+
 -- 会员表，存储用户的会员信息
 CREATE TABLE memberships (
                              id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '会员ID，主键，自增',

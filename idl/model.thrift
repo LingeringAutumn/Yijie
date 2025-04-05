@@ -18,7 +18,7 @@ struct UserProfile {
     1: string username,
     2: string email,
     3: string phone,
-    4: binary avatar,
+    4: i64 avatar,
     5: string bio,
     6: i64 membershipLevel,
     7: i64 point,
