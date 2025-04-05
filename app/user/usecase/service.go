@@ -44,8 +44,11 @@ func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.
 
 // Todo
 func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error) {
-	var url string
-	err =
+	userProfile, err := uc.svc.UploadProfile(ctx, user)
+	if err != nil {
+		return nil, fmt.Errorf("update user profile failed: %w", err)
+	}
+	return userProfile, nil
 }
 
 func (uc *userUseCase) GetUserProfile(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {

@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
+	"github.com/LingeringAutumn/Yijie/config"
+	userData "github.com/LingeringAutumn/Yijie/pkg/base/context"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -86,4 +89,43 @@ func (svc *UserService) CheckPassword(passwordDigest, password string) error {
 
 	// 如果密码匹配，返回 nil 表示没有错误。
 	return nil
+}
+
+func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error) {
+	// 1. 把头像的二进制字节流传到MinIO服务器上
+	var imageId string
+	var avatar []byte
+	uid, err := svc.GetUserId(ctx)
+	imageId = fmt.Sprintf("%d", uid)
+	avatar = user.Avatar
+	err = utils.MinioClientGlobal.UploadFile(constants.ImageBucket, imageId, constants.Location, constants.ImageType, avatar)
+	if err != nil {
+		return nil, fmt.Errorf("upload image failed: %w", err)
+	}
+
+	// 2. 获取头像对应的url
+	url := fmt.Sprintf("%s/%s/%d", config.Minio.Addr, constants.ImageBucket, uid)
+
+	// 3. 储存头像到image内部
+	image := &model.Image{
+		Url: url,
+		Uid: uid,
+	}
+	err = svc.db.StoreUserAvatar(ctx, image)
+	if err != nil {
+		return nil, fmt.Errorf("store user avatar failed: %w", err)
+	}
+	// 4. 储存其它内容
+	userProfileResponse, err := svc.db.StoreUserProfile(ctx, uid, image)
+	if err != nil {
+		return nil, fmt.Errorf("store user profile failed: %w", err)
+	}
+	return userProfileResponse, nil
+}
+
+func (svc *UserService) GetUserId(ctx context.Context) (uid int64, err error) {
+	if uid, err = userData.GetLoginData(ctx); err != nil {
+		return 0, fmt.Errorf("get user id failed: %w", err)
+	}
+	return uid, err
 }

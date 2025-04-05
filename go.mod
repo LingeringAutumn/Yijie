@@ -15,6 +15,7 @@ require (
 	github.com/h2non/filetype v1.1.3
 	github.com/kitex-contrib/obs-opentelemetry v0.2.9
 	github.com/kitex-contrib/registry-etcd v0.2.6
+	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/spf13/viper v1.20.0
 	github.com/spf13/viper/remote v1.20.0
 	golang.org/x/crypto v0.32.0
@@ -48,6 +49,7 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
+	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect

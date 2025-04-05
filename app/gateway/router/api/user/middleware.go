@@ -44,6 +44,7 @@ func _profileMw() []app.HandlerFunc {
 	}
 }
 
+// TODO 这里需要鉴权吗？
 func _getuserprofileMw() []app.HandlerFunc {
 	// your code...
 	return nil
