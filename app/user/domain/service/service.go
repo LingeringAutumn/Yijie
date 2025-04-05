@@ -53,7 +53,7 @@ func (svc *UserService) GetUserById(ctx context.Context, uid int64) (*model.User
 }
 
 // GetUserProfileInfoById 这个是查询和更新个人信息的时候来获取个人信息的
-func (svc *UserService) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfile, error) {
+func (svc *UserService) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	userInfo, err := svc.db.GetUserProfileInfoById(ctx, uid)
 	if err != nil {
 		return nil, fmt.Errorf("service get user profile info failed: %w", err)

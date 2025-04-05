@@ -11,8 +11,8 @@ import (
 type UserUseCase interface {
 	RegisterUser(ctx context.Context, user *model.User) (uid int64, err error)
 	LoginUser(ctx context.Context, user *model.User) (*model.User, error)
-	UpdateUserProfile(ctx context.Context, user *model.UserProfile) (*model.UserProfile, error)
-	GetUserProfile(ctx context.Context, uid int64) (*model.UserProfile, error)
+	UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error)
+	GetUserProfile(ctx context.Context, uid int64) (*model.UserProfileResponse, error)
 }
 
 type userUseCase struct {

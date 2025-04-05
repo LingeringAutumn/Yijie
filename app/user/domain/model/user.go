@@ -15,13 +15,23 @@ type UserInfo struct {
 	Username string `json:"username"`
 }
 
-type UserProfile struct {
+type UserProfileRequest struct {
 	Uid      int64  `json:"uid"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
-	// TODO 有点怀疑这里
-	Avatar          int64  `json:"avatar"`
+	// TODO传进来的avatar头像文件本身
+	Avatar []byte `json:"avatar"`
+	Bio    string `json:"bio"`
+}
+
+type UserProfileResponse struct {
+	Uid      int64  `json:"uid"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	// TODO返回的avatar是它的url
+	Avatar          string `json:"avatar"`
 	Bio             string `json:"bio"`
 	MembershipLevel int64  `json:"member"`
 	Point           int64  `json:"point"`

@@ -25,11 +25,11 @@ struct LoginResponse {
 // 更新个人信息
 struct UpdateUserProfileRequest{
     1: required i64 uid,
-    2: required model.UserProfile userProfile,
+    2: required model.UserProfileReq userProfileReq,
 }
 
 struct UpdateUserProfileResponse{
-    1:required model.UserProfile userProfile,
+    1:required model.UserProfileResp userProfileResp,
 }
 
 // 获取个人信息
@@ -38,7 +38,7 @@ struct GetUserProfileRequest{
 }
 
 struct GetUserProfileResponse{
-    1:required model.UserProfile userProfile,
+    1:required model.UserProfileResp userProfileResp,
 }
 
 

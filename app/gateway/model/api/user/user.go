@@ -755,8 +755,8 @@ func (p *LoginResponse) String() string {
 
 // 更新个人信息
 type UpdateUserProfileRequest struct {
-	UID         int64              `thrift:"uid,1,required" form:"uid,required" json:"uid,required" query:"uid,required"`
-	UserProfile *model.UserProfile `thrift:"userProfile,2,required" form:"userProfile,required" json:"userProfile,required" query:"userProfile,required"`
+	UID            int64                 `thrift:"uid,1,required" form:"uid,required" json:"uid,required" query:"uid,required"`
+	UserProfileReq *model.UserProfileReq `thrift:"userProfileReq,2,required" form:"userProfileReq,required" json:"userProfileReq,required" query:"userProfileReq,required"`
 }
 
 func NewUpdateUserProfileRequest() *UpdateUserProfileRequest {
@@ -770,29 +770,29 @@ func (p *UpdateUserProfileRequest) GetUID() (v int64) {
 	return p.UID
 }
 
-var UpdateUserProfileRequest_UserProfile_DEFAULT *model.UserProfile
+var UpdateUserProfileRequest_UserProfileReq_DEFAULT *model.UserProfileReq
 
-func (p *UpdateUserProfileRequest) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return UpdateUserProfileRequest_UserProfile_DEFAULT
+func (p *UpdateUserProfileRequest) GetUserProfileReq() (v *model.UserProfileReq) {
+	if !p.IsSetUserProfileReq() {
+		return UpdateUserProfileRequest_UserProfileReq_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileReq
 }
 
 var fieldIDToName_UpdateUserProfileRequest = map[int16]string{
 	1: "uid",
-	2: "userProfile",
+	2: "userProfileReq",
 }
 
-func (p *UpdateUserProfileRequest) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *UpdateUserProfileRequest) IsSetUserProfileReq() bool {
+	return p.UserProfileReq != nil
 }
 
 func (p *UpdateUserProfileRequest) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUID bool = false
-	var issetUserProfile bool = false
+	var issetUserProfileReq bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -822,7 +822,7 @@ func (p *UpdateUserProfileRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileReq = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -844,7 +844,7 @@ func (p *UpdateUserProfileRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileReq {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -878,11 +878,11 @@ func (p *UpdateUserProfileRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *UpdateUserProfileRequest) ReadField2(iprot thrift.TProtocol) error {
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
-	p.UserProfile = _field
+	p.UserProfileReq = _field
 	return nil
 }
 
@@ -935,10 +935,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 func (p *UpdateUserProfileRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("userProfile", thrift.STRUCT, 2); err != nil {
+	if err = oprot.WriteFieldBegin("userProfileReq", thrift.STRUCT, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.UserProfile.Write(oprot); err != nil {
+	if err := p.UserProfileReq.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -960,7 +960,7 @@ func (p *UpdateUserProfileRequest) String() string {
 }
 
 type UpdateUserProfileResponse struct {
-	UserProfile *model.UserProfile `thrift:"userProfile,1,required" form:"userProfile,required" json:"userProfile,required" query:"userProfile,required"`
+	UserProfileResp *model.UserProfileResp `thrift:"userProfileResp,1,required" form:"userProfileResp,required" json:"userProfileResp,required" query:"userProfileResp,required"`
 }
 
 func NewUpdateUserProfileResponse() *UpdateUserProfileResponse {
@@ -970,27 +970,27 @@ func NewUpdateUserProfileResponse() *UpdateUserProfileResponse {
 func (p *UpdateUserProfileResponse) InitDefault() {
 }
 
-var UpdateUserProfileResponse_UserProfile_DEFAULT *model.UserProfile
+var UpdateUserProfileResponse_UserProfileResp_DEFAULT *model.UserProfileResp
 
-func (p *UpdateUserProfileResponse) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return UpdateUserProfileResponse_UserProfile_DEFAULT
+func (p *UpdateUserProfileResponse) GetUserProfileResp() (v *model.UserProfileResp) {
+	if !p.IsSetUserProfileResp() {
+		return UpdateUserProfileResponse_UserProfileResp_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileResp
 }
 
 var fieldIDToName_UpdateUserProfileResponse = map[int16]string{
-	1: "userProfile",
+	1: "userProfileResp",
 }
 
-func (p *UpdateUserProfileResponse) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *UpdateUserProfileResponse) IsSetUserProfileResp() bool {
+	return p.UserProfileResp != nil
 }
 
 func (p *UpdateUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserProfile bool = false
+	var issetUserProfileResp bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1011,7 +1011,7 @@ func (p *UpdateUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileResp = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1028,7 +1028,7 @@ func (p *UpdateUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileResp {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1051,11 +1051,11 @@ RequiredFieldNotSetError:
 }
 
 func (p *UpdateUserProfileResponse) ReadField1(iprot thrift.TProtocol) error {
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileResp()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
-	p.UserProfile = _field
+	p.UserProfileResp = _field
 	return nil
 }
 
@@ -1088,10 +1088,10 @@ WriteStructEndError:
 }
 
 func (p *UpdateUserProfileResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("userProfile", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("userProfileResp", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.UserProfile.Write(oprot); err != nil {
+	if err := p.UserProfileResp.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1261,7 +1261,7 @@ func (p *GetUserProfileRequest) String() string {
 }
 
 type GetUserProfileResponse struct {
-	UserProfile *model.UserProfile `thrift:"userProfile,1,required" form:"userProfile,required" json:"userProfile,required" query:"userProfile,required"`
+	UserProfileResp *model.UserProfileResp `thrift:"userProfileResp,1,required" form:"userProfileResp,required" json:"userProfileResp,required" query:"userProfileResp,required"`
 }
 
 func NewGetUserProfileResponse() *GetUserProfileResponse {
@@ -1271,27 +1271,27 @@ func NewGetUserProfileResponse() *GetUserProfileResponse {
 func (p *GetUserProfileResponse) InitDefault() {
 }
 
-var GetUserProfileResponse_UserProfile_DEFAULT *model.UserProfile
+var GetUserProfileResponse_UserProfileResp_DEFAULT *model.UserProfileResp
 
-func (p *GetUserProfileResponse) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return GetUserProfileResponse_UserProfile_DEFAULT
+func (p *GetUserProfileResponse) GetUserProfileResp() (v *model.UserProfileResp) {
+	if !p.IsSetUserProfileResp() {
+		return GetUserProfileResponse_UserProfileResp_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileResp
 }
 
 var fieldIDToName_GetUserProfileResponse = map[int16]string{
-	1: "userProfile",
+	1: "userProfileResp",
 }
 
-func (p *GetUserProfileResponse) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *GetUserProfileResponse) IsSetUserProfileResp() bool {
+	return p.UserProfileResp != nil
 }
 
 func (p *GetUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserProfile bool = false
+	var issetUserProfileResp bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1312,7 +1312,7 @@ func (p *GetUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileResp = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1329,7 +1329,7 @@ func (p *GetUserProfileResponse) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileResp {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1352,11 +1352,11 @@ RequiredFieldNotSetError:
 }
 
 func (p *GetUserProfileResponse) ReadField1(iprot thrift.TProtocol) error {
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileResp()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
-	p.UserProfile = _field
+	p.UserProfileResp = _field
 	return nil
 }
 
@@ -1389,10 +1389,10 @@ WriteStructEndError:
 }
 
 func (p *GetUserProfileResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("userProfile", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("userProfileResp", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.UserProfile.Write(oprot); err != nil {
+	if err := p.UserProfileResp.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

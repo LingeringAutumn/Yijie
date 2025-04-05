@@ -13,8 +13,17 @@ func BuildUser(user *dmodel.User) *kmodel.UserInfo {
 	}
 }
 
-func BuildUserProfile(user *dmodel.UserProfile) *kmodel.UserProfile {
-	return &kmodel.UserProfile{
+func BuildUserProfileRequest(user *dmodel.UserProfileRequest) *kmodel.UserProfileReq {
+	return &kmodel.UserProfileReq{
+		Username: user.Username,
+		Email:    user.Email,
+		Phone:    user.Phone,
+		Avatar:   user.Avatar,
+		Bio:      user.Bio,
+	}
+}
+func BuildUserProfileResponse(user *dmodel.UserProfileResponse) *kmodel.UserProfileResp {
+	return &kmodel.UserProfileResp{
 		Username:        user.Username,
 		Email:           user.Email,
 		Phone:           user.Phone,

@@ -366,8 +366,8 @@ var fieldIDToName_LoginResponse = map[int16]string{
 }
 
 type UpdateUserProfileRequest struct {
-	Uid         int64              `thrift:"uid,1,required" frugal:"1,required,i64" json:"uid"`
-	UserProfile *model.UserProfile `thrift:"userProfile,2,required" frugal:"2,required,model.UserProfile" json:"userProfile"`
+	Uid            int64                 `thrift:"uid,1,required" frugal:"1,required,i64" json:"uid"`
+	UserProfileReq *model.UserProfileReq `thrift:"userProfileReq,2,required" frugal:"2,required,model.UserProfileReq" json:"userProfileReq"`
 }
 
 func NewUpdateUserProfileRequest() *UpdateUserProfileRequest {
@@ -381,23 +381,23 @@ func (p *UpdateUserProfileRequest) GetUid() (v int64) {
 	return p.Uid
 }
 
-var UpdateUserProfileRequest_UserProfile_DEFAULT *model.UserProfile
+var UpdateUserProfileRequest_UserProfileReq_DEFAULT *model.UserProfileReq
 
-func (p *UpdateUserProfileRequest) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return UpdateUserProfileRequest_UserProfile_DEFAULT
+func (p *UpdateUserProfileRequest) GetUserProfileReq() (v *model.UserProfileReq) {
+	if !p.IsSetUserProfileReq() {
+		return UpdateUserProfileRequest_UserProfileReq_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileReq
 }
 func (p *UpdateUserProfileRequest) SetUid(val int64) {
 	p.Uid = val
 }
-func (p *UpdateUserProfileRequest) SetUserProfile(val *model.UserProfile) {
-	p.UserProfile = val
+func (p *UpdateUserProfileRequest) SetUserProfileReq(val *model.UserProfileReq) {
+	p.UserProfileReq = val
 }
 
-func (p *UpdateUserProfileRequest) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *UpdateUserProfileRequest) IsSetUserProfileReq() bool {
+	return p.UserProfileReq != nil
 }
 
 func (p *UpdateUserProfileRequest) String() string {
@@ -416,7 +416,7 @@ func (p *UpdateUserProfileRequest) DeepEqual(ano *UpdateUserProfileRequest) bool
 	if !p.Field1DeepEqual(ano.Uid) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.UserProfile) {
+	if !p.Field2DeepEqual(ano.UserProfileReq) {
 		return false
 	}
 	return true
@@ -429,9 +429,9 @@ func (p *UpdateUserProfileRequest) Field1DeepEqual(src int64) bool {
 	}
 	return true
 }
-func (p *UpdateUserProfileRequest) Field2DeepEqual(src *model.UserProfile) bool {
+func (p *UpdateUserProfileRequest) Field2DeepEqual(src *model.UserProfileReq) bool {
 
-	if !p.UserProfile.DeepEqual(src) {
+	if !p.UserProfileReq.DeepEqual(src) {
 		return false
 	}
 	return true
@@ -439,12 +439,12 @@ func (p *UpdateUserProfileRequest) Field2DeepEqual(src *model.UserProfile) bool 
 
 var fieldIDToName_UpdateUserProfileRequest = map[int16]string{
 	1: "uid",
-	2: "userProfile",
+	2: "userProfileReq",
 }
 
 type UpdateUserProfileResponse struct {
-	Base        *model.BaseResp    `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
-	UserProfile *model.UserProfile `thrift:"userProfile,2,required" frugal:"2,required,model.UserProfile" json:"userProfile"`
+	Base            *model.BaseResp        `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	UserProfileResp *model.UserProfileResp `thrift:"userProfileResp,2,required" frugal:"2,required,model.UserProfileResp" json:"userProfileResp"`
 }
 
 func NewUpdateUserProfileResponse() *UpdateUserProfileResponse {
@@ -463,27 +463,27 @@ func (p *UpdateUserProfileResponse) GetBase() (v *model.BaseResp) {
 	return p.Base
 }
 
-var UpdateUserProfileResponse_UserProfile_DEFAULT *model.UserProfile
+var UpdateUserProfileResponse_UserProfileResp_DEFAULT *model.UserProfileResp
 
-func (p *UpdateUserProfileResponse) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return UpdateUserProfileResponse_UserProfile_DEFAULT
+func (p *UpdateUserProfileResponse) GetUserProfileResp() (v *model.UserProfileResp) {
+	if !p.IsSetUserProfileResp() {
+		return UpdateUserProfileResponse_UserProfileResp_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileResp
 }
 func (p *UpdateUserProfileResponse) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
-func (p *UpdateUserProfileResponse) SetUserProfile(val *model.UserProfile) {
-	p.UserProfile = val
+func (p *UpdateUserProfileResponse) SetUserProfileResp(val *model.UserProfileResp) {
+	p.UserProfileResp = val
 }
 
 func (p *UpdateUserProfileResponse) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *UpdateUserProfileResponse) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *UpdateUserProfileResponse) IsSetUserProfileResp() bool {
+	return p.UserProfileResp != nil
 }
 
 func (p *UpdateUserProfileResponse) String() string {
@@ -502,7 +502,7 @@ func (p *UpdateUserProfileResponse) DeepEqual(ano *UpdateUserProfileResponse) bo
 	if !p.Field1DeepEqual(ano.Base) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.UserProfile) {
+	if !p.Field2DeepEqual(ano.UserProfileResp) {
 		return false
 	}
 	return true
@@ -515,9 +515,9 @@ func (p *UpdateUserProfileResponse) Field1DeepEqual(src *model.BaseResp) bool {
 	}
 	return true
 }
-func (p *UpdateUserProfileResponse) Field2DeepEqual(src *model.UserProfile) bool {
+func (p *UpdateUserProfileResponse) Field2DeepEqual(src *model.UserProfileResp) bool {
 
-	if !p.UserProfile.DeepEqual(src) {
+	if !p.UserProfileResp.DeepEqual(src) {
 		return false
 	}
 	return true
@@ -525,7 +525,7 @@ func (p *UpdateUserProfileResponse) Field2DeepEqual(src *model.UserProfile) bool
 
 var fieldIDToName_UpdateUserProfileResponse = map[int16]string{
 	1: "base",
-	2: "userProfile",
+	2: "userProfileResp",
 }
 
 type GetUserProfileRequest struct {
@@ -578,8 +578,8 @@ var fieldIDToName_GetUserProfileRequest = map[int16]string{
 }
 
 type GetUserProfileResponse struct {
-	Base        *model.BaseResp    `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
-	UserProfile *model.UserProfile `thrift:"userProfile,2,required" frugal:"2,required,model.UserProfile" json:"userProfile"`
+	Base            *model.BaseResp        `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	UserProfileResp *model.UserProfileResp `thrift:"userProfileResp,2,required" frugal:"2,required,model.UserProfileResp" json:"userProfileResp"`
 }
 
 func NewGetUserProfileResponse() *GetUserProfileResponse {
@@ -598,27 +598,27 @@ func (p *GetUserProfileResponse) GetBase() (v *model.BaseResp) {
 	return p.Base
 }
 
-var GetUserProfileResponse_UserProfile_DEFAULT *model.UserProfile
+var GetUserProfileResponse_UserProfileResp_DEFAULT *model.UserProfileResp
 
-func (p *GetUserProfileResponse) GetUserProfile() (v *model.UserProfile) {
-	if !p.IsSetUserProfile() {
-		return GetUserProfileResponse_UserProfile_DEFAULT
+func (p *GetUserProfileResponse) GetUserProfileResp() (v *model.UserProfileResp) {
+	if !p.IsSetUserProfileResp() {
+		return GetUserProfileResponse_UserProfileResp_DEFAULT
 	}
-	return p.UserProfile
+	return p.UserProfileResp
 }
 func (p *GetUserProfileResponse) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
-func (p *GetUserProfileResponse) SetUserProfile(val *model.UserProfile) {
-	p.UserProfile = val
+func (p *GetUserProfileResponse) SetUserProfileResp(val *model.UserProfileResp) {
+	p.UserProfileResp = val
 }
 
 func (p *GetUserProfileResponse) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *GetUserProfileResponse) IsSetUserProfile() bool {
-	return p.UserProfile != nil
+func (p *GetUserProfileResponse) IsSetUserProfileResp() bool {
+	return p.UserProfileResp != nil
 }
 
 func (p *GetUserProfileResponse) String() string {
@@ -637,7 +637,7 @@ func (p *GetUserProfileResponse) DeepEqual(ano *GetUserProfileResponse) bool {
 	if !p.Field1DeepEqual(ano.Base) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.UserProfile) {
+	if !p.Field2DeepEqual(ano.UserProfileResp) {
 		return false
 	}
 	return true
@@ -650,9 +650,9 @@ func (p *GetUserProfileResponse) Field1DeepEqual(src *model.BaseResp) bool {
 	}
 	return true
 }
-func (p *GetUserProfileResponse) Field2DeepEqual(src *model.UserProfile) bool {
+func (p *GetUserProfileResponse) Field2DeepEqual(src *model.UserProfileResp) bool {
 
-	if !p.UserProfile.DeepEqual(src) {
+	if !p.UserProfileResp.DeepEqual(src) {
 		return false
 	}
 	return true
@@ -660,7 +660,7 @@ func (p *GetUserProfileResponse) Field2DeepEqual(src *model.UserProfile) bool {
 
 var fieldIDToName_GetUserProfileResponse = map[int16]string{
 	1: "base",
-	2: "userProfile",
+	2: "userProfileResp",
 }
 
 type UserService interface {

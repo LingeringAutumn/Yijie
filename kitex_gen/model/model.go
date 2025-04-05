@@ -3,6 +3,7 @@
 package model
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 )
@@ -192,88 +193,88 @@ var fieldIDToName_LoginData = map[int16]string{
 	1: "userId",
 }
 
-type UserProfile struct {
+type UserProfileResp struct {
 	Username        string `thrift:"username,1" frugal:"1,default,string" json:"username"`
 	Email           string `thrift:"email,2" frugal:"2,default,string" json:"email"`
 	Phone           string `thrift:"phone,3" frugal:"3,default,string" json:"phone"`
-	Avatar          int64  `thrift:"avatar,4" frugal:"4,default,i64" json:"avatar"`
+	Avatar          string `thrift:"avatar,4" frugal:"4,default,string" json:"avatar"`
 	Bio             string `thrift:"bio,5" frugal:"5,default,string" json:"bio"`
 	MembershipLevel int64  `thrift:"membershipLevel,6" frugal:"6,default,i64" json:"membershipLevel"`
 	Point           int64  `thrift:"point,7" frugal:"7,default,i64" json:"point"`
 	Team            string `thrift:"team,8" frugal:"8,default,string" json:"team"`
 }
 
-func NewUserProfile() *UserProfile {
-	return &UserProfile{}
+func NewUserProfileResp() *UserProfileResp {
+	return &UserProfileResp{}
 }
 
-func (p *UserProfile) InitDefault() {
+func (p *UserProfileResp) InitDefault() {
 }
 
-func (p *UserProfile) GetUsername() (v string) {
+func (p *UserProfileResp) GetUsername() (v string) {
 	return p.Username
 }
 
-func (p *UserProfile) GetEmail() (v string) {
+func (p *UserProfileResp) GetEmail() (v string) {
 	return p.Email
 }
 
-func (p *UserProfile) GetPhone() (v string) {
+func (p *UserProfileResp) GetPhone() (v string) {
 	return p.Phone
 }
 
-func (p *UserProfile) GetAvatar() (v int64) {
+func (p *UserProfileResp) GetAvatar() (v string) {
 	return p.Avatar
 }
 
-func (p *UserProfile) GetBio() (v string) {
+func (p *UserProfileResp) GetBio() (v string) {
 	return p.Bio
 }
 
-func (p *UserProfile) GetMembershipLevel() (v int64) {
+func (p *UserProfileResp) GetMembershipLevel() (v int64) {
 	return p.MembershipLevel
 }
 
-func (p *UserProfile) GetPoint() (v int64) {
+func (p *UserProfileResp) GetPoint() (v int64) {
 	return p.Point
 }
 
-func (p *UserProfile) GetTeam() (v string) {
+func (p *UserProfileResp) GetTeam() (v string) {
 	return p.Team
 }
-func (p *UserProfile) SetUsername(val string) {
+func (p *UserProfileResp) SetUsername(val string) {
 	p.Username = val
 }
-func (p *UserProfile) SetEmail(val string) {
+func (p *UserProfileResp) SetEmail(val string) {
 	p.Email = val
 }
-func (p *UserProfile) SetPhone(val string) {
+func (p *UserProfileResp) SetPhone(val string) {
 	p.Phone = val
 }
-func (p *UserProfile) SetAvatar(val int64) {
+func (p *UserProfileResp) SetAvatar(val string) {
 	p.Avatar = val
 }
-func (p *UserProfile) SetBio(val string) {
+func (p *UserProfileResp) SetBio(val string) {
 	p.Bio = val
 }
-func (p *UserProfile) SetMembershipLevel(val int64) {
+func (p *UserProfileResp) SetMembershipLevel(val int64) {
 	p.MembershipLevel = val
 }
-func (p *UserProfile) SetPoint(val int64) {
+func (p *UserProfileResp) SetPoint(val int64) {
 	p.Point = val
 }
-func (p *UserProfile) SetTeam(val string) {
+func (p *UserProfileResp) SetTeam(val string) {
 	p.Team = val
 }
 
-func (p *UserProfile) String() string {
+func (p *UserProfileResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserProfile(%+v)", *p)
+	return fmt.Sprintf("UserProfileResp(%+v)", *p)
 }
 
-func (p *UserProfile) DeepEqual(ano *UserProfile) bool {
+func (p *UserProfileResp) DeepEqual(ano *UserProfileResp) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -306,56 +307,56 @@ func (p *UserProfile) DeepEqual(ano *UserProfile) bool {
 	return true
 }
 
-func (p *UserProfile) Field1DeepEqual(src string) bool {
+func (p *UserProfileResp) Field1DeepEqual(src string) bool {
 
 	if strings.Compare(p.Username, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field2DeepEqual(src string) bool {
+func (p *UserProfileResp) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Email, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field3DeepEqual(src string) bool {
+func (p *UserProfileResp) Field3DeepEqual(src string) bool {
 
 	if strings.Compare(p.Phone, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field4DeepEqual(src int64) bool {
+func (p *UserProfileResp) Field4DeepEqual(src string) bool {
 
-	if p.Avatar != src {
+	if strings.Compare(p.Avatar, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field5DeepEqual(src string) bool {
+func (p *UserProfileResp) Field5DeepEqual(src string) bool {
 
 	if strings.Compare(p.Bio, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field6DeepEqual(src int64) bool {
+func (p *UserProfileResp) Field6DeepEqual(src int64) bool {
 
 	if p.MembershipLevel != src {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field7DeepEqual(src int64) bool {
+func (p *UserProfileResp) Field7DeepEqual(src int64) bool {
 
 	if p.Point != src {
 		return false
 	}
 	return true
 }
-func (p *UserProfile) Field8DeepEqual(src string) bool {
+func (p *UserProfileResp) Field8DeepEqual(src string) bool {
 
 	if strings.Compare(p.Team, src) != 0 {
 		return false
@@ -363,7 +364,7 @@ func (p *UserProfile) Field8DeepEqual(src string) bool {
 	return true
 }
 
-var fieldIDToName_UserProfile = map[int16]string{
+var fieldIDToName_UserProfileResp = map[int16]string{
 	1: "username",
 	2: "email",
 	3: "phone",
@@ -372,6 +373,131 @@ var fieldIDToName_UserProfile = map[int16]string{
 	6: "membershipLevel",
 	7: "point",
 	8: "team",
+}
+
+type UserProfileReq struct {
+	Username string `thrift:"username,1" frugal:"1,default,string" json:"username"`
+	Email    string `thrift:"email,2" frugal:"2,default,string" json:"email"`
+	Phone    string `thrift:"phone,3" frugal:"3,default,string" json:"phone"`
+	Avatar   []byte `thrift:"avatar,4" frugal:"4,default,binary" json:"avatar"`
+	Bio      string `thrift:"bio,5" frugal:"5,default,string" json:"bio"`
+}
+
+func NewUserProfileReq() *UserProfileReq {
+	return &UserProfileReq{}
+}
+
+func (p *UserProfileReq) InitDefault() {
+}
+
+func (p *UserProfileReq) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *UserProfileReq) GetEmail() (v string) {
+	return p.Email
+}
+
+func (p *UserProfileReq) GetPhone() (v string) {
+	return p.Phone
+}
+
+func (p *UserProfileReq) GetAvatar() (v []byte) {
+	return p.Avatar
+}
+
+func (p *UserProfileReq) GetBio() (v string) {
+	return p.Bio
+}
+func (p *UserProfileReq) SetUsername(val string) {
+	p.Username = val
+}
+func (p *UserProfileReq) SetEmail(val string) {
+	p.Email = val
+}
+func (p *UserProfileReq) SetPhone(val string) {
+	p.Phone = val
+}
+func (p *UserProfileReq) SetAvatar(val []byte) {
+	p.Avatar = val
+}
+func (p *UserProfileReq) SetBio(val string) {
+	p.Bio = val
+}
+
+func (p *UserProfileReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserProfileReq(%+v)", *p)
+}
+
+func (p *UserProfileReq) DeepEqual(ano *UserProfileReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Phone) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Avatar) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Bio) {
+		return false
+	}
+	return true
+}
+
+func (p *UserProfileReq) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfileReq) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Email, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfileReq) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Phone, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfileReq) Field4DeepEqual(src []byte) bool {
+
+	if bytes.Compare(p.Avatar, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *UserProfileReq) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Bio, src) != 0 {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_UserProfileReq = map[int16]string{
+	1: "username",
+	2: "email",
+	3: "phone",
+	4: "avatar",
+	5: "bio",
 }
 
 type Image struct {

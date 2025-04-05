@@ -54,13 +54,12 @@ func (handler *UserHandler) Login(ctx context.Context, req *user.LoginRequest) (
 
 func (handler *UserHandler) UpdateProfile(ctx context.Context, req *user.UpdateUserProfileRequest) (r *user.UpdateUserProfileResponse, err error) {
 	r = new(user.UpdateUserProfileResponse)
-	u := &model.UserProfile{
-		Username: req.UserProfile.Username,
-		Email:    req.UserProfile.Email,
-		Phone:    req.UserProfile.Phone,
-		Avatar:   req.UserProfile.Avatar,
-		Bio:      req.UserProfile.Bio,
-		Team:     req.UserProfile.Team,
+	u := &model.UserProfileRequest{
+		Username: req.UserProfileReq.Username,
+		Email:    req.UserProfileReq.Email,
+		Phone:    req.UserProfileReq.Phone,
+		Avatar:   req.UserProfileReq.Avatar,
+		Bio:      req.UserProfileReq.Bio,
 	}
 	// TODO team,membershipLevel和point应该在UpdateUserProfile函数里处理，这些东西不应该由前端传过来
 	userProfile, err := handler.useCase.UpdateUserProfile(ctx, u)
@@ -69,7 +68,7 @@ func (handler *UserHandler) UpdateProfile(ctx context.Context, req *user.UpdateU
 		return
 	}
 	r.Base = base.BuildBaseResp(err)
-	r.UserProfile = pack.BuildUserProfile(userProfile)
+	r.UserProfileResp = pack.BuildUserProfileResponse(userProfile)
 	return
 }
 
@@ -81,6 +80,6 @@ func (handler *UserHandler) GetProfile(ctx context.Context, req *user.GetUserPro
 		return
 	}
 	r.Base = base.BuildBaseResp(err)
-	r.UserProfile = pack.BuildUserProfile(userProfile)
+	r.UserProfileResp = pack.BuildUserProfileResponse(userProfile)
 	return
 }

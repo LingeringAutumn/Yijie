@@ -776,7 +776,7 @@ func (p *UpdateUserProfileRequest) FastRead(buf []byte) (int, error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetUid bool = false
-	var issetUserProfile bool = false
+	var issetUserProfileReq bool = false
 	for {
 		fieldTypeId, fieldId, l, err = thrift.Binary.ReadFieldBegin(buf[offset:])
 		offset += l
@@ -809,7 +809,7 @@ func (p *UpdateUserProfileRequest) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileReq = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -831,7 +831,7 @@ func (p *UpdateUserProfileRequest) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileReq {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -862,13 +862,13 @@ func (p *UpdateUserProfileRequest) FastReadField1(buf []byte) (int, error) {
 
 func (p *UpdateUserProfileRequest) FastReadField2(buf []byte) (int, error) {
 	offset := 0
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileReq()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 	}
-	p.UserProfile = _field
+	p.UserProfileReq = _field
 	return offset, nil
 }
 
@@ -906,7 +906,7 @@ func (p *UpdateUserProfileRequest) fastWriteField1(buf []byte, w thrift.NocopyWr
 func (p *UpdateUserProfileRequest) fastWriteField2(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 2)
-	offset += p.UserProfile.FastWriteNocopy(buf[offset:], w)
+	offset += p.UserProfileReq.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
@@ -920,7 +920,7 @@ func (p *UpdateUserProfileRequest) field1Length() int {
 func (p *UpdateUserProfileRequest) field2Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += p.UserProfile.BLength()
+	l += p.UserProfileReq.BLength()
 	return l
 }
 
@@ -931,7 +931,7 @@ func (p *UpdateUserProfileResponse) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserProfile bool = false
+	var issetUserProfileResp bool = false
 	for {
 		fieldTypeId, fieldId, l, err = thrift.Binary.ReadFieldBegin(buf[offset:])
 		offset += l
@@ -963,7 +963,7 @@ func (p *UpdateUserProfileResponse) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileResp = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -980,7 +980,7 @@ func (p *UpdateUserProfileResponse) FastRead(buf []byte) (int, error) {
 		}
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileResp {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -1009,13 +1009,13 @@ func (p *UpdateUserProfileResponse) FastReadField1(buf []byte) (int, error) {
 
 func (p *UpdateUserProfileResponse) FastReadField2(buf []byte) (int, error) {
 	offset := 0
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileResp()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 	}
-	p.UserProfile = _field
+	p.UserProfileResp = _field
 	return offset, nil
 }
 
@@ -1053,7 +1053,7 @@ func (p *UpdateUserProfileResponse) fastWriteField1(buf []byte, w thrift.NocopyW
 func (p *UpdateUserProfileResponse) fastWriteField2(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 2)
-	offset += p.UserProfile.FastWriteNocopy(buf[offset:], w)
+	offset += p.UserProfileResp.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
@@ -1067,7 +1067,7 @@ func (p *UpdateUserProfileResponse) field1Length() int {
 func (p *UpdateUserProfileResponse) field2Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += p.UserProfile.BLength()
+	l += p.UserProfileResp.BLength()
 	return l
 }
 
@@ -1185,7 +1185,7 @@ func (p *GetUserProfileResponse) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserProfile bool = false
+	var issetUserProfileResp bool = false
 	for {
 		fieldTypeId, fieldId, l, err = thrift.Binary.ReadFieldBegin(buf[offset:])
 		offset += l
@@ -1217,7 +1217,7 @@ func (p *GetUserProfileResponse) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetUserProfile = true
+				issetUserProfileResp = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1234,7 +1234,7 @@ func (p *GetUserProfileResponse) FastRead(buf []byte) (int, error) {
 		}
 	}
 
-	if !issetUserProfile {
+	if !issetUserProfileResp {
 		fieldId = 2
 		goto RequiredFieldNotSetError
 	}
@@ -1263,13 +1263,13 @@ func (p *GetUserProfileResponse) FastReadField1(buf []byte) (int, error) {
 
 func (p *GetUserProfileResponse) FastReadField2(buf []byte) (int, error) {
 	offset := 0
-	_field := model.NewUserProfile()
+	_field := model.NewUserProfileResp()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 	}
-	p.UserProfile = _field
+	p.UserProfileResp = _field
 	return offset, nil
 }
 
@@ -1307,7 +1307,7 @@ func (p *GetUserProfileResponse) fastWriteField1(buf []byte, w thrift.NocopyWrit
 func (p *GetUserProfileResponse) fastWriteField2(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 2)
-	offset += p.UserProfile.FastWriteNocopy(buf[offset:], w)
+	offset += p.UserProfileResp.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
@@ -1321,7 +1321,7 @@ func (p *GetUserProfileResponse) field1Length() int {
 func (p *GetUserProfileResponse) field2Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += p.UserProfile.BLength()
+	l += p.UserProfileResp.BLength()
 	return l
 }
 

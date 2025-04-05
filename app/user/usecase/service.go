@@ -43,16 +43,17 @@ func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.
 }
 
 // Todo
-func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfile) (*model.UserProfile, error) {
-
+func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error) {
+	var url string
+	err =
 }
 
-func (uc *userUseCase) GetUserProfile(ctx context.Context, uid int64) (*model.UserProfile, error) {
+func (uc *userUseCase) GetUserProfile(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	u, err := uc.svc.GetUserProfileInfoById(ctx, uid)
 	if err != nil {
 		return nil, fmt.Errorf("usecase get user profile info failed: %w", err)
 	}
-	userProfile := &model.UserProfile{
+	userProfile := &model.UserProfileResponse{
 		Uid:             u.Uid,
 		Username:        u.Username,
 		Email:           u.Email,
