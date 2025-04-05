@@ -11,7 +11,7 @@ type UserDB interface {
 	GetUserById(ctx context.Context, uid int64) (*model.User, error)
 	GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error)
 	StoreUserAvatar(ctx context.Context, image *model.Image) error
-	StoreUserProfile(ctx context.Context, uid int64, image *model.Image) (*model.UserProfileResponse, error)
+	StoreUserProfile(ctx context.Context, userProfileRequest *model.UserProfileRequest, uid int64, image *model.Image) (*model.UserProfileResponse, error)
 }
 
 type UserRedis interface {

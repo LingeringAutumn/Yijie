@@ -14,7 +14,7 @@ CREATE TABLE users (
 
 -- 图片表，存储用户上传的图片信息
 CREATE TABLE `images` (
-                          `id` BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '图片ID，主键，自增',
+                          `image_id` BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '图片ID，主键，自增',
                           `uid` BIGINT NOT NULL COMMENT '用户ID，关联 users 表，标识图片的上传用户',
                           `url` VARCHAR(255) NOT NULL COMMENT '图片地址，存储图片在存储服务上的访问URL',
                           `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '图片上传时间',

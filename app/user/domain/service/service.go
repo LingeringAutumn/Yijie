@@ -95,6 +95,7 @@ func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfi
 	// 1. 把头像的二进制字节流传到MinIO服务器上
 	var imageId string
 	var avatar []byte
+	// TODO 这个地方没问题吗？
 	uid, err := svc.GetUserId(ctx)
 	imageId = fmt.Sprintf("%d", uid)
 	avatar = user.Avatar
@@ -116,7 +117,7 @@ func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfi
 		return nil, fmt.Errorf("store user avatar failed: %w", err)
 	}
 	// 4. 储存其它内容
-	userProfileResponse, err := svc.db.StoreUserProfile(ctx, uid, image)
+	userProfileResponse, err := svc.db.StoreUserProfile(ctx, user, uid, image)
 	if err != nil {
 		return nil, fmt.Errorf("store user profile failed: %w", err)
 	}
