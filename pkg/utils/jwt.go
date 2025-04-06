@@ -4,11 +4,13 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"time"
+
+	"github.com/golang-jwt/jwt"
+
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"github.com/golang-jwt/jwt"
-	"time"
 )
 
 // Claims 定义 JWT 令牌的声明结构体，包含令牌类型、用户 ID 以及标准声明

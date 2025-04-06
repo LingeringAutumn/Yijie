@@ -2,10 +2,11 @@ package context
 
 import (
 	"context"
+	"strconv"
+
 	// 这里的 constants.LoginDataKey 是用于标识登录数据在 context 中存储的键名
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"strconv"
 )
 
 // WithLoginData 将LoginData加入到context中，通过metainfo传递到RPC server

@@ -1,12 +1,13 @@
 package rpc
 
 import (
+	"golang.org/x/net/context"
+
 	"github.com/LingeringAutumn/Yijie/app/user/controllers/rpc/pack"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/user/usecase"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
 	"github.com/LingeringAutumn/Yijie/pkg/base"
-	"golang.org/x/net/context"
 )
 
 type UserHandler struct {

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/repository"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/service"

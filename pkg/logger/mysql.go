@@ -2,8 +2,10 @@ package logger
 
 import (
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
+
 	"go.uber.org/zap"
+
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 )
 
 // MysqlLogger 是一个自定义的日志记录器结构体，用于记录 MySQL 相关的日志信息。

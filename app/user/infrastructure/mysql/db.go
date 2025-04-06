@@ -3,11 +3,13 @@ package mysql
 import (
 	"context"
 	"errors"
+
+	"gorm.io/gorm"
+
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/repository"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"gorm.io/gorm"
 )
 
 // userDB impl domain.UserDB defined domain
@@ -82,6 +84,7 @@ func (db *userDB) GetUserById(ctx context.Context, uid int64) (*model.User, erro
 	}
 	return resp, nil
 }
+
 func (db *userDB) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	var userProfileResp UserProfileResponse
 	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&userProfileResp).Error
@@ -195,7 +198,6 @@ func (db *userDB) StoreUserProfile(ctx context.Context, userProfileRequest *mode
 		Team:            userProfileResponse.Team,
 	}
 	return resp, nil
-
 }
 
 func (db *userDB) ConvertDefaultUPReqToUPResp(req *model.UserProfileRequest, avatarUrl string) (*UserProfileResponse, error) {

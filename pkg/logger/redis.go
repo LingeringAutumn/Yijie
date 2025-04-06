@@ -3,9 +3,10 @@ package logger
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"net"
 	"time"
+
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"

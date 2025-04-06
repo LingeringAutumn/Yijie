@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 )
 
@@ -14,8 +15,6 @@ type UserDB interface {
 	StoreUserProfile(ctx context.Context, userProfileRequest *model.UserProfileRequest, uid int64, image *model.Image) (*model.UserProfileResponse, error)
 }
 
-type UserRedis interface {
-}
+type UserRedis interface{}
 
-type UserRPC interface {
-}
+type UserRPC interface{}

@@ -3,15 +3,17 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
-	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"github.com/LingeringAutumn/Yijie/pkg/logger"
-	"github.com/LingeringAutumn/Yijie/pkg/utils"
+	"time"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"time"
+
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
+	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"github.com/LingeringAutumn/Yijie/pkg/logger"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
 // InitMySQL 通用初始化mysql函数，该函数用于初始化与 MySQL 数据库的连接，并进行相关配置。

@@ -4,8 +4,11 @@ package user
 
 import (
 	"context"
+
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	// hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
+	"github.com/cloudwego/hertz/pkg/app"
+
 	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
 	kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
@@ -13,7 +16,6 @@ import (
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 // Register .
@@ -84,9 +86,9 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	pack.RespData(c, resp)
 }
 
-// UpdateUserProfile .
+// UpdateProfile .
 // @router api/v1/user/profile/update [PUT]
-func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
+func UpdateProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req api.UpdateUserProfileRequest
 	err = c.BindAndValidate(&req)
@@ -105,36 +107,31 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 		if err == nil {
 			pack.RespError(c, errno.FileUploadError.WithError(err))
 			return
-		} else if len(req.UserProfile.Avatar) == 0 {
+		} else if len(req.UserProfileReq.Avatar) == 0 {
 			avatarData = nil
 		}
 	}
-
-	userProfile := kmodel.UserProfile{
-		Username:        req.UserProfile.Username,
-		Email:           req.UserProfile.Email,
-		Phone:           req.UserProfile.Phone,
-		Avatar:          avatarData,
-		Bio:             req.UserProfile.Bio,
-		MembershipLevel: req.UserProfile.MembershipLevel,
-		Point:           req.UserProfile.Point,
-		Team:            req.UserProfile.Team,
+	userProfile := kmodel.UserProfileReq{
+		Username: req.UserProfileReq.Username,
+		Email:    req.UserProfileReq.Email,
+		Phone:    req.UserProfileReq.Phone,
+		Avatar:   avatarData,
+		Bio:      req.UserProfileReq.Bio,
 	}
 	resp, err := rpc.UpdateUserProfileRPC(ctx, &user.UpdateUserProfileRequest{
-		Uid:         req.UID,
-		UserProfile: &userProfile,
+		Uid:            req.UID,
+		UserProfileReq: &userProfile,
 	})
 	if err != nil {
 		pack.RespError(c, err)
 		return
 	}
 	pack.RespData(c, resp)
-
 }
 
-// GetUserProfile .
+// GetProfile .
 // @router api/v1/user/profile/get [GET]
-func GetUserProfile(ctx context.Context, c *app.RequestContext) {
+func GetProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req api.GetUserProfileRequest
 	err = c.BindAndValidate(&req)
@@ -151,36 +148,4 @@ func GetUserProfile(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	pack.RespData(c, resp)
-}
-
-// UpdateProfile .
-// @router api/v1/user/profile/update [PUT]
-func UpdateProfile(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req user.UpdateUserProfileRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp := new(user.UpdateUserProfileResponse)
-
-	c.JSON(consts.StatusOK, resp)
-}
-
-// GetProfile .
-// @router api/v1/user/profile/get [GET]
-func GetProfile(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req user.GetUserProfileRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	resp := new(user.GetUserProfileResponse)
-
-	c.JSON(consts.StatusOK, resp)
 }

@@ -5,8 +5,9 @@ package user
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"strings"
+
+	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 )
 
 type RegisterRequest struct {

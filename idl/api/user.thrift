@@ -6,6 +6,7 @@ struct RegisterRequest {
     1: required string name
     2: required string password
     3: required string email
+    4: required string phone,
 }
 
 struct RegisterResponse {

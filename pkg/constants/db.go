@@ -6,6 +6,7 @@ const (
 	UserTableName  = "users"
 	ImageTableName = "images"
 )
+
 const (
 	// MaxConnections 表示数据库的最大连接数。
 	// 这是数据库连接池允许同时存在的最大连接数量。

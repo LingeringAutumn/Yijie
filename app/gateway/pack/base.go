@@ -1,10 +1,12 @@
 package pack
 
 import (
-	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"strconv"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-	"strconv"
+
+	"github.com/LingeringAutumn/Yijie/pkg/errno"
 )
 
 type Base struct {

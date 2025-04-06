@@ -2,6 +2,7 @@ package constants
 
 const (
 	GatewayServiceName = "gateway"
+	UserServiceName    = "user"
 )
 
 // UserService

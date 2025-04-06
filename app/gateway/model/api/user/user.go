@@ -5,8 +5,10 @@ package user
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
+
 	"github.com/apache/thrift/lib/go/thrift"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 )
 
 // 注册
@@ -14,6 +16,7 @@ type RegisterRequest struct {
 	Name     string `thrift:"name,1,required" form:"name,required" json:"name,required" query:"name,required"`
 	Password string `thrift:"password,2,required" form:"password,required" json:"password,required" query:"password,required"`
 	Email    string `thrift:"email,3,required" form:"email,required" json:"email,required" query:"email,required"`
+	Phone    string `thrift:"phone,4,required" form:"phone,required" json:"phone,required" query:"phone,required"`
 }
 
 func NewRegisterRequest() *RegisterRequest {
@@ -35,10 +38,15 @@ func (p *RegisterRequest) GetEmail() (v string) {
 	return p.Email
 }
 
+func (p *RegisterRequest) GetPhone() (v string) {
+	return p.Phone
+}
+
 var fieldIDToName_RegisterRequest = map[int16]string{
 	1: "name",
 	2: "password",
 	3: "email",
+	4: "phone",
 }
 
 func (p *RegisterRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -47,6 +55,7 @@ func (p *RegisterRequest) Read(iprot thrift.TProtocol) (err error) {
 	var issetName bool = false
 	var issetPassword bool = false
 	var issetEmail bool = false
+	var issetPhone bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -89,6 +98,15 @@ func (p *RegisterRequest) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetPhone = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -114,6 +132,11 @@ func (p *RegisterRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetEmail {
 		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetPhone {
+		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -167,6 +190,17 @@ func (p *RegisterRequest) ReadField3(iprot thrift.TProtocol) error {
 	p.Email = _field
 	return nil
 }
+func (p *RegisterRequest) ReadField4(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Phone = _field
+	return nil
+}
 
 func (p *RegisterRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -184,6 +218,10 @@ func (p *RegisterRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField3(oprot); err != nil {
 			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
 			goto WriteFieldError
 		}
 	}
@@ -251,6 +289,22 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+func (p *RegisterRequest) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("phone", thrift.STRING, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Phone); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *RegisterRequest) String() string {

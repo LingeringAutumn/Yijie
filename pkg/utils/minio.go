@@ -87,7 +87,7 @@ func (m *MinioClient) DownloadFile(bucketName, objectName, filePath string) erro
 	// 创建本地文件
 	// file, err := os.Create(filePath)
 	// 使用 os.OpenFile 并设置标志，避免不必要的文件覆盖
-	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0666)
+	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0o666)
 	if err != nil {
 		return fmt.Errorf("failed to create local file %s: %w", filePath, err)
 	}

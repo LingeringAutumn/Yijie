@@ -2,13 +2,15 @@ package rpc
 
 import (
 	"context"
+
+	"github.com/bytedance/gopkg/util/logger"
+
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-	"github.com/bytedance/gopkg/util/logger"
 )
 
 func InitUserRPC() {
@@ -55,7 +57,7 @@ func LoginRPC(ctx context.Context, req *user.LoginRequest) (response *api.LoginR
 }
 
 func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileRequest) (response *api.UpdateUserProfileResponse, err error) {
-	resp, err := userClient.UpdateUserProfile(ctx, req)
+	resp, err := userClient.UpdateProfile(ctx, req)
 	if err != nil {
 		logger.Fatal("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
@@ -64,22 +66,22 @@ func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileReques
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	response = &api.UpdateUserProfileResponse{
-		UserProfile: &model.UserProfile{
-			Username:        resp.UserProfile.Username,
-			Email:           resp.UserProfile.Email,
-			Phone:           resp.UserProfile.Phone,
-			Avatar:          resp.UserProfile.Avatar,
-			Bio:             resp.UserProfile.Bio,
-			MembershipLevel: resp.UserProfile.MembershipLevel,
-			Point:           resp.UserProfile.Point,
-			Team:            resp.UserProfile.Team,
+		UserProfileResp: &model.UserProfileResp{
+			Username:        resp.UserProfileResp.Username,
+			Email:           resp.UserProfileResp.Email,
+			Phone:           resp.UserProfileResp.Phone,
+			Avatar:          resp.UserProfileResp.Avatar,
+			Bio:             resp.UserProfileResp.Bio,
+			MembershipLevel: resp.UserProfileResp.MembershipLevel,
+			Point:           resp.UserProfileResp.Point,
+			Team:            resp.UserProfileResp.Team,
 		},
 	}
 	return response, nil
 }
 
 func GetUserProfileRPC(ctx context.Context, req *user.GetUserProfileRequest) (response *api.GetUserProfileResponse, err error) {
-	resp, err := userClient.GetUserProfile(ctx, req)
+	resp, err := userClient.GetProfile(ctx, req)
 	if err != nil {
 		logger.Fatal("GetUserProfile: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
@@ -88,15 +90,15 @@ func GetUserProfileRPC(ctx context.Context, req *user.GetUserProfileRequest) (re
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	response = &api.GetUserProfileResponse{
-		UserProfile: &model.UserProfile{
-			Username:        resp.UserProfile.Username,
-			Email:           resp.UserProfile.Email,
-			Phone:           resp.UserProfile.Phone,
-			Avatar:          resp.UserProfile.Avatar,
-			Bio:             resp.UserProfile.Bio,
-			MembershipLevel: resp.UserProfile.MembershipLevel,
-			Point:           resp.UserProfile.Point,
-			Team:            resp.UserProfile.Team,
+		UserProfileResp: &model.UserProfileResp{
+			Username:        resp.UserProfileResp.Username,
+			Email:           resp.UserProfileResp.Email,
+			Phone:           resp.UserProfileResp.Phone,
+			Avatar:          resp.UserProfileResp.Avatar,
+			Bio:             resp.UserProfileResp.Bio,
+			MembershipLevel: resp.UserProfileResp.MembershipLevel,
+			Point:           resp.UserProfileResp.Point,
+			Team:            resp.UserProfileResp.Team,
 		},
 	}
 	return response, nil

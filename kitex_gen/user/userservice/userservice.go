@@ -5,9 +5,11 @@ package userservice
 import (
 	"context"
 	"errors"
-	user "github.com/LingeringAutumn/Yijie/kitex_gen/user"
+
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
+
+	user "github.com/LingeringAutumn/Yijie/kitex_gen/user"
 )
 
 var errInvalidMessageType = errors.New("invalid message type for service method handler")

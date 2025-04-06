@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 )

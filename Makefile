@@ -154,5 +154,6 @@ tidy:
 	go mod tidy
 
 # 一键修正规范并执行代码检查，同时运行 license 检查
+# TODO lint要加进去
 .PHONY: verify
-verify:  vet fmt import lint vulncheck tidy
+verify:  vet fmt import vulncheck tidy

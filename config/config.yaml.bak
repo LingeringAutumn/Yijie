@@ -86,32 +86,26 @@ services:
     addr:
       - 0.0.0.0:20002
 
-  profile:
-    name: profile
+  interface:
+    name: interface
     load-balance: false
     addr:
       - 0.0.0.0:20003
-
+      -
   community:
     name: community
     load-balance: false
     addr:
       - 0.0.0.0:20004
 
-  interface:
-    name: interface
-    load-balance: false
-    addr:
-      - 0.0.0.0:20005
-
   chat:
     name: chat
     load-balance: false
     addr:
-      - 0.0.0.0:20006
+      - 0.0.0.0:20005
 
   group:
     name: group
     load-balance: false
     addr:
-      - 0.0.0.0:20007
+      - 0.0.0.0:20006

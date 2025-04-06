@@ -3,13 +3,15 @@ package service
 import (
 	"context"
 	"fmt"
+
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/config"
 	userData "github.com/LingeringAutumn/Yijie/pkg/base/context"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // EncryptPassword 是 UserService 结构体的一个方法，用于对输入的明文密码进行加密。
@@ -23,7 +25,6 @@ func (svc *UserService) EncryptPassword(pwd string) (string, error) {
 	// passwordDigest 是生成的加密后的密码，类型为字节切片。
 	// err 是在加密过程中可能出现的错误。
 	passwordDigest, err := bcrypt.GenerateFromPassword([]byte(pwd), constants.UserDefaultEncryptPasswordCost)
-
 	// 检查加密过程中是否发生错误。
 	if err != nil {
 		// 如果发生错误，使用 errno 包的 NewErrNo 函数创建一个自定义的错误对象。

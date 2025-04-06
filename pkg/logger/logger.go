@@ -2,15 +2,17 @@ package logger
 
 import (
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"os"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/cloudwego/kitex/pkg/klog"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 )
 
 // controlLogger 结构体用于管理日志记录器的配置和状态。

@@ -3,13 +3,15 @@ package client
 import (
 	"errors"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/config"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/user/userservice"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+
+	"github.com/LingeringAutumn/Yijie/config"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/user/userservice"
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 )
 
 // 通用的RPC客户端初始化函数

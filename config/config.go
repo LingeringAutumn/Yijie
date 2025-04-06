@@ -2,9 +2,11 @@ package config
 
 import (
 	"errors"
-	"github.com/LingeringAutumn/Yijie/pkg/constants"
-	"github.com/bytedance/gopkg/util/logger"
 	"os"
+
+	"github.com/bytedance/gopkg/util/logger"
+
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"

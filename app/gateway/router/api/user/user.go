@@ -3,8 +3,9 @@
 package user
 
 import (
-	user "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
+
+	user "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user"
 )
 
 /*

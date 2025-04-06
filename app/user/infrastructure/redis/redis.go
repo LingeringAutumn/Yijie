@@ -1,8 +1,9 @@
 package redis
 
 import (
-	"github.com/LingeringAutumn/Yijie/app/user/domain/repository"
 	"github.com/redis/go-redis/v9"
+
+	"github.com/LingeringAutumn/Yijie/app/user/domain/repository"
 )
 
 type userRedis struct {

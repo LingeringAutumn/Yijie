@@ -22,6 +22,7 @@ func BuildUserProfileRequest(user *dmodel.UserProfileRequest) *kmodel.UserProfil
 		Bio:      user.Bio,
 	}
 }
+
 func BuildUpdateUserProfileResponse(user *dmodel.UpdateUserProfileResponse) *kmodel.UserProfileResp {
 	return &kmodel.UserProfileResp{
 		Username:        user.Username,

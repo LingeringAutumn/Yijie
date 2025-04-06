@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 )
@@ -28,7 +29,6 @@ func (uc *userUseCase) RegisterUser(ctx context.Context, u *model.User) (uid int
 		return
 	}
 	return uid, nil
-
 }
 
 func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.User, error) {
