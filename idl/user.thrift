@@ -51,6 +51,6 @@ struct GetUserProfileResponse{
 service UserService {
     RegisterResponse Register(1: RegisterRequest req),
     LoginResponse Login(1: LoginRequest req),
-    UpdateUserProfileResponse UpdateUserProfile(1:UpdateUserProfileRequest req)
-    GetUserProfileResponse GetUserProfile(1:GetUserProfileRequest req)
+    UpdateUserProfileResponse UpdateProfile(1:UpdateUserProfileRequest req)
+    GetUserProfileResponse GetProfile(1:GetUserProfileRequest req)
 }

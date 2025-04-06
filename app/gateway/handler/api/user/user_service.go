@@ -152,3 +152,35 @@ func GetUserProfile(ctx context.Context, c *app.RequestContext) {
 	}
 	pack.RespData(c, resp)
 }
+
+// UpdateProfile .
+// @router api/v1/user/profile/update [PUT]
+func UpdateProfile(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.UpdateUserProfileRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.UpdateUserProfileResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// GetProfile .
+// @router api/v1/user/profile/get [GET]
+func GetProfile(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.GetUserProfileRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.GetUserProfileResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}

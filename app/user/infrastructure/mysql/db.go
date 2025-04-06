@@ -27,10 +27,11 @@ func (db *userDB) CreateUser(ctx context.Context, u *model.User) (int64, error) 
 		Email:    u.Email,
 		Phone:    u.Phone,
 	}
+	// TODO 我不确定我们是否要主动生成雪花ID
 	if err := db.client.Create(&user).Error; err != nil {
 		return -1, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to create user: %v", err)
 	}
-	return u.Uid, nil
+	return user.Uid, nil
 }
 
 // IsUserExist 方法用于检查指定用户名的用户是否存在于数据库中。

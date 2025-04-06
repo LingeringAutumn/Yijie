@@ -54,3 +54,13 @@ func _updateuserprofileMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getprofileMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updateprofileMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

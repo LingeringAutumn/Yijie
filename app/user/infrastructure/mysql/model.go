@@ -40,6 +40,32 @@ type UserProfileResponse struct {
 	Team            string `json:"team"`
 }
 
+type UpdateUserProfileResponse struct {
+	Uid      int64  `json:"uid"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	// TODO返回的avatar是它的url
+	Avatar          string `json:"avatar"`
+	Bio             string `json:"bio"`
+	MembershipLevel int64  `json:"member"`
+	Point           int64  `json:"point"`
+	Team            string `json:"team"`
+}
+
+type GetUserProfileResponse struct {
+	Uid      int64  `json:"uid"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	// TODO返回的avatar是它的url
+	Avatar          string `json:"avatar"`
+	Bio             string `json:"bio"`
+	MembershipLevel int64  `json:"member"`
+	Point           int64  `json:"point"`
+	Team            string `json:"team"`
+}
+
 type Image struct {
 	Uid     int64  `json:"uid"`
 	ImageID string `json:"image_id"`

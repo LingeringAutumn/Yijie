@@ -46,6 +46,6 @@ struct GetUserProfileResponse{
 service UserService {
     RegisterResponse Register(1: RegisterRequest req)(api.post = "api/v1/user/register"),
     LoginResponse Login(1: LoginRequest req)(api.post = "api/v1/user/login")
-    UpdateUserProfileResponse UpdateUserProfile(1:UpdateUserProfileRequest req)(api.put="api/v1/user/profile/update")
-    GetUserProfileResponse GetUserProfile(1:GetUserProfileRequest req)(api.get="api/v1/user/profile/get")
+    UpdateUserProfileResponse UpdateProfile(1:UpdateUserProfileRequest req)(api.put="api/v1/user/profile/update")
+    GetUserProfileResponse GetProfile(1:GetUserProfileRequest req)(api.get="api/v1/user/profile/get")
 }

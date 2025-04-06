@@ -91,7 +91,7 @@ func (svc *UserService) CheckPassword(passwordDigest, password string) error {
 	return nil
 }
 
-func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error) {
+func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error) {
 	// 1. 把头像的二进制字节流传到MinIO服务器上
 	var imageId string
 	var avatar []byte
@@ -121,7 +121,20 @@ func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfi
 	if err != nil {
 		return nil, fmt.Errorf("store user profile failed: %w", err)
 	}
-	return userProfileResponse, nil
+
+	// 5. 更改返回类型
+	resp := &model.UpdateUserProfileResponse{
+		Uid:             userProfileResponse.Uid,
+		Username:        userProfileResponse.Username,
+		Email:           userProfileResponse.Email,
+		Phone:           userProfileResponse.Phone,
+		Avatar:          userProfileResponse.Avatar,
+		Bio:             userProfileResponse.Bio,
+		MembershipLevel: userProfileResponse.MembershipLevel,
+		Point:           userProfileResponse.Point,
+		Team:            userProfileResponse.Team,
+	}
+	return resp, nil
 }
 
 func (svc *UserService) GetUserId(ctx context.Context) (uid int64, err error) {

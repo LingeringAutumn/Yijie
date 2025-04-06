@@ -22,7 +22,20 @@ func BuildUserProfileRequest(user *dmodel.UserProfileRequest) *kmodel.UserProfil
 		Bio:      user.Bio,
 	}
 }
-func BuildUserProfileResponse(user *dmodel.UserProfileResponse) *kmodel.UserProfileResp {
+func BuildUpdateUserProfileResponse(user *dmodel.UpdateUserProfileResponse) *kmodel.UserProfileResp {
+	return &kmodel.UserProfileResp{
+		Username:        user.Username,
+		Email:           user.Email,
+		Phone:           user.Phone,
+		Avatar:          user.Avatar,
+		Bio:             user.Bio,
+		MembershipLevel: user.MembershipLevel,
+		Point:           user.Point,
+		Team:            user.Team,
+	}
+}
+
+func BuildGetUserProfileResponse(user *dmodel.GetUserProfileResponse) *kmodel.UserProfileResp {
 	return &kmodel.UserProfileResp{
 		Username:        user.Username,
 		Email:           user.Email,

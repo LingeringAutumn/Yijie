@@ -668,9 +668,9 @@ type UserService interface {
 
 	Login(ctx context.Context, req *LoginRequest) (r *LoginResponse, err error)
 
-	UpdateUserProfile(ctx context.Context, req *UpdateUserProfileRequest) (r *UpdateUserProfileResponse, err error)
+	UpdateProfile(ctx context.Context, req *UpdateUserProfileRequest) (r *UpdateUserProfileResponse, err error)
 
-	GetUserProfile(ctx context.Context, req *GetUserProfileRequest) (r *GetUserProfileResponse, err error)
+	GetProfile(ctx context.Context, req *GetUserProfileRequest) (r *GetUserProfileResponse, err error)
 }
 
 type UserServiceRegisterArgs struct {
@@ -905,41 +905,41 @@ var fieldIDToName_UserServiceLoginResult = map[int16]string{
 	0: "success",
 }
 
-type UserServiceUpdateUserProfileArgs struct {
+type UserServiceUpdateProfileArgs struct {
 	Req *UpdateUserProfileRequest `thrift:"req,1" frugal:"1,default,UpdateUserProfileRequest" json:"req"`
 }
 
-func NewUserServiceUpdateUserProfileArgs() *UserServiceUpdateUserProfileArgs {
-	return &UserServiceUpdateUserProfileArgs{}
+func NewUserServiceUpdateProfileArgs() *UserServiceUpdateProfileArgs {
+	return &UserServiceUpdateProfileArgs{}
 }
 
-func (p *UserServiceUpdateUserProfileArgs) InitDefault() {
+func (p *UserServiceUpdateProfileArgs) InitDefault() {
 }
 
-var UserServiceUpdateUserProfileArgs_Req_DEFAULT *UpdateUserProfileRequest
+var UserServiceUpdateProfileArgs_Req_DEFAULT *UpdateUserProfileRequest
 
-func (p *UserServiceUpdateUserProfileArgs) GetReq() (v *UpdateUserProfileRequest) {
+func (p *UserServiceUpdateProfileArgs) GetReq() (v *UpdateUserProfileRequest) {
 	if !p.IsSetReq() {
-		return UserServiceUpdateUserProfileArgs_Req_DEFAULT
+		return UserServiceUpdateProfileArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserServiceUpdateUserProfileArgs) SetReq(val *UpdateUserProfileRequest) {
+func (p *UserServiceUpdateProfileArgs) SetReq(val *UpdateUserProfileRequest) {
 	p.Req = val
 }
 
-func (p *UserServiceUpdateUserProfileArgs) IsSetReq() bool {
+func (p *UserServiceUpdateProfileArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *UserServiceUpdateUserProfileArgs) String() string {
+func (p *UserServiceUpdateProfileArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceUpdateUserProfileArgs(%+v)", *p)
+	return fmt.Sprintf("UserServiceUpdateProfileArgs(%+v)", *p)
 }
 
-func (p *UserServiceUpdateUserProfileArgs) DeepEqual(ano *UserServiceUpdateUserProfileArgs) bool {
+func (p *UserServiceUpdateProfileArgs) DeepEqual(ano *UserServiceUpdateProfileArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -951,7 +951,7 @@ func (p *UserServiceUpdateUserProfileArgs) DeepEqual(ano *UserServiceUpdateUserP
 	return true
 }
 
-func (p *UserServiceUpdateUserProfileArgs) Field1DeepEqual(src *UpdateUserProfileRequest) bool {
+func (p *UserServiceUpdateProfileArgs) Field1DeepEqual(src *UpdateUserProfileRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -959,45 +959,45 @@ func (p *UserServiceUpdateUserProfileArgs) Field1DeepEqual(src *UpdateUserProfil
 	return true
 }
 
-var fieldIDToName_UserServiceUpdateUserProfileArgs = map[int16]string{
+var fieldIDToName_UserServiceUpdateProfileArgs = map[int16]string{
 	1: "req",
 }
 
-type UserServiceUpdateUserProfileResult struct {
+type UserServiceUpdateProfileResult struct {
 	Success *UpdateUserProfileResponse `thrift:"success,0,optional" frugal:"0,optional,UpdateUserProfileResponse" json:"success,omitempty"`
 }
 
-func NewUserServiceUpdateUserProfileResult() *UserServiceUpdateUserProfileResult {
-	return &UserServiceUpdateUserProfileResult{}
+func NewUserServiceUpdateProfileResult() *UserServiceUpdateProfileResult {
+	return &UserServiceUpdateProfileResult{}
 }
 
-func (p *UserServiceUpdateUserProfileResult) InitDefault() {
+func (p *UserServiceUpdateProfileResult) InitDefault() {
 }
 
-var UserServiceUpdateUserProfileResult_Success_DEFAULT *UpdateUserProfileResponse
+var UserServiceUpdateProfileResult_Success_DEFAULT *UpdateUserProfileResponse
 
-func (p *UserServiceUpdateUserProfileResult) GetSuccess() (v *UpdateUserProfileResponse) {
+func (p *UserServiceUpdateProfileResult) GetSuccess() (v *UpdateUserProfileResponse) {
 	if !p.IsSetSuccess() {
-		return UserServiceUpdateUserProfileResult_Success_DEFAULT
+		return UserServiceUpdateProfileResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *UserServiceUpdateUserProfileResult) SetSuccess(x interface{}) {
+func (p *UserServiceUpdateProfileResult) SetSuccess(x interface{}) {
 	p.Success = x.(*UpdateUserProfileResponse)
 }
 
-func (p *UserServiceUpdateUserProfileResult) IsSetSuccess() bool {
+func (p *UserServiceUpdateProfileResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *UserServiceUpdateUserProfileResult) String() string {
+func (p *UserServiceUpdateProfileResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceUpdateUserProfileResult(%+v)", *p)
+	return fmt.Sprintf("UserServiceUpdateProfileResult(%+v)", *p)
 }
 
-func (p *UserServiceUpdateUserProfileResult) DeepEqual(ano *UserServiceUpdateUserProfileResult) bool {
+func (p *UserServiceUpdateProfileResult) DeepEqual(ano *UserServiceUpdateProfileResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1009,7 +1009,7 @@ func (p *UserServiceUpdateUserProfileResult) DeepEqual(ano *UserServiceUpdateUse
 	return true
 }
 
-func (p *UserServiceUpdateUserProfileResult) Field0DeepEqual(src *UpdateUserProfileResponse) bool {
+func (p *UserServiceUpdateProfileResult) Field0DeepEqual(src *UpdateUserProfileResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -1017,45 +1017,45 @@ func (p *UserServiceUpdateUserProfileResult) Field0DeepEqual(src *UpdateUserProf
 	return true
 }
 
-var fieldIDToName_UserServiceUpdateUserProfileResult = map[int16]string{
+var fieldIDToName_UserServiceUpdateProfileResult = map[int16]string{
 	0: "success",
 }
 
-type UserServiceGetUserProfileArgs struct {
+type UserServiceGetProfileArgs struct {
 	Req *GetUserProfileRequest `thrift:"req,1" frugal:"1,default,GetUserProfileRequest" json:"req"`
 }
 
-func NewUserServiceGetUserProfileArgs() *UserServiceGetUserProfileArgs {
-	return &UserServiceGetUserProfileArgs{}
+func NewUserServiceGetProfileArgs() *UserServiceGetProfileArgs {
+	return &UserServiceGetProfileArgs{}
 }
 
-func (p *UserServiceGetUserProfileArgs) InitDefault() {
+func (p *UserServiceGetProfileArgs) InitDefault() {
 }
 
-var UserServiceGetUserProfileArgs_Req_DEFAULT *GetUserProfileRequest
+var UserServiceGetProfileArgs_Req_DEFAULT *GetUserProfileRequest
 
-func (p *UserServiceGetUserProfileArgs) GetReq() (v *GetUserProfileRequest) {
+func (p *UserServiceGetProfileArgs) GetReq() (v *GetUserProfileRequest) {
 	if !p.IsSetReq() {
-		return UserServiceGetUserProfileArgs_Req_DEFAULT
+		return UserServiceGetProfileArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserServiceGetUserProfileArgs) SetReq(val *GetUserProfileRequest) {
+func (p *UserServiceGetProfileArgs) SetReq(val *GetUserProfileRequest) {
 	p.Req = val
 }
 
-func (p *UserServiceGetUserProfileArgs) IsSetReq() bool {
+func (p *UserServiceGetProfileArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *UserServiceGetUserProfileArgs) String() string {
+func (p *UserServiceGetProfileArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceGetUserProfileArgs(%+v)", *p)
+	return fmt.Sprintf("UserServiceGetProfileArgs(%+v)", *p)
 }
 
-func (p *UserServiceGetUserProfileArgs) DeepEqual(ano *UserServiceGetUserProfileArgs) bool {
+func (p *UserServiceGetProfileArgs) DeepEqual(ano *UserServiceGetProfileArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1067,7 +1067,7 @@ func (p *UserServiceGetUserProfileArgs) DeepEqual(ano *UserServiceGetUserProfile
 	return true
 }
 
-func (p *UserServiceGetUserProfileArgs) Field1DeepEqual(src *GetUserProfileRequest) bool {
+func (p *UserServiceGetProfileArgs) Field1DeepEqual(src *GetUserProfileRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1075,45 +1075,45 @@ func (p *UserServiceGetUserProfileArgs) Field1DeepEqual(src *GetUserProfileReque
 	return true
 }
 
-var fieldIDToName_UserServiceGetUserProfileArgs = map[int16]string{
+var fieldIDToName_UserServiceGetProfileArgs = map[int16]string{
 	1: "req",
 }
 
-type UserServiceGetUserProfileResult struct {
+type UserServiceGetProfileResult struct {
 	Success *GetUserProfileResponse `thrift:"success,0,optional" frugal:"0,optional,GetUserProfileResponse" json:"success,omitempty"`
 }
 
-func NewUserServiceGetUserProfileResult() *UserServiceGetUserProfileResult {
-	return &UserServiceGetUserProfileResult{}
+func NewUserServiceGetProfileResult() *UserServiceGetProfileResult {
+	return &UserServiceGetProfileResult{}
 }
 
-func (p *UserServiceGetUserProfileResult) InitDefault() {
+func (p *UserServiceGetProfileResult) InitDefault() {
 }
 
-var UserServiceGetUserProfileResult_Success_DEFAULT *GetUserProfileResponse
+var UserServiceGetProfileResult_Success_DEFAULT *GetUserProfileResponse
 
-func (p *UserServiceGetUserProfileResult) GetSuccess() (v *GetUserProfileResponse) {
+func (p *UserServiceGetProfileResult) GetSuccess() (v *GetUserProfileResponse) {
 	if !p.IsSetSuccess() {
-		return UserServiceGetUserProfileResult_Success_DEFAULT
+		return UserServiceGetProfileResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *UserServiceGetUserProfileResult) SetSuccess(x interface{}) {
+func (p *UserServiceGetProfileResult) SetSuccess(x interface{}) {
 	p.Success = x.(*GetUserProfileResponse)
 }
 
-func (p *UserServiceGetUserProfileResult) IsSetSuccess() bool {
+func (p *UserServiceGetProfileResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *UserServiceGetUserProfileResult) String() string {
+func (p *UserServiceGetProfileResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserServiceGetUserProfileResult(%+v)", *p)
+	return fmt.Sprintf("UserServiceGetProfileResult(%+v)", *p)
 }
 
-func (p *UserServiceGetUserProfileResult) DeepEqual(ano *UserServiceGetUserProfileResult) bool {
+func (p *UserServiceGetProfileResult) DeepEqual(ano *UserServiceGetProfileResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1125,7 +1125,7 @@ func (p *UserServiceGetUserProfileResult) DeepEqual(ano *UserServiceGetUserProfi
 	return true
 }
 
-func (p *UserServiceGetUserProfileResult) Field0DeepEqual(src *GetUserProfileResponse) bool {
+func (p *UserServiceGetProfileResult) Field0DeepEqual(src *GetUserProfileResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -1133,6 +1133,6 @@ func (p *UserServiceGetUserProfileResult) Field0DeepEqual(src *GetUserProfileRes
 	return true
 }
 
-var fieldIDToName_UserServiceGetUserProfileResult = map[int16]string{
+var fieldIDToName_UserServiceGetProfileResult = map[int16]string{
 	0: "success",
 }

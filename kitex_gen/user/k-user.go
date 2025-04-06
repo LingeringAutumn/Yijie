@@ -1721,7 +1721,7 @@ func (p *UserServiceLoginResult) field0Length() int {
 	return l
 }
 
-func (p *UserServiceUpdateUserProfileArgs) FastRead(buf []byte) (int, error) {
+func (p *UserServiceUpdateProfileArgs) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1765,12 +1765,12 @@ func (p *UserServiceUpdateUserProfileArgs) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateProfileArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *UserServiceUpdateUserProfileArgs) FastReadField1(buf []byte) (int, error) {
+func (p *UserServiceUpdateProfileArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := NewUpdateUserProfileRequest()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1782,11 +1782,11 @@ func (p *UserServiceUpdateUserProfileArgs) FastReadField1(buf []byte) (int, erro
 	return offset, nil
 }
 
-func (p *UserServiceUpdateUserProfileArgs) FastWrite(buf []byte) int {
+func (p *UserServiceUpdateProfileArgs) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *UserServiceUpdateUserProfileArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceUpdateProfileArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
@@ -1795,7 +1795,7 @@ func (p *UserServiceUpdateUserProfileArgs) FastWriteNocopy(buf []byte, w thrift.
 	return offset
 }
 
-func (p *UserServiceUpdateUserProfileArgs) BLength() int {
+func (p *UserServiceUpdateProfileArgs) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field1Length()
@@ -1804,21 +1804,21 @@ func (p *UserServiceUpdateUserProfileArgs) BLength() int {
 	return l
 }
 
-func (p *UserServiceUpdateUserProfileArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceUpdateProfileArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
-func (p *UserServiceUpdateUserProfileArgs) field1Length() int {
+func (p *UserServiceUpdateProfileArgs) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
 	l += p.Req.BLength()
 	return l
 }
 
-func (p *UserServiceUpdateUserProfileResult) FastRead(buf []byte) (int, error) {
+func (p *UserServiceUpdateProfileResult) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1862,12 +1862,12 @@ func (p *UserServiceUpdateUserProfileResult) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateProfileResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *UserServiceUpdateUserProfileResult) FastReadField0(buf []byte) (int, error) {
+func (p *UserServiceUpdateProfileResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 	_field := NewUpdateUserProfileResponse()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1879,11 +1879,11 @@ func (p *UserServiceUpdateUserProfileResult) FastReadField0(buf []byte) (int, er
 	return offset, nil
 }
 
-func (p *UserServiceUpdateUserProfileResult) FastWrite(buf []byte) int {
+func (p *UserServiceUpdateProfileResult) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *UserServiceUpdateUserProfileResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceUpdateProfileResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], w)
@@ -1892,7 +1892,7 @@ func (p *UserServiceUpdateUserProfileResult) FastWriteNocopy(buf []byte, w thrif
 	return offset
 }
 
-func (p *UserServiceUpdateUserProfileResult) BLength() int {
+func (p *UserServiceUpdateProfileResult) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field0Length()
@@ -1901,7 +1901,7 @@ func (p *UserServiceUpdateUserProfileResult) BLength() int {
 	return l
 }
 
-func (p *UserServiceUpdateUserProfileResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceUpdateProfileResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 0)
@@ -1910,7 +1910,7 @@ func (p *UserServiceUpdateUserProfileResult) fastWriteField0(buf []byte, w thrif
 	return offset
 }
 
-func (p *UserServiceUpdateUserProfileResult) field0Length() int {
+func (p *UserServiceUpdateProfileResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += thrift.Binary.FieldBeginLength()
@@ -1919,7 +1919,7 @@ func (p *UserServiceUpdateUserProfileResult) field0Length() int {
 	return l
 }
 
-func (p *UserServiceGetUserProfileArgs) FastRead(buf []byte) (int, error) {
+func (p *UserServiceGetProfileArgs) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1963,12 +1963,12 @@ func (p *UserServiceGetUserProfileArgs) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserProfileArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetProfileArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *UserServiceGetUserProfileArgs) FastReadField1(buf []byte) (int, error) {
+func (p *UserServiceGetProfileArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := NewGetUserProfileRequest()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1980,11 +1980,11 @@ func (p *UserServiceGetUserProfileArgs) FastReadField1(buf []byte) (int, error) 
 	return offset, nil
 }
 
-func (p *UserServiceGetUserProfileArgs) FastWrite(buf []byte) int {
+func (p *UserServiceGetProfileArgs) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *UserServiceGetUserProfileArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceGetProfileArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
@@ -1993,7 +1993,7 @@ func (p *UserServiceGetUserProfileArgs) FastWriteNocopy(buf []byte, w thrift.Noc
 	return offset
 }
 
-func (p *UserServiceGetUserProfileArgs) BLength() int {
+func (p *UserServiceGetProfileArgs) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field1Length()
@@ -2002,21 +2002,21 @@ func (p *UserServiceGetUserProfileArgs) BLength() int {
 	return l
 }
 
-func (p *UserServiceGetUserProfileArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceGetProfileArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
-func (p *UserServiceGetUserProfileArgs) field1Length() int {
+func (p *UserServiceGetProfileArgs) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
 	l += p.Req.BLength()
 	return l
 }
 
-func (p *UserServiceGetUserProfileResult) FastRead(buf []byte) (int, error) {
+func (p *UserServiceGetProfileResult) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -2060,12 +2060,12 @@ func (p *UserServiceGetUserProfileResult) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserProfileResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetProfileResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *UserServiceGetUserProfileResult) FastReadField0(buf []byte) (int, error) {
+func (p *UserServiceGetProfileResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 	_field := NewGetUserProfileResponse()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -2077,11 +2077,11 @@ func (p *UserServiceGetUserProfileResult) FastReadField0(buf []byte) (int, error
 	return offset, nil
 }
 
-func (p *UserServiceGetUserProfileResult) FastWrite(buf []byte) int {
+func (p *UserServiceGetProfileResult) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *UserServiceGetUserProfileResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceGetProfileResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], w)
@@ -2090,7 +2090,7 @@ func (p *UserServiceGetUserProfileResult) FastWriteNocopy(buf []byte, w thrift.N
 	return offset
 }
 
-func (p *UserServiceGetUserProfileResult) BLength() int {
+func (p *UserServiceGetProfileResult) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field0Length()
@@ -2099,7 +2099,7 @@ func (p *UserServiceGetUserProfileResult) BLength() int {
 	return l
 }
 
-func (p *UserServiceGetUserProfileResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
+func (p *UserServiceGetProfileResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 0)
@@ -2108,7 +2108,7 @@ func (p *UserServiceGetUserProfileResult) fastWriteField0(buf []byte, w thrift.N
 	return offset
 }
 
-func (p *UserServiceGetUserProfileResult) field0Length() int {
+func (p *UserServiceGetProfileResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += thrift.Binary.FieldBeginLength()
@@ -2133,18 +2133,18 @@ func (p *UserServiceLoginResult) GetResult() interface{} {
 	return p.Success
 }
 
-func (p *UserServiceUpdateUserProfileArgs) GetFirstArgument() interface{} {
+func (p *UserServiceUpdateProfileArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *UserServiceUpdateUserProfileResult) GetResult() interface{} {
+func (p *UserServiceUpdateProfileResult) GetResult() interface{} {
 	return p.Success
 }
 
-func (p *UserServiceGetUserProfileArgs) GetFirstArgument() interface{} {
+func (p *UserServiceGetProfileArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *UserServiceGetUserProfileResult) GetResult() interface{} {
+func (p *UserServiceGetProfileResult) GetResult() interface{} {
 	return p.Success
 }

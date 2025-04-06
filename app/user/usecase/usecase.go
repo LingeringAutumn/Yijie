@@ -11,8 +11,8 @@ import (
 type UserUseCase interface {
 	RegisterUser(ctx context.Context, user *model.User) (uid int64, err error)
 	LoginUser(ctx context.Context, user *model.User) (*model.User, error)
-	UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error)
-	GetUserProfile(ctx context.Context, uid int64) (*model.UserProfileResponse, error)
+	UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error)
+	GetUserProfile(ctx context.Context, uid int64) (*model.GetUserProfileResponse, error)
 }
 
 type userUseCase struct {
@@ -22,11 +22,11 @@ type userUseCase struct {
 	svc   *service.UserService
 }
 
-func NewUserUseCase(db repository.UserDB, svc *service.UserService, redis repository.UserRedis, rpc repository.UserRPC) UserUseCase {
+// TODO UserRPC如果后面有需要后面再加
+func NewUserUseCase(db repository.UserDB, svc *service.UserService, redis repository.UserRedis) UserUseCase {
 	return &userUseCase{
 		db:    db,
 		svc:   svc,
 		redis: redis,
-		rpc:   rpc,
 	}
 }

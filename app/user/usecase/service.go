@@ -43,7 +43,7 @@ func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.
 }
 
 // Todo
-func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UserProfileResponse, error) {
+func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error) {
 	userProfile, err := uc.svc.UploadProfile(ctx, user)
 	if err != nil {
 		return nil, fmt.Errorf("update user profile failed: %w", err)
@@ -51,12 +51,12 @@ func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserPr
 	return userProfile, nil
 }
 
-func (uc *userUseCase) GetUserProfile(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
+func (uc *userUseCase) GetUserProfile(ctx context.Context, uid int64) (*model.GetUserProfileResponse, error) {
 	u, err := uc.svc.GetUserProfileInfoById(ctx, uid)
 	if err != nil {
 		return nil, fmt.Errorf("usecase get user profile info failed: %w", err)
 	}
-	userProfile := &model.UserProfileResponse{
+	userProfile := &model.GetUserProfileResponse{
 		Uid:             u.Uid,
 		Username:        u.Username,
 		Email:           u.Email,

@@ -68,7 +68,7 @@ func (handler *UserHandler) UpdateProfile(ctx context.Context, req *user.UpdateU
 		return
 	}
 	r.Base = base.BuildBaseResp(err)
-	r.UserProfileResp = pack.BuildUserProfileResponse(userProfile)
+	r.UserProfileResp = pack.BuildUpdateUserProfileResponse(userProfile)
 	return
 }
 
@@ -80,6 +80,6 @@ func (handler *UserHandler) GetProfile(ctx context.Context, req *user.GetUserPro
 		return
 	}
 	r.Base = base.BuildBaseResp(err)
-	r.UserProfileResp = pack.BuildUserProfileResponse(userProfile)
+	r.UserProfileResp = pack.BuildGetUserProfileResponse(userProfile)
 	return
 }
