@@ -23,3 +23,9 @@ go mod tidy
 
 
 ```
+
+make clean-all权限不足
+```bash
+sudo chown -R $(whoami):$(whoami) ./docker/data
+
+```

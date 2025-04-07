@@ -1,0 +1,44 @@
+  ❯ make verify
+    
+    go vet ./...
+    gofumpt -l -w .
+    app/gateway/handler/api/user/user_service.go
+    goimports -w -local github.com/LingeringAutumn .
+    govulncheck ./...
+    === Symbol Results ===
+    
+    Vulnerability #1: GO-2025-3553
+    Excessive memory allocation during header parsing in
+    github.com/golang-jwt/jwt
+  More info: https://pkg.go.dev/vuln/GO-2025-3553
+  Module: github.com/golang-jwt/jwt
+    Found in: github.com/golang-jwt/jwt@v3.2.2+incompatible
+    Fixed in: N/A
+    Example traces found:
+    #1: pkg/utils/jwt.go:46:28: utils.CreateToken calls jwt.NewWithClaims
+    #2: pkg/utils/jwt.go:124:49: utils.parsePrivateKey calls jwt.ParseEdPrivateKeyFromPEM
+    #3: pkg/utils/jwt.go:136:47: utils.parsePublicKey calls jwt.ParseEdPublicKeyFromPEM
+    #4: pkg/utils/jwt.go:166:41: utils.verifyToken calls jwt.ParseWithClaims
+    #5: pkg/utils/jwt.go:148:56: utils.parseUnverifiedClaims calls jwt.Parser.ParseUnverified
+    #6: pkg/utils/jwt.go:54:40: utils.CreateToken calls jwt.Token.SignedString
+    #7: app/gateway/rpc/user.go:86:66: rpc.GetUserProfileRPC calls jwt.ValidationError.Error
+    #8: pkg/utils/jwt.go:9:2: utils.init calls jwt.init
+
+    Vulnerability #2: GO-2025-3540
+    Potential out of order responses when CLIENT SETINFO times out during
+    connection establishment in github.com/redis/go-redis
+  More info: https://pkg.go.dev/vuln/GO-2025-3540
+  Module: github.com/redis/go-redis/v9
+    Found in: github.com/redis/go-redis/v9@v9.5.1
+    Fixed in: github.com/redis/go-redis/v9@v9.6.3
+    Example traces found:
+    #1: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
+    #2: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
+    #3: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
+
+    Your code is affected by 2 vulnerabilities from 2 modules.
+    This scan also found 1 vulnerability in packages you import and 2
+    vulnerabilities in modules you require, but your code doesn't appear to call
+    these vulnerabilities.
+    Use '-show verbose' for more details.
+  make: *** [Makefile:150：vulncheck] 错误 3
