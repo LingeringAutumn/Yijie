@@ -28,6 +28,7 @@ func main() {
 	// 调用 utils 包中的 GetAvailablePort 函数，获取一个可用的端口
 	// 如果获取过程中出现错误，使用 logger.Fatalf 打印错误信息并终止程序
 	listenAddr, err := utils.GetAvailablePort()
+	logger.Infof("available port:%s", listenAddr)
 	if err != nil {
 		logger.Fatalf("get available port failed, err: %v", err)
 	}
