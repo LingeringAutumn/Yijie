@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"github.com/LingeringAutumn/Yijie/pkg/logger"
 	"golang.org/x/net/context"
 
 	"github.com/LingeringAutumn/Yijie/app/user/controllers/rpc/pack"
@@ -20,6 +21,7 @@ func NewUserHandler(useCase usecase.UserUseCase) *UserHandler {
 
 func (handler *UserHandler) Register(ctx context.Context, req *user.RegisterRequest) (r *user.RegisterResponse, err error) {
 	r = new(user.RegisterResponse)
+	logger.Info("new user register")
 	u := &model.User{
 		Username: req.Username,
 		Password: req.Password,
@@ -32,6 +34,7 @@ func (handler *UserHandler) Register(ctx context.Context, req *user.RegisterRequ
 		r.Base = base.BuildBaseResp(err)
 		return
 	}
+	logger.Info("user register success")
 	r.Base = base.BuildBaseResp(err)
 	r.UserID = uid
 	return

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 	"github.com/cloudwego/hertz/pkg/app/server"
 
 	"github.com/LingeringAutumn/Yijie/app/gateway/router"
@@ -8,7 +9,6 @@ import (
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/logger"
-	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
 // 定义服务名称，从 constants 包中获取
@@ -28,10 +28,11 @@ func main() {
 	// 调用 utils 包中的 GetAvailablePort 函数，获取一个可用的端口
 	// 如果获取过程中出现错误，使用 logger.Fatalf 打印错误信息并终止程序
 	listenAddr, err := utils.GetAvailablePort()
-	logger.Infof("available port:%s", listenAddr)
 	if err != nil {
-		logger.Fatalf("get available port failed, err: %v", err)
+		logger.Fatalf("failed to listen: %v", err)
 	}
+	// listenAddr := "0.0.0.0:8888"
+	logger.Infof("available port:%s", listenAddr)
 
 	// 创建一个新的 Hertz 服务器实例
 	// server.WithHostPorts(listenAddr)：设置服务器监听的地址和端口

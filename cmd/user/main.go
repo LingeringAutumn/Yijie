@@ -26,6 +26,7 @@ func init() {
 }
 
 func main() {
+	logger.Infof("starting user service")
 	r, err := etcd.NewEtcdRegistry([]string{config.Etcd.Addr})
 	if err != nil {
 		logger.Fatalf("User: new etcd registry failed, err: %v", err)
@@ -60,6 +61,7 @@ func main() {
 
 		server.WithMiddleware(middleware.Respond()),
 	)
+	logger.Infof("User: server listening at %s", addr)
 	if err = svr.Run(); err != nil {
 		logger.Fatalf("User: run server failed, err: %v", err)
 	}

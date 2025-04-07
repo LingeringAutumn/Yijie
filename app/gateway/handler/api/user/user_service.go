@@ -29,7 +29,6 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	pack.RespError(c, errno.ParamVerifyError.WithError(err))
 	resp, err := rpc.RegisterRPC(ctx, &user.RegisterRequest{
 		Username: req.Name,
 		Password: req.Password,
