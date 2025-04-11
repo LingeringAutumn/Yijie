@@ -32,7 +32,7 @@ func (uc *userUseCase) RegisterUser(ctx context.Context, u *model.User) (uid int
 }
 
 func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.User, error) {
-	userData, err := uc.svc.GetUserById(ctx, user.Uid)
+	userData, err := uc.svc.GetUserByName(ctx, user.Username)
 	if err != nil {
 		return nil, fmt.Errorf("get user info failed: %w", err)
 	}

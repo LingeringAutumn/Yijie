@@ -17,7 +17,7 @@ import (
 type Claims struct {
 	Type               int64 `json:"type"`    // 令牌类型，用于区分不同类型的令牌
 	UserID             int64 `json:"user_id"` // 用户 ID，标识令牌所属的用户
-	jwt.StandardClaims       // 嵌入标准的 JWT 声明
+	jwt.StandardClaims                        // 嵌入标准的 JWT 声明
 }
 
 // CreateToken 根据 token 类型和用户 ID 创建 token
@@ -68,7 +68,6 @@ func CreateAllToken(uid int64) (string, string, error) {
 	if err != nil {
 		return "", "", fmt.Errorf("failed to create access token: %w", err)
 	}
-
 	// 创建刷新令牌
 	refreshToken, err := CreateToken(constants.TypeRefreshToken, uid)
 	if err != nil {

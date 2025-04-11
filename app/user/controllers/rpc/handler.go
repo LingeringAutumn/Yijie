@@ -1,8 +1,9 @@
 package rpc
 
 import (
-	"github.com/LingeringAutumn/Yijie/pkg/logger"
 	"golang.org/x/net/context"
+
+	"github.com/LingeringAutumn/Yijie/pkg/logger"
 
 	"github.com/LingeringAutumn/Yijie/app/user/controllers/rpc/pack"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"

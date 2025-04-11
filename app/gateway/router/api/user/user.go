@@ -4,9 +4,10 @@ package user
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"net/http"
 
 	user "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user"
 )
