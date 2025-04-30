@@ -43,8 +43,8 @@ func (uc *userUseCase) LoginUser(ctx context.Context, user *model.User) (*model.
 }
 
 // Todo
-func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error) {
-	userProfile, err := uc.svc.UploadProfile(ctx, user)
+func (uc *userUseCase) UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest, avatar []byte) (*model.UpdateUserProfileResponse, error) {
+	userProfile, err := uc.svc.UploadProfile(ctx, user, avatar)
 	if err != nil {
 		return nil, fmt.Errorf("update user profile failed: %w", err)
 	}

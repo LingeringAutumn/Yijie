@@ -12,7 +12,7 @@ import (
 type UserUseCase interface {
 	RegisterUser(ctx context.Context, user *model.User) (uid int64, err error)
 	LoginUser(ctx context.Context, user *model.User) (*model.User, error)
-	UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error)
+	UpdateUserProfile(ctx context.Context, user *model.UserProfileRequest, avatar []byte) (*model.UpdateUserProfileResponse, error)
 	GetUserProfile(ctx context.Context, uid int64) (*model.GetUserProfileResponse, error)
 }
 

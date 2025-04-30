@@ -26,10 +26,10 @@ type MinioClient struct {
 // 参数 accessKeyID 是访问 MinIO 的密钥 ID
 // 参数 secretAccessKey 是访问 MinIO 的密钥
 // 返回值为错误信息，如果初始化成功则返回 nil
-func InitMinioClient(endpoint, accessKeyID, secretAccessKey string) error {
+func InitMinioClient(endpoint, accessKey, secretKey string) error {
 	// 调用 minio.New 函数创建一个新的 MinIO 客户端实例
 	// 最后一个参数 false 表示不使用 SSL 连接
-	client, err := minio.New(endpoint, accessKeyID, secretAccessKey, false)
+	client, err := minio.New(endpoint, accessKey, secretKey, false)
 	if err != nil {
 		// 如果创建客户端失败，使用 log.Fatalf 输出错误信息并终止程序
 		return fmt.Errorf("failed to create MinIO client: %w", err)

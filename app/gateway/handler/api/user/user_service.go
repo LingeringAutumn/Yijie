@@ -105,23 +105,21 @@ func UpdateProfile(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 		avatarData, err = utils.FileToBytes(avatarFile)
-		if err == nil {
+		if err != nil {
 			pack.RespError(c, errno.FileUploadError.WithError(err))
 			return
-		} else if len(req.UserProfileReq.Avatar) == 0 {
-			avatarData = nil
 		}
 	}
 	userProfile := kmodel.UserProfileReq{
 		Username: req.UserProfileReq.Username,
 		Email:    req.UserProfileReq.Email,
 		Phone:    req.UserProfileReq.Phone,
-		Avatar:   avatarData,
 		Bio:      req.UserProfileReq.Bio,
 	}
 	resp, err := rpc.UpdateUserProfileRPC(ctx, &user.UpdateUserProfileRequest{
 		Uid:            req.UID,
 		UserProfileReq: &userProfile,
+		Avatar:         avatarData,
 	})
 	if err != nil {
 		pack.RespError(c, err)

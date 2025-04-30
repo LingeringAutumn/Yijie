@@ -3,7 +3,6 @@
 package model
 
 import (
-	"bytes"
 	"fmt"
 	"strings"
 )
@@ -379,8 +378,7 @@ type UserProfileReq struct {
 	Username string `thrift:"username,1" frugal:"1,default,string" json:"username"`
 	Email    string `thrift:"email,2" frugal:"2,default,string" json:"email"`
 	Phone    string `thrift:"phone,3" frugal:"3,default,string" json:"phone"`
-	Avatar   []byte `thrift:"avatar,4" frugal:"4,default,binary" json:"avatar"`
-	Bio      string `thrift:"bio,5" frugal:"5,default,string" json:"bio"`
+	Bio      string `thrift:"bio,4" frugal:"4,default,string" json:"bio"`
 }
 
 func NewUserProfileReq() *UserProfileReq {
@@ -402,10 +400,6 @@ func (p *UserProfileReq) GetPhone() (v string) {
 	return p.Phone
 }
 
-func (p *UserProfileReq) GetAvatar() (v []byte) {
-	return p.Avatar
-}
-
 func (p *UserProfileReq) GetBio() (v string) {
 	return p.Bio
 }
@@ -417,9 +411,6 @@ func (p *UserProfileReq) SetEmail(val string) {
 }
 func (p *UserProfileReq) SetPhone(val string) {
 	p.Phone = val
-}
-func (p *UserProfileReq) SetAvatar(val []byte) {
-	p.Avatar = val
 }
 func (p *UserProfileReq) SetBio(val string) {
 	p.Bio = val
@@ -447,10 +438,7 @@ func (p *UserProfileReq) DeepEqual(ano *UserProfileReq) bool {
 	if !p.Field3DeepEqual(ano.Phone) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.Avatar) {
-		return false
-	}
-	if !p.Field5DeepEqual(ano.Bio) {
+	if !p.Field4DeepEqual(ano.Bio) {
 		return false
 	}
 	return true
@@ -477,14 +465,7 @@ func (p *UserProfileReq) Field3DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *UserProfileReq) Field4DeepEqual(src []byte) bool {
-
-	if bytes.Compare(p.Avatar, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *UserProfileReq) Field5DeepEqual(src string) bool {
+func (p *UserProfileReq) Field4DeepEqual(src string) bool {
 
 	if strings.Compare(p.Bio, src) != 0 {
 		return false
@@ -496,8 +477,7 @@ var fieldIDToName_UserProfileReq = map[int16]string{
 	1: "username",
 	2: "email",
 	3: "phone",
-	4: "avatar",
-	5: "bio",
+	4: "bio",
 }
 
 type Image struct {

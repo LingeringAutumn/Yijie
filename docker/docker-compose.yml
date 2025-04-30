@@ -87,7 +87,7 @@ services:
       - ./data/minio-data:/data
     networks:
       - yijie
-    command: server /data --console-address ":9000" --address ":9001"
+    command: server /data --console-address ":9001" --address ":9000"
 
 
 networks:

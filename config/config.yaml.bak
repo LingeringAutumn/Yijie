@@ -37,9 +37,10 @@ kafka:
   password: yijie-password
 
 minio:
-  addr: 127.0.0.1:9001
-  accesskeyid: yijie
-  secretkey: yijie
+  endpoint: 127.0.0.1:9000       # 注意是 API 端口
+  access-key: yijie              # MinIO 用户名
+  secret-key: yijie              # MinIO 密码
+  use-ssl: false                 # 不用 https，就写 false
 
 services:
   gateway:

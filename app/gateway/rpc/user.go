@@ -59,7 +59,7 @@ func LoginRPC(ctx context.Context, req *user.LoginRequest) (response *api.LoginR
 func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileRequest) (response *api.UpdateUserProfileResponse, err error) {
 	resp, err := userClient.UpdateProfile(ctx, req)
 	if err != nil {
-		logger.Fatal("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
+		logger.Fatalf("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.Base) {

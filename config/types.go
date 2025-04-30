@@ -51,10 +51,10 @@ type kafka struct {
 }
 
 type minio struct {
-	Addr        string
-	AccessKey   string
-	AccessKeyID string
-	SecretKey   string
+	Endpoint  string `mapstructure:"endpoint"`   // eg: "127.0.0.1:9000"
+	AccessKey string `mapstructure:"access-key"` // MinIO 用户名
+	SecretKey string `mapstructure:"secret-key"` // MinIO 密码
+	UseSSL    bool   `mapstructure:"use-ssl"`    // 是否使用 HTTPS
 }
 
 type config struct {

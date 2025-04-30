@@ -3,6 +3,7 @@
 package user
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"strings"
@@ -369,6 +370,7 @@ var fieldIDToName_LoginResponse = map[int16]string{
 type UpdateUserProfileRequest struct {
 	Uid            int64                 `thrift:"uid,1,required" frugal:"1,required,i64" json:"uid"`
 	UserProfileReq *model.UserProfileReq `thrift:"userProfileReq,2,required" frugal:"2,required,model.UserProfileReq" json:"userProfileReq"`
+	Avatar         []byte                `thrift:"avatar,3,required" frugal:"3,required,binary" json:"avatar"`
 }
 
 func NewUpdateUserProfileRequest() *UpdateUserProfileRequest {
@@ -390,11 +392,18 @@ func (p *UpdateUserProfileRequest) GetUserProfileReq() (v *model.UserProfileReq)
 	}
 	return p.UserProfileReq
 }
+
+func (p *UpdateUserProfileRequest) GetAvatar() (v []byte) {
+	return p.Avatar
+}
 func (p *UpdateUserProfileRequest) SetUid(val int64) {
 	p.Uid = val
 }
 func (p *UpdateUserProfileRequest) SetUserProfileReq(val *model.UserProfileReq) {
 	p.UserProfileReq = val
+}
+func (p *UpdateUserProfileRequest) SetAvatar(val []byte) {
+	p.Avatar = val
 }
 
 func (p *UpdateUserProfileRequest) IsSetUserProfileReq() bool {
@@ -420,6 +429,9 @@ func (p *UpdateUserProfileRequest) DeepEqual(ano *UpdateUserProfileRequest) bool
 	if !p.Field2DeepEqual(ano.UserProfileReq) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.Avatar) {
+		return false
+	}
 	return true
 }
 
@@ -437,10 +449,18 @@ func (p *UpdateUserProfileRequest) Field2DeepEqual(src *model.UserProfileReq) bo
 	}
 	return true
 }
+func (p *UpdateUserProfileRequest) Field3DeepEqual(src []byte) bool {
+
+	if bytes.Compare(p.Avatar, src) != 0 {
+		return false
+	}
+	return true
+}
 
 var fieldIDToName_UpdateUserProfileRequest = map[int16]string{
 	1: "uid",
 	2: "userProfileReq",
+	3: "avatar",
 }
 
 type UpdateUserProfileResponse struct {

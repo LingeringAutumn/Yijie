@@ -92,21 +92,19 @@ func (svc *UserService) CheckPassword(passwordDigest, password string) error {
 	return nil
 }
 
-func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest) (*model.UpdateUserProfileResponse, error) {
+func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest, avatar []byte) (*model.UpdateUserProfileResponse, error) {
 	// 1. 把头像的二进制字节流传到MinIO服务器上
 	var imageId string
-	var avatar []byte
 	// TODO 这个地方没问题吗？
 	uid, err := svc.GetUserId(ctx)
 	imageId = fmt.Sprintf("%d", uid)
-	avatar = user.Avatar
 	err = utils.MinioClientGlobal.UploadFile(constants.ImageBucket, imageId, constants.Location, constants.ImageType, avatar)
 	if err != nil {
 		return nil, fmt.Errorf("upload image failed: %w", err)
 	}
 
 	// 2. 获取头像对应的url
-	url := fmt.Sprintf("%s/%s/%d", config.Minio.Addr, constants.ImageBucket, uid)
+	url := fmt.Sprintf("%s/%s/%d", config.Minio.Endpoint, constants.ImageBucket, uid)
 
 	// 3. 储存头像到image内部
 	image := &model.Image{
