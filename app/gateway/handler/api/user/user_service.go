@@ -4,6 +4,7 @@ package user
 
 import (
 	"context"
+	"log"
 
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user"
 	// hmodel "github.com/LingeringAutumn/Yijie/app/gateway/model/model"
@@ -97,6 +98,7 @@ func UpdateProfile(ctx context.Context, c *app.RequestContext) {
 		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
+	log.Printf(">>>> Handler绑定 req: %+v", req)
 	var avatarData []byte
 	avatarFile, err := c.FormFile("avatar")
 	if err == nil {
@@ -116,6 +118,7 @@ func UpdateProfile(ctx context.Context, c *app.RequestContext) {
 		Phone:    req.UserProfileReq.Phone,
 		Bio:      req.UserProfileReq.Bio,
 	}
+	log.Printf(">>>> 构造 userProfile: %+v", userProfile)
 	resp, err := rpc.UpdateUserProfileRPC(ctx, &user.UpdateUserProfileRequest{
 		Uid:            req.UID,
 		UserProfileReq: &userProfile,

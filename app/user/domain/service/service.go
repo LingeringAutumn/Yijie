@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 	"fmt"
-
 	"golang.org/x/crypto/bcrypt"
+	"log"
 
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/config"
@@ -94,9 +94,13 @@ func (svc *UserService) CheckPassword(passwordDigest, password string) error {
 
 func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest, avatar []byte) (*model.UpdateUserProfileResponse, error) {
 	// 1. 把头像的二进制字节流传到MinIO服务器上
+	//log.Printf("upload profile input: %+v", user)
+	//log.Printf(">>>> UploadProfile input: %+v", user)
+
 	var imageId string
 	// TODO 这个地方没问题吗？
 	uid, err := svc.GetUserId(ctx)
+	log.Printf(">>>> Got UID: %v, err: %v", uid, err)
 	imageId = fmt.Sprintf("%d", uid)
 	err = utils.MinioClientGlobal.UploadFile(constants.ImageBucket, imageId, constants.Location, constants.ImageType, avatar)
 	if err != nil {
@@ -116,11 +120,13 @@ func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfi
 		return nil, fmt.Errorf("store user avatar failed: %w", err)
 	}
 	// 4. 储存其它内容
+	log.Printf(">>>> UploadProfile received: UID=%d, UserProfile=%+v", uid, user)
 	userProfileResponse, err := svc.db.StoreUserProfile(ctx, user, uid, image)
 	if err != nil {
+		log.Printf(">>>> StoreUserProfile error: %v", err)
 		return nil, fmt.Errorf("store user profile failed: %w", err)
 	}
-
+	log.Printf(">>>> StoreUserProfile returned: %+v", userProfileResponse)
 	// 5. 更改返回类型
 	resp := &model.UpdateUserProfileResponse{
 		Uid:             userProfileResponse.Uid,
