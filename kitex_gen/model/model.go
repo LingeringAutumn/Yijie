@@ -547,3 +547,261 @@ var fieldIDToName_Image = map[int16]string{
 	1: "imageId",
 	2: "imageUrl",
 }
+
+type Video struct {
+	VideoId         int64   `thrift:"video_id,1" frugal:"1,default,i64" json:"video_id"`
+	UserId          int64   `thrift:"user_id,2" frugal:"2,default,i64" json:"user_id"`
+	Title           string  `thrift:"title,3" frugal:"3,default,string" json:"title"`
+	Description     string  `thrift:"description,4" frugal:"4,default,string" json:"description"`
+	CoverUrl        string  `thrift:"cover_url,5" frugal:"5,default,string" json:"cover_url"`
+	VideoUrl        string  `thrift:"video_url,6" frugal:"6,default,string" json:"video_url"`
+	DurationSeconds int64   `thrift:"duration_seconds,7" frugal:"7,default,i64" json:"duration_seconds"`
+	Views           int64   `thrift:"views,8" frugal:"8,default,i64" json:"views"`
+	Likes           int64   `thrift:"likes,9" frugal:"9,default,i64" json:"likes"`
+	Comments        int64   `thrift:"comments,10" frugal:"10,default,i64" json:"comments"`
+	HotScore        float64 `thrift:"hot_score,11" frugal:"11,default,double" json:"hot_score"`
+	CreatedAt       int64   `thrift:"created_at,12" frugal:"12,default,i64" json:"created_at"`
+}
+
+func NewVideo() *Video {
+	return &Video{}
+}
+
+func (p *Video) InitDefault() {
+}
+
+func (p *Video) GetVideoId() (v int64) {
+	return p.VideoId
+}
+
+func (p *Video) GetUserId() (v int64) {
+	return p.UserId
+}
+
+func (p *Video) GetTitle() (v string) {
+	return p.Title
+}
+
+func (p *Video) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *Video) GetCoverUrl() (v string) {
+	return p.CoverUrl
+}
+
+func (p *Video) GetVideoUrl() (v string) {
+	return p.VideoUrl
+}
+
+func (p *Video) GetDurationSeconds() (v int64) {
+	return p.DurationSeconds
+}
+
+func (p *Video) GetViews() (v int64) {
+	return p.Views
+}
+
+func (p *Video) GetLikes() (v int64) {
+	return p.Likes
+}
+
+func (p *Video) GetComments() (v int64) {
+	return p.Comments
+}
+
+func (p *Video) GetHotScore() (v float64) {
+	return p.HotScore
+}
+
+func (p *Video) GetCreatedAt() (v int64) {
+	return p.CreatedAt
+}
+func (p *Video) SetVideoId(val int64) {
+	p.VideoId = val
+}
+func (p *Video) SetUserId(val int64) {
+	p.UserId = val
+}
+func (p *Video) SetTitle(val string) {
+	p.Title = val
+}
+func (p *Video) SetDescription(val string) {
+	p.Description = val
+}
+func (p *Video) SetCoverUrl(val string) {
+	p.CoverUrl = val
+}
+func (p *Video) SetVideoUrl(val string) {
+	p.VideoUrl = val
+}
+func (p *Video) SetDurationSeconds(val int64) {
+	p.DurationSeconds = val
+}
+func (p *Video) SetViews(val int64) {
+	p.Views = val
+}
+func (p *Video) SetLikes(val int64) {
+	p.Likes = val
+}
+func (p *Video) SetComments(val int64) {
+	p.Comments = val
+}
+func (p *Video) SetHotScore(val float64) {
+	p.HotScore = val
+}
+func (p *Video) SetCreatedAt(val int64) {
+	p.CreatedAt = val
+}
+
+func (p *Video) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("Video(%+v)", *p)
+}
+
+func (p *Video) DeepEqual(ano *Video) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.VideoId) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.UserId) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Title) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Description) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.CoverUrl) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.VideoUrl) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.DurationSeconds) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.Views) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.Likes) {
+		return false
+	}
+	if !p.Field10DeepEqual(ano.Comments) {
+		return false
+	}
+	if !p.Field11DeepEqual(ano.HotScore) {
+		return false
+	}
+	if !p.Field12DeepEqual(ano.CreatedAt) {
+		return false
+	}
+	return true
+}
+
+func (p *Video) Field1DeepEqual(src int64) bool {
+
+	if p.VideoId != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field2DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Title, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Video) Field4DeepEqual(src string) bool {
+
+	if strings.Compare(p.Description, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Video) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.CoverUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Video) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.VideoUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Video) Field7DeepEqual(src int64) bool {
+
+	if p.DurationSeconds != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field8DeepEqual(src int64) bool {
+
+	if p.Views != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field9DeepEqual(src int64) bool {
+
+	if p.Likes != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field10DeepEqual(src int64) bool {
+
+	if p.Comments != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field11DeepEqual(src float64) bool {
+
+	if p.HotScore != src {
+		return false
+	}
+	return true
+}
+func (p *Video) Field12DeepEqual(src int64) bool {
+
+	if p.CreatedAt != src {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_Video = map[int16]string{
+	1:  "video_id",
+	2:  "user_id",
+	3:  "title",
+	4:  "description",
+	5:  "cover_url",
+	6:  "video_url",
+	7:  "duration_seconds",
+	8:  "views",
+	9:  "likes",
+	10: "comments",
+	11: "hot_score",
+	12: "created_at",
+}
