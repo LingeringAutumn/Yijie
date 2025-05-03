@@ -32,15 +32,15 @@ type UserProfileRequest struct {
 
 // UserProfileResponse 是用户资料的完整响应体
 type UserProfileResponse struct {
-	Uid             int64  `json:"uid"`
+	Uid             int64  `json:"uid" gorm:"-"`
 	Username        string `json:"username"`
 	Email           string `json:"email"`
 	Phone           string `json:"phone"`
-	Avatar          string `json:"avatar"` // 头像 URL
-	Bio             string `json:"bio"`    // 个人简介
-	MembershipLevel int64  `json:"member"` // 会员等级
-	Point           int64  `json:"point"`  // 当前积分
-	Team            string `json:"team"`   // 团队信息
+	Avatar          string `json:"avatar" gorm:"column:avatar_url"` // 头像 URL
+	Bio             string `json:"bio"`                             // 个人简介
+	MembershipLevel int64  `json:"member"`                          // 会员等级
+	Point           int64  `json:"point"`                           // 当前积分
+	Team            string `json:"team"`                            // 团队信息
 }
 
 // UpdateUserProfileResponse 是更新用户资料后的响应

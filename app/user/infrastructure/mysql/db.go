@@ -161,31 +161,49 @@ func (db *userDB) StoreUserAvatar(ctx context.Context, image *model.Image) error
 func (db *userDB) StoreUserProfile(ctx context.Context, userProfileRequest *model.UserProfileRequest, uid int64, image *model.Image) (*model.UserProfileResponse, error) {
 	var userProfileResponse UserProfileResponse
 	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&userProfileResponse).Error
-	if err != nil {
-		// 如果个人信息不存在，则创建
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			r, err := db.ConvertDefaultUPReqToUPResp(userProfileRequest, image.Url)
-			err = db.client.WithContext(ctx).Table(constants.UserTableName).Create(r).Error
-			if err != nil {
-				return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to create user profile: %v", err)
-			}
-			userProfileResponse.Uid = r.Uid
-			userProfileResponse.Username = r.Username
-			userProfileResponse.Email = r.Email
-			userProfileResponse.Phone = r.Phone
-			userProfileResponse.Avatar = r.Avatar
-			userProfileResponse.Bio = r.Bio
-			userProfileResponse.MembershipLevel = r.MembershipLevel
-			userProfileResponse.Point = r.Point
-			userProfileResponse.Team = r.Team
-		}
-	} else {
-		// 如果存在，就更新
-		err = db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).Updates(userProfileResponse).Error
+
+	// 如果个人信息不存在，则创建
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		r, err := db.ConvertDefaultUPReqToUPResp(userProfileRequest, image.Url)
 		if err != nil {
-			return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to update user profile: %v", err)
+			return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to convert user profile: %v", err)
 		}
+		r.Uid = uid
+		err = db.client.WithContext(ctx).Table(constants.UserTableName).Create(r).Error
+		if err != nil {
+			return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to create user profile: %v", err)
+		}
+		return &model.UserProfileResponse{
+			Uid:             r.Uid,
+			Username:        r.Username,
+			Email:           r.Email,
+			Phone:           r.Phone,
+			Avatar:          r.Avatar,
+			Bio:             r.Bio,
+			MembershipLevel: r.MembershipLevel,
+			Point:           r.Point,
+			Team:            r.Team,
+		}, nil
 	}
+	if err != nil {
+		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to search user profile: %v", err)
+	}
+	// 如果存在，就更新
+	userProfileResponse.Uid = uid
+	userProfileResponse.Username = userProfileRequest.Username
+	userProfileResponse.Email = userProfileRequest.Email
+	userProfileResponse.Phone = userProfileRequest.Phone
+	userProfileResponse.Bio = userProfileRequest.Bio
+	userProfileResponse.Avatar = image.Url
+	// TODO 这里逻辑写死了，后面有时间优化一下，特别是Update里的东西，不更新的东西不应该更新
+	userProfileResponse.MembershipLevel = constants.MembershipLevelFreeCode
+	userProfileResponse.Point = 0
+	userProfileResponse.Team = ""
+	err = db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).Updates(userProfileResponse).Error
+	if err != nil {
+		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to update user profile: %v", err)
+	}
+
 	resp := &model.UserProfileResponse{
 		Uid:             userProfileResponse.Uid,
 		Username:        userProfileResponse.Username,
