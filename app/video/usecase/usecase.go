@@ -5,6 +5,7 @@ import (
 	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/video/domain/repository"
 	"github.com/LingeringAutumn/Yijie/app/video/domain/service"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
 type VideoUseCase interface {
@@ -17,13 +18,15 @@ type VideoUseCase interface {
 type videoUseCase struct {
 	db repository.VideoDB
 	redis repository.VideoRedis
+	sf *utils.Snowflake
 	svc *service.VideoService
 }
 
-func NewVideoUseCase(db repository.VideoDB,redis repository.VideoRedis,svc service.VideoService) VideoUseCase {
+func NewVideoUseCase(db repository.VideoDB,redis repository.VideoRedis,sf *utils.Snowflake, svc service.VideoService) VideoUseCase {
 	return &videoUseCase{
 		db:db,
 		redis:redis,
+		sf:sf
 		svc:svc
 	}
 }
