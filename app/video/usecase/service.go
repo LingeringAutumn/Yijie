@@ -19,7 +19,6 @@ func (uc *useCase) SubmitVideo(ctx context.Context, video *model.Video, videoDat
 
 	// 2. 生成视频 ID，用于命名文件和任务唯一标识
 	videoId = uc.svc.GenerateVideoId()
-	paymentID, err = svc.sf.NextVal()
 	video.VideoID = videoId
 
 	// 3. 构造 Kafka producer（同步发送模式）
