@@ -199,3 +199,44 @@ func GetAvailablePort() (string, error) {
 	// 如果遍历完所有地址都没有找到可用地址，返回一个错误，提示没有从配置文件中找到可用端口
 	return "", errors.New("utils.GetAvailablePort: not available port from config")
 }
+
+// CheckVideoFileType 检查视频格式
+func CheckVideoFileType(header *multipart.FileHeader) (string, bool) {
+	// 打开文件
+	file, err := header.Open()
+	if err != nil {
+		// 若打开文件失败，返回空字符串和 false
+		return "", false
+	}
+	// 使用 defer 确保文件在函数结束时关闭，并捕获并处理关闭文件时可能发生的错误
+	defer func() {
+		if err := file.Close(); err != nil {
+			logger.Errorf("utils.CheckVideoFileType: failed to close file: %v", err.Error())
+		}
+	}()
+
+	// 创建一个字节切片，用于存储读取的文件头部信息
+	buffer := make([]byte, constants.CheckFileTypeBufferSize)
+	// 读取文件头部信息到 buffer 中
+	_, err = file.Read(buffer)
+	if err != nil {
+		// 若读取文件头部信息失败，返回空字符串和 false
+		return "", false
+	}
+
+	// 使用 filetype 库的 Match 函数来判断文件类型
+	kind, _ := filetype.Match(buffer)
+
+	// 检查文件类型是否为 jpg 或 png
+	switch kind {
+	case types.Get("mp4"):
+		// 若为 mp4 类型，返回 "mp4" 和 true
+		return "mp4", true
+	case types.Get("avi"):
+		// 若为 avi 类型，返回 "avi" 和 true
+		return "avi", true
+	default:
+		// 若不是 mp4 或 avi 类型，返回空字符串和 false
+		return "", false
+	}
+}

@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/LingeringAutumn/Yijie/kitex_gen/video/videoservice"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
@@ -39,4 +41,8 @@ func initRPCClient[T any](serviceName string, newClientFunc func(string, ...clie
 
 func InitUserRPC() (*userservice.Client, error) {
 	return initRPCClient("user", userservice.NewClient)
+}
+
+func InitVideoRPC() (*videoservice.Client, error) {
+	return initRPCClient("video", videoservice.NewClient)
 }

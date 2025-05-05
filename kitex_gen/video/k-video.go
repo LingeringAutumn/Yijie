@@ -35,8 +35,9 @@ func (p *VideoSubmissionRequest) FastRead(buf []byte) (int, error) {
 	var fieldId int16
 	var issetUserId bool = false
 	var issetTitle bool = false
-	var issetVideoUrl bool = false
+	var issetDescription bool = false
 	var issetDurationSeconds bool = false
+	var issetVideo bool = false
 	for {
 		fieldTypeId, fieldId, l, err = thrift.Binary.ReadFieldBegin(buf[offset:])
 		offset += l
@@ -84,6 +85,7 @@ func (p *VideoSubmissionRequest) FastRead(buf []byte) (int, error) {
 				if err != nil {
 					goto ReadFieldError
 				}
+				issetDescription = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -106,13 +108,13 @@ func (p *VideoSubmissionRequest) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 5:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField5(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetVideoUrl = true
+				issetDurationSeconds = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -121,13 +123,13 @@ func (p *VideoSubmissionRequest) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetDurationSeconds = true
+				issetVideo = true
 			} else {
 				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -154,12 +156,17 @@ func (p *VideoSubmissionRequest) FastRead(buf []byte) (int, error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetVideoUrl {
-		fieldId = 5
+	if !issetDescription {
+		fieldId = 3
 		goto RequiredFieldNotSetError
 	}
 
 	if !issetDurationSeconds {
+		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetVideo {
 		fieldId = 6
 		goto RequiredFieldNotSetError
 	}
@@ -205,12 +212,12 @@ func (p *VideoSubmissionRequest) FastReadField2(buf []byte) (int, error) {
 func (p *VideoSubmissionRequest) FastReadField3(buf []byte) (int, error) {
 	offset := 0
 
-	var _field *string
+	var _field string
 	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-		_field = &v
+		_field = v
 	}
 	p.Description = _field
 	return offset, nil
@@ -233,20 +240,6 @@ func (p *VideoSubmissionRequest) FastReadField4(buf []byte) (int, error) {
 func (p *VideoSubmissionRequest) FastReadField5(buf []byte) (int, error) {
 	offset := 0
 
-	var _field string
-	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-		_field = v
-	}
-	p.VideoUrl = _field
-	return offset, nil
-}
-
-func (p *VideoSubmissionRequest) FastReadField6(buf []byte) (int, error) {
-	offset := 0
-
 	var _field int64
 	if v, l, err := thrift.Binary.ReadI64(buf[offset:]); err != nil {
 		return offset, err
@@ -258,6 +251,21 @@ func (p *VideoSubmissionRequest) FastReadField6(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *VideoSubmissionRequest) FastReadField6(buf []byte) (int, error) {
+	offset := 0
+
+	var _field []byte
+	if v, l, err := thrift.Binary.ReadBinary(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		_field = []byte(v)
+	}
+	p.Video = _field
+	return offset, nil
+}
+
 func (p *VideoSubmissionRequest) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -266,11 +274,11 @@ func (p *VideoSubmissionRequest) FastWriteNocopy(buf []byte, w thrift.NocopyWrit
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
-		offset += p.fastWriteField6(buf[offset:], w)
+		offset += p.fastWriteField5(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
 		offset += p.fastWriteField4(buf[offset:], w)
-		offset += p.fastWriteField5(buf[offset:], w)
+		offset += p.fastWriteField6(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -306,10 +314,8 @@ func (p *VideoSubmissionRequest) fastWriteField2(buf []byte, w thrift.NocopyWrit
 
 func (p *VideoSubmissionRequest) fastWriteField3(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
-	if p.IsSetDescription() {
-		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 3)
-		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Description)
-	}
+	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 3)
+	offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, p.Description)
 	return offset
 }
 
@@ -324,15 +330,15 @@ func (p *VideoSubmissionRequest) fastWriteField4(buf []byte, w thrift.NocopyWrit
 
 func (p *VideoSubmissionRequest) fastWriteField5(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
-	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 5)
-	offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, p.VideoUrl)
+	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.I64, 5)
+	offset += thrift.Binary.WriteI64(buf[offset:], p.DurationSeconds)
 	return offset
 }
 
 func (p *VideoSubmissionRequest) fastWriteField6(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
-	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.I64, 6)
-	offset += thrift.Binary.WriteI64(buf[offset:], p.DurationSeconds)
+	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 6)
+	offset += thrift.Binary.WriteBinaryNocopy(buf[offset:], w, []byte(p.Video))
 	return offset
 }
 
@@ -352,10 +358,8 @@ func (p *VideoSubmissionRequest) field2Length() int {
 
 func (p *VideoSubmissionRequest) field3Length() int {
 	l := 0
-	if p.IsSetDescription() {
-		l += thrift.Binary.FieldBeginLength()
-		l += thrift.Binary.StringLengthNocopy(*p.Description)
-	}
+	l += thrift.Binary.FieldBeginLength()
+	l += thrift.Binary.StringLengthNocopy(p.Description)
 	return l
 }
 
@@ -371,14 +375,14 @@ func (p *VideoSubmissionRequest) field4Length() int {
 func (p *VideoSubmissionRequest) field5Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += thrift.Binary.StringLengthNocopy(p.VideoUrl)
+	l += thrift.Binary.I64Length()
 	return l
 }
 
 func (p *VideoSubmissionRequest) field6Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
-	l += thrift.Binary.I64Length()
+	l += thrift.Binary.BinaryLengthNocopy([]byte(p.Video))
 	return l
 }
 

@@ -3,6 +3,7 @@
 package video
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
@@ -12,10 +13,10 @@ import (
 type VideoSubmissionRequest struct {
 	UserId          int64   `thrift:"user_id,1,required" frugal:"1,required,i64" json:"user_id"`
 	Title           string  `thrift:"title,2,required" frugal:"2,required,string" json:"title"`
-	Description     *string `thrift:"description,3,optional" frugal:"3,optional,string" json:"description,omitempty"`
+	Description     string  `thrift:"description,3,required" frugal:"3,required,string" json:"description"`
 	CoverUrl        *string `thrift:"cover_url,4,optional" frugal:"4,optional,string" json:"cover_url,omitempty"`
-	VideoUrl        string  `thrift:"video_url,5,required" frugal:"5,required,string" json:"video_url"`
-	DurationSeconds int64   `thrift:"duration_seconds,6,required" frugal:"6,required,i64" json:"duration_seconds"`
+	DurationSeconds int64   `thrift:"duration_seconds,5,required" frugal:"5,required,i64" json:"duration_seconds"`
+	Video           []byte  `thrift:"video,6,required" frugal:"6,required,binary" json:"video"`
 }
 
 func NewVideoSubmissionRequest() *VideoSubmissionRequest {
@@ -33,13 +34,8 @@ func (p *VideoSubmissionRequest) GetTitle() (v string) {
 	return p.Title
 }
 
-var VideoSubmissionRequest_Description_DEFAULT string
-
 func (p *VideoSubmissionRequest) GetDescription() (v string) {
-	if !p.IsSetDescription() {
-		return VideoSubmissionRequest_Description_DEFAULT
-	}
-	return *p.Description
+	return p.Description
 }
 
 var VideoSubmissionRequest_CoverUrl_DEFAULT string
@@ -51,12 +47,12 @@ func (p *VideoSubmissionRequest) GetCoverUrl() (v string) {
 	return *p.CoverUrl
 }
 
-func (p *VideoSubmissionRequest) GetVideoUrl() (v string) {
-	return p.VideoUrl
-}
-
 func (p *VideoSubmissionRequest) GetDurationSeconds() (v int64) {
 	return p.DurationSeconds
+}
+
+func (p *VideoSubmissionRequest) GetVideo() (v []byte) {
+	return p.Video
 }
 func (p *VideoSubmissionRequest) SetUserId(val int64) {
 	p.UserId = val
@@ -64,21 +60,17 @@ func (p *VideoSubmissionRequest) SetUserId(val int64) {
 func (p *VideoSubmissionRequest) SetTitle(val string) {
 	p.Title = val
 }
-func (p *VideoSubmissionRequest) SetDescription(val *string) {
+func (p *VideoSubmissionRequest) SetDescription(val string) {
 	p.Description = val
 }
 func (p *VideoSubmissionRequest) SetCoverUrl(val *string) {
 	p.CoverUrl = val
 }
-func (p *VideoSubmissionRequest) SetVideoUrl(val string) {
-	p.VideoUrl = val
-}
 func (p *VideoSubmissionRequest) SetDurationSeconds(val int64) {
 	p.DurationSeconds = val
 }
-
-func (p *VideoSubmissionRequest) IsSetDescription() bool {
-	return p.Description != nil
+func (p *VideoSubmissionRequest) SetVideo(val []byte) {
+	p.Video = val
 }
 
 func (p *VideoSubmissionRequest) IsSetCoverUrl() bool {
@@ -110,10 +102,10 @@ func (p *VideoSubmissionRequest) DeepEqual(ano *VideoSubmissionRequest) bool {
 	if !p.Field4DeepEqual(ano.CoverUrl) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.VideoUrl) {
+	if !p.Field5DeepEqual(ano.DurationSeconds) {
 		return false
 	}
-	if !p.Field6DeepEqual(ano.DurationSeconds) {
+	if !p.Field6DeepEqual(ano.Video) {
 		return false
 	}
 	return true
@@ -133,14 +125,9 @@ func (p *VideoSubmissionRequest) Field2DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *VideoSubmissionRequest) Field3DeepEqual(src *string) bool {
+func (p *VideoSubmissionRequest) Field3DeepEqual(src string) bool {
 
-	if p.Description == src {
-		return true
-	} else if p.Description == nil || src == nil {
-		return false
-	}
-	if strings.Compare(*p.Description, *src) != 0 {
+	if strings.Compare(p.Description, src) != 0 {
 		return false
 	}
 	return true
@@ -157,16 +144,16 @@ func (p *VideoSubmissionRequest) Field4DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *VideoSubmissionRequest) Field5DeepEqual(src string) bool {
+func (p *VideoSubmissionRequest) Field5DeepEqual(src int64) bool {
 
-	if strings.Compare(p.VideoUrl, src) != 0 {
+	if p.DurationSeconds != src {
 		return false
 	}
 	return true
 }
-func (p *VideoSubmissionRequest) Field6DeepEqual(src int64) bool {
+func (p *VideoSubmissionRequest) Field6DeepEqual(src []byte) bool {
 
-	if p.DurationSeconds != src {
+	if bytes.Compare(p.Video, src) != 0 {
 		return false
 	}
 	return true
@@ -177,8 +164,8 @@ var fieldIDToName_VideoSubmissionRequest = map[int16]string{
 	2: "title",
 	3: "description",
 	4: "cover_url",
-	5: "video_url",
-	6: "duration_seconds",
+	5: "duration_seconds",
+	6: "video",
 }
 
 type VideoSubmissionResponse struct {

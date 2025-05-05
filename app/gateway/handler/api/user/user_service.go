@@ -99,6 +99,7 @@ func UpdateProfile(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	log.Printf(">>>> Handler绑定 req: %+v", req)
+
 	var avatarData []byte
 	avatarFile, err := c.FormFile("avatar")
 	if err == nil {

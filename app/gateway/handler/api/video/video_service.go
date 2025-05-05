@@ -5,71 +5,119 @@ package video
 import (
 	"context"
 
-	video "github.com/LingeringAutumn/Yijie/app/gateway/model/api/video"
+	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/video"
+	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
+	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
+
+	"github.com/LingeringAutumn/Yijie/kitex_gen/video"
+	"github.com/LingeringAutumn/Yijie/pkg/errno"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
+	// kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 // SubmitVideo .
 // @router api/v1/video/submit [POST]
 func SubmitVideo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req video.VideoSubmissionRequest
+	var req api.VideoSubmissionRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
-
-	resp := new(video.VideoSubmissionResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	var videoData []byte
+	videoFile, err := c.FormFile("video")
+	if err != nil {
+		if _, ok := utils.CheckVideoFileType(videoFile); !ok {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		}
+		videoData, err = utils.FileToBytes(videoFile)
+		if err != nil {
+			pack.RespError(c, errno.FileUploadError.WithError(err))
+			return
+		}
+	}
+	resp, err := rpc.SubmitVideoRPC(ctx, &video.VideoSubmissionRequest{
+		UserId:          req.UserID,
+		Title:           req.Title,
+		Description:     req.Description,
+		CoverUrl:        req.CoverURL,
+		DurationSeconds: req.DurationSeconds,
+		Video:           videoData,
+	})
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }
 
 // GetVideo .
 // @router api/v1/video/get [GET]
 func GetVideo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req video.VideoDetailRequest
+	var req api.VideoDetailRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
 
-	resp := new(video.VideoDetailResponse)
+	resp, err := rpc.GetVideoRPC(ctx, &video.VideoDetailRequest{
+		VideoId: req.VideoID,
+	})
 
-	c.JSON(consts.StatusOK, resp)
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }
 
 // SearchVideo .
 // @router api/v1/video/search [GET]
 func SearchVideo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req video.VideoSearchRequest
+	var req api.VideoSearchRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
+	resp, err := rpc.SearchVideoRPC(ctx, &video.VideoSearchRequest{
+		Keyword:  req.Keyword,
+		Tags:     req.Tags,
+		PageNum:  req.PageNum,
+		PageSize: req.PageSize,
+	})
 
-	resp := new(video.VideoSearchResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }
 
 // TrendingVideo .
 // @router api/v1/video/trending [GET]
 func TrendingVideo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req video.VideoTrendingRequest
+	var req api.VideoTrendingRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
+	resp, err := rpc.TrendingVideoRPC(ctx, &video.VideoTrendingRequest{
+		PageNum:  req.PageNum,
+		PageSize: req.PageSize,
+	})
 
-	resp := new(video.VideoTrendingResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	if err != nil {
+		pack.RespError(c, err)
+		return
+	}
+	pack.RespData(c, resp)
 }

@@ -3,8 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"log"
+
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
 	"github.com/LingeringAutumn/Yijie/config"
@@ -94,8 +95,8 @@ func (svc *UserService) CheckPassword(passwordDigest, password string) error {
 
 func (svc *UserService) UploadProfile(ctx context.Context, user *model.UserProfileRequest, avatar []byte) (*model.UpdateUserProfileResponse, error) {
 	// 1. 把头像的二进制字节流传到MinIO服务器上
-	//log.Printf("upload profile input: %+v", user)
-	//log.Printf(">>>> UploadProfile input: %+v", user)
+	// log.Printf("upload profile input: %+v", user)
+	// log.Printf(">>>> UploadProfile input: %+v", user)
 
 	var imageId string
 	// TODO 这个地方没问题吗？

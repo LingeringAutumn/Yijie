@@ -19,13 +19,11 @@ type VideoSubmissionRequest struct {
 	// 视频标题
 	Title string `thrift:"title,2,required" form:"title,required" json:"title,required" query:"title,required"`
 	// 视频描述，可为空
-	Description *string `thrift:"description,3,optional" form:"description" json:"description,omitempty" query:"description"`
+	Description string `thrift:"description,3,required" form:"description,required" json:"description,required" query:"description,required"`
 	// 封面图URL（可选）
 	CoverURL *string `thrift:"cover_url,4,optional" form:"cover_url" json:"cover_url,omitempty" query:"cover_url"`
-	// 视频内容URL（上传到 MinIO 后的地址）
-	VideoURL string `thrift:"video_url,5,required" form:"video_url,required" json:"video_url,required" query:"video_url,required"`
 	// 视频时长（单位：秒）
-	DurationSeconds int64 `thrift:"duration_seconds,6,required" form:"duration_seconds,required" json:"duration_seconds,required" query:"duration_seconds,required"`
+	DurationSeconds int64 `thrift:"duration_seconds,5,required" form:"duration_seconds,required" json:"duration_seconds,required" query:"duration_seconds,required"`
 }
 
 func NewVideoSubmissionRequest() *VideoSubmissionRequest {
@@ -43,13 +41,8 @@ func (p *VideoSubmissionRequest) GetTitle() (v string) {
 	return p.Title
 }
 
-var VideoSubmissionRequest_Description_DEFAULT string
-
 func (p *VideoSubmissionRequest) GetDescription() (v string) {
-	if !p.IsSetDescription() {
-		return VideoSubmissionRequest_Description_DEFAULT
-	}
-	return *p.Description
+	return p.Description
 }
 
 var VideoSubmissionRequest_CoverURL_DEFAULT string
@@ -61,10 +54,6 @@ func (p *VideoSubmissionRequest) GetCoverURL() (v string) {
 	return *p.CoverURL
 }
 
-func (p *VideoSubmissionRequest) GetVideoURL() (v string) {
-	return p.VideoURL
-}
-
 func (p *VideoSubmissionRequest) GetDurationSeconds() (v int64) {
 	return p.DurationSeconds
 }
@@ -74,12 +63,7 @@ var fieldIDToName_VideoSubmissionRequest = map[int16]string{
 	2: "title",
 	3: "description",
 	4: "cover_url",
-	5: "video_url",
-	6: "duration_seconds",
-}
-
-func (p *VideoSubmissionRequest) IsSetDescription() bool {
-	return p.Description != nil
+	5: "duration_seconds",
 }
 
 func (p *VideoSubmissionRequest) IsSetCoverURL() bool {
@@ -91,7 +75,7 @@ func (p *VideoSubmissionRequest) Read(iprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	var issetUserID bool = false
 	var issetTitle bool = false
-	var issetVideoURL bool = false
+	var issetDescription bool = false
 	var issetDurationSeconds bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -131,6 +115,7 @@ func (p *VideoSubmissionRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetDescription = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -143,17 +128,8 @@ func (p *VideoSubmissionRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-				issetVideoURL = true
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 6:
 			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField6(iprot); err != nil {
+				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 				issetDurationSeconds = true
@@ -183,13 +159,13 @@ func (p *VideoSubmissionRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
-	if !issetVideoURL {
-		fieldId = 5
+	if !issetDescription {
+		fieldId = 3
 		goto RequiredFieldNotSetError
 	}
 
 	if !issetDurationSeconds {
-		fieldId = 6
+		fieldId = 5
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -234,11 +210,11 @@ func (p *VideoSubmissionRequest) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *VideoSubmissionRequest) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field *string
+	var _field string
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		_field = &v
+		_field = v
 	}
 	p.Description = _field
 	return nil
@@ -255,17 +231,6 @@ func (p *VideoSubmissionRequest) ReadField4(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *VideoSubmissionRequest) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.VideoURL = _field
-	return nil
-}
-func (p *VideoSubmissionRequest) ReadField6(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -301,10 +266,6 @@ func (p *VideoSubmissionRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
-			goto WriteFieldError
-		}
-		if err = p.writeField6(oprot); err != nil {
-			fieldId = 6
 			goto WriteFieldError
 		}
 	}
@@ -358,16 +319,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 func (p *VideoSubmissionRequest) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetDescription() {
-		if err = oprot.WriteFieldBegin("description", thrift.STRING, 3); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Description); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -394,23 +353,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 func (p *VideoSubmissionRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("video_url", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.VideoURL); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-func (p *VideoSubmissionRequest) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("duration_seconds", thrift.I64, 6); err != nil {
+	if err = oprot.WriteFieldBegin("duration_seconds", thrift.I64, 5); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteI64(p.DurationSeconds); err != nil {
@@ -421,9 +364,9 @@ func (p *VideoSubmissionRequest) writeField6(oprot thrift.TProtocol) (err error)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *VideoSubmissionRequest) String() string {

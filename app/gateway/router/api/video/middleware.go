@@ -4,11 +4,16 @@ package video
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/mw"
 )
 
 func rootMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	// TODO 鉴权写在这里没问题吗？
+	return []app.HandlerFunc{
+		mw.Auth(),
+	}
 }
 
 func _apiMw() []app.HandlerFunc {

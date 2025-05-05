@@ -8,10 +8,9 @@ include "../model.thrift"
 struct VideoSubmissionRequest {
     1: required i64 user_id                // 投稿者用户ID
     2: required string title              // 视频标题
-    3: optional string description        // 视频描述，可为空
+    3: required string description        // 视频描述，可为空
     4: optional string cover_url          // 封面图URL（可选）
-    5: required string video_url          // 视频内容URL（上传到 MinIO 后的地址）
-    6: required i64 duration_seconds      // 视频时长（单位：秒）
+    5: required i64 duration_seconds      // 视频时长（单位：秒）
 }
 
 /**
