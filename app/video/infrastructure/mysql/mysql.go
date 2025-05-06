@@ -78,12 +78,12 @@ func (db *videoDB) SearchVideo(ctx context.Context, keyword string, tags []strin
 			vs.views, vs.likes, vs.comments, vs.hot_score
 		`). // SELECT 字段来自主表和统计表
 		Joins(fmt.Sprintf("LEFT JOIN %s AS vs ON v.video_id = vs.video_id", constants.VideoStatsTableName)). // 统计信息表联接
-		Where("v.status = ?", "published"). // 只查询已发布视频
-		Where("v.title LIKE ? OR v.description LIKE ?", "%"+keyword+"%", "%"+keyword+"%"). // 模糊搜索标题或描述
-		Order("v.created_at DESC"). // 新发布的在前
-		Offset(offset). // 分页偏移
-		Limit(int(pageSize)). // 限制结果数量
-		Scan(&results).Error // 结果扫描进结构体切片
+		Where("v.status = ?", "published").                                                                  // 只查询已发布视频
+		Where("v.title LIKE ? OR v.description LIKE ?", "%"+keyword+"%", "%"+keyword+"%").                   // 模糊搜索标题或描述
+		Order("v.created_at DESC").                                                                          // 新发布的在前
+		Offset(offset).                                                                                      // 分页偏移
+		Limit(int(pageSize)).                                                                                // 限制结果数量
+		Scan(&results).Error                                                                                 // 结果扫描进结构体切片
 
 	if err != nil {
 		return nil, fmt.Errorf("search videos failed: %w", err)
@@ -105,8 +105,8 @@ func (db *videoDB) TrendVideo(ctx context.Context, pageNum, pageSize int64) ([]*
 			vs.views, vs.likes, vs.comments, vs.hot_score
 		`). // SELECT 字段来自主表和统计表
 		Joins(fmt.Sprintf("LEFT JOIN %s AS vs ON v.video_id = vs.video_id", constants.VideoStatsTableName)). // 联接统计表
-		Where("v.status = ?", "published"). // 只显示已发布视频
-		Order("vs.hot_score DESC, v.created_at DESC"). // 按热度排序，发布时间为次要排序
+		Where("v.status = ?", "published").                                                                  // 只显示已发布视频
+		Order("vs.hot_score DESC, v.created_at DESC").                                                       // 按热度排序，发布时间为次要排序
 		Offset(offset).
 		Limit(int(pageSize)).
 		Scan(&results).Error

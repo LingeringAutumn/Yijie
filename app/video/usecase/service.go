@@ -11,7 +11,6 @@ import (
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
 	"log"
-	"time"
 )
 
 func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, videoData []byte) (videoId int64, videoUrl string, err error) {
