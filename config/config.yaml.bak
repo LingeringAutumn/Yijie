@@ -31,10 +31,15 @@ mysql:
   charset: utf8mb4
 
 kafka:
-  address: 127.0.0.1:9092
-  network: tcp
-  user: yijie
-  password: yijie-password
+  broker: 127.0.0.1:9092                # Kafka 服务地址
+  topic: yijie                          # 上传任务的主题名（生产者/消费者都用它）
+  consumer_group: upload-task-group    # 消费者组名（每个消费者进程唯一）
+  max_connections: 100                 # 最大并发连接数（一般够用）
+  max_qps: 1000                        # 最大每秒请求数（可用于限流）
+  auto_offset_reset: earliest          # 新消费者读取历史消息（推荐 earliest）
+  sasl_user: yijie                     # Kafka SASL 认证用户名（如服务端配置了）
+  sasl_password: yijie-password        # Kafka SASL 认证密码
+
 
 minio:
   endpoint: 127.0.0.1:9000       # 注意是 API 端口
