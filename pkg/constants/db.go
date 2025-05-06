@@ -3,8 +3,10 @@ package constants
 import "time"
 
 const (
-	UserTableName  = "users"
-	ImageTableName = "images"
+	UserTableName       = "users"
+	ImageTableName      = "images"
+	VideoTableName      = "videos"
+	VideoStatsTableName = "video_stats"
 )
 
 const (
