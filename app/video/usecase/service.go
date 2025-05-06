@@ -10,6 +10,8 @@ import (
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
+	"log"
+	"time"
 )
 
 func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, videoData []byte) (videoId int64, videoUrl string, err error) {
@@ -91,7 +93,7 @@ func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, vid
 
 	// 9. 将视频元数据存入数据库，包括用户 ID、标题、描述、URL 等
 	// 这样即便后续 Kafka 消费失败，前端也能通过数据库查询到上传记录
-	err = uc.db.StoreVideo(ctx, video)
+	err = uc.svc.StoreVideo(ctx, video)
 	if err != nil {
 		return 0, "", fmt.Errorf("store video meta failed: %w", err)
 	}
@@ -101,11 +103,36 @@ func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, vid
 }
 
 func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.VideoProfile, error) {
+	// 1. 优先从 Redis 中获取缓存数据
+	videoProfile, err := uc.svc.GetVideoRedis(ctx, videoId)
+	if err == nil && videoProfile != nil {
+		return videoProfile, nil // 命中缓存
+	}
 
+	// 2. 缓存未命中，从数据库查询
+	videoProfile, err = uc.svc.GetVideoDB(ctx, videoId)
+	if err != nil {
+		return nil, fmt.Errorf("get video from db failed: %w", err)
+	}
+
+	// 3. 回写 Redis 缓存（设置过期时间）
+	if err := uc.svc.SetVideoRedis(ctx, videoProfile); err != nil {
+		log.Printf("warning: failed to set video cache for id %d: %v", videoId, err)
+	}
+
+	return videoProfile, nil
 }
 func (uc *videoUseCase) SearchVideo(ctx context.Context, keyword string, tags []string, pageNum int64, pageSize int64) ([]*model.VideoProfile, error) {
-
+	videoProfile, err := uc.svc.SearchVideo(ctx, keyword, tags, pageNum, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	return videoProfile, nil
 }
 func (uc *videoUseCase) TrendVideo(ctx context.Context, pageNum int64, pageSize int64) ([]*model.VideoProfile, error) {
-
+	videoProfile, err := uc.svc.TrendVideo(ctx, pageNum, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	return videoProfile, nil
 }
