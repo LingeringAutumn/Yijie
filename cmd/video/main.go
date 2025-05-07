@@ -3,9 +3,10 @@ package main
 import (
 	"net"
 
-	"github.com/LingeringAutumn/Yijie/app/user"
+	"github.com/LingeringAutumn/Yijie/app/video"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/video/videoservice"
+
 	"github.com/LingeringAutumn/Yijie/config"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/user/userservice"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/logger"
 	"github.com/LingeringAutumn/Yijie/pkg/middleware"
@@ -44,9 +45,9 @@ func main() {
 		logger.Fatalf("Video: new minio client failed, err: %v", err)
 	}
 
-	svr := userservice.NewServer(
+	svr := videoservice.NewServer(
 		// 注入依赖
-		user.InjectUserHandler(),
+		video.InjectVideoHandler(),
 		server.WithSuite(tracing.NewServerSuite()),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: serviceName,

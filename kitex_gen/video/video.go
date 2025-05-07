@@ -6,8 +6,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"strings"
+
+	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 )
 
 type VideoSubmissionRequest struct {
@@ -761,7 +762,7 @@ type VideoService interface {
 
 	SearchVideo(ctx context.Context, req *VideoSearchRequest) (r *VideoSearchResponse, err error)
 
-	TrendingVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error)
+	TrendVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error)
 }
 
 type VideoServiceSubmitVideoArgs struct {
@@ -1112,41 +1113,41 @@ var fieldIDToName_VideoServiceSearchVideoResult = map[int16]string{
 	0: "success",
 }
 
-type VideoServiceTrendingVideoArgs struct {
+type VideoServiceTrendVideoArgs struct {
 	Req *VideoTrendingRequest `thrift:"req,1" frugal:"1,default,VideoTrendingRequest" json:"req"`
 }
 
-func NewVideoServiceTrendingVideoArgs() *VideoServiceTrendingVideoArgs {
-	return &VideoServiceTrendingVideoArgs{}
+func NewVideoServiceTrendVideoArgs() *VideoServiceTrendVideoArgs {
+	return &VideoServiceTrendVideoArgs{}
 }
 
-func (p *VideoServiceTrendingVideoArgs) InitDefault() {
+func (p *VideoServiceTrendVideoArgs) InitDefault() {
 }
 
-var VideoServiceTrendingVideoArgs_Req_DEFAULT *VideoTrendingRequest
+var VideoServiceTrendVideoArgs_Req_DEFAULT *VideoTrendingRequest
 
-func (p *VideoServiceTrendingVideoArgs) GetReq() (v *VideoTrendingRequest) {
+func (p *VideoServiceTrendVideoArgs) GetReq() (v *VideoTrendingRequest) {
 	if !p.IsSetReq() {
-		return VideoServiceTrendingVideoArgs_Req_DEFAULT
+		return VideoServiceTrendVideoArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *VideoServiceTrendingVideoArgs) SetReq(val *VideoTrendingRequest) {
+func (p *VideoServiceTrendVideoArgs) SetReq(val *VideoTrendingRequest) {
 	p.Req = val
 }
 
-func (p *VideoServiceTrendingVideoArgs) IsSetReq() bool {
+func (p *VideoServiceTrendVideoArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *VideoServiceTrendingVideoArgs) String() string {
+func (p *VideoServiceTrendVideoArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("VideoServiceTrendingVideoArgs(%+v)", *p)
+	return fmt.Sprintf("VideoServiceTrendVideoArgs(%+v)", *p)
 }
 
-func (p *VideoServiceTrendingVideoArgs) DeepEqual(ano *VideoServiceTrendingVideoArgs) bool {
+func (p *VideoServiceTrendVideoArgs) DeepEqual(ano *VideoServiceTrendVideoArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1158,7 +1159,7 @@ func (p *VideoServiceTrendingVideoArgs) DeepEqual(ano *VideoServiceTrendingVideo
 	return true
 }
 
-func (p *VideoServiceTrendingVideoArgs) Field1DeepEqual(src *VideoTrendingRequest) bool {
+func (p *VideoServiceTrendVideoArgs) Field1DeepEqual(src *VideoTrendingRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1166,45 +1167,45 @@ func (p *VideoServiceTrendingVideoArgs) Field1DeepEqual(src *VideoTrendingReques
 	return true
 }
 
-var fieldIDToName_VideoServiceTrendingVideoArgs = map[int16]string{
+var fieldIDToName_VideoServiceTrendVideoArgs = map[int16]string{
 	1: "req",
 }
 
-type VideoServiceTrendingVideoResult struct {
+type VideoServiceTrendVideoResult struct {
 	Success *VideoTrendingResponse `thrift:"success,0,optional" frugal:"0,optional,VideoTrendingResponse" json:"success,omitempty"`
 }
 
-func NewVideoServiceTrendingVideoResult() *VideoServiceTrendingVideoResult {
-	return &VideoServiceTrendingVideoResult{}
+func NewVideoServiceTrendVideoResult() *VideoServiceTrendVideoResult {
+	return &VideoServiceTrendVideoResult{}
 }
 
-func (p *VideoServiceTrendingVideoResult) InitDefault() {
+func (p *VideoServiceTrendVideoResult) InitDefault() {
 }
 
-var VideoServiceTrendingVideoResult_Success_DEFAULT *VideoTrendingResponse
+var VideoServiceTrendVideoResult_Success_DEFAULT *VideoTrendingResponse
 
-func (p *VideoServiceTrendingVideoResult) GetSuccess() (v *VideoTrendingResponse) {
+func (p *VideoServiceTrendVideoResult) GetSuccess() (v *VideoTrendingResponse) {
 	if !p.IsSetSuccess() {
-		return VideoServiceTrendingVideoResult_Success_DEFAULT
+		return VideoServiceTrendVideoResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *VideoServiceTrendingVideoResult) SetSuccess(x interface{}) {
+func (p *VideoServiceTrendVideoResult) SetSuccess(x interface{}) {
 	p.Success = x.(*VideoTrendingResponse)
 }
 
-func (p *VideoServiceTrendingVideoResult) IsSetSuccess() bool {
+func (p *VideoServiceTrendVideoResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *VideoServiceTrendingVideoResult) String() string {
+func (p *VideoServiceTrendVideoResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("VideoServiceTrendingVideoResult(%+v)", *p)
+	return fmt.Sprintf("VideoServiceTrendVideoResult(%+v)", *p)
 }
 
-func (p *VideoServiceTrendingVideoResult) DeepEqual(ano *VideoServiceTrendingVideoResult) bool {
+func (p *VideoServiceTrendVideoResult) DeepEqual(ano *VideoServiceTrendVideoResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1216,7 +1217,7 @@ func (p *VideoServiceTrendingVideoResult) DeepEqual(ano *VideoServiceTrendingVid
 	return true
 }
 
-func (p *VideoServiceTrendingVideoResult) Field0DeepEqual(src *VideoTrendingResponse) bool {
+func (p *VideoServiceTrendVideoResult) Field0DeepEqual(src *VideoTrendingResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -1224,6 +1225,6 @@ func (p *VideoServiceTrendingVideoResult) Field0DeepEqual(src *VideoTrendingResp
 	return true
 }
 
-var fieldIDToName_VideoServiceTrendingVideoResult = map[int16]string{
+var fieldIDToName_VideoServiceTrendVideoResult = map[int16]string{
 	0: "success",
 }

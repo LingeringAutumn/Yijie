@@ -83,5 +83,5 @@ service VideoService {
     VideoSubmissionResponse SubmitVideo(1: VideoSubmissionRequest req)(api.post = "api/v1/video/submit"),
     VideoDetailResponse GetVideo(1: VideoDetailRequest req)(api.get = "api/v1/video/get"),
     VideoSearchResponse SearchVideo(1: VideoSearchRequest req)(api.get = "api/v1/video/search"),
-    VideoTrendingResponse TrendingVideo(1: VideoTrendingRequest req)(api.get = "api/v1/video/trending")
+    VideoTrendingResponse TrendVideo(1: VideoTrendingRequest req)(api.get = "api/v1/video/trending")
 }

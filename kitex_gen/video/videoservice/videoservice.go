@@ -5,9 +5,11 @@ package videoservice
 import (
 	"context"
 	"errors"
-	video "github.com/LingeringAutumn/Yijie/kitex_gen/video"
+
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
+
+	video "github.com/LingeringAutumn/Yijie/kitex_gen/video"
 )
 
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
@@ -34,10 +36,10 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
-	"TrendingVideo": kitex.NewMethodInfo(
-		trendingVideoHandler,
-		newVideoServiceTrendingVideoArgs,
-		newVideoServiceTrendingVideoResult,
+	"TrendVideo": kitex.NewMethodInfo(
+		trendVideoHandler,
+		newVideoServiceTrendVideoArgs,
+		newVideoServiceTrendVideoResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -161,22 +163,22 @@ func newVideoServiceSearchVideoResult() interface{} {
 	return video.NewVideoServiceSearchVideoResult()
 }
 
-func trendingVideoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*video.VideoServiceTrendingVideoArgs)
-	realResult := result.(*video.VideoServiceTrendingVideoResult)
-	success, err := handler.(video.VideoService).TrendingVideo(ctx, realArg.Req)
+func trendVideoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*video.VideoServiceTrendVideoArgs)
+	realResult := result.(*video.VideoServiceTrendVideoResult)
+	success, err := handler.(video.VideoService).TrendVideo(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newVideoServiceTrendingVideoArgs() interface{} {
-	return video.NewVideoServiceTrendingVideoArgs()
+func newVideoServiceTrendVideoArgs() interface{} {
+	return video.NewVideoServiceTrendVideoArgs()
 }
 
-func newVideoServiceTrendingVideoResult() interface{} {
-	return video.NewVideoServiceTrendingVideoResult()
+func newVideoServiceTrendVideoResult() interface{} {
+	return video.NewVideoServiceTrendVideoResult()
 }
 
 type kClient struct {
@@ -219,11 +221,11 @@ func (p *kClient) SearchVideo(ctx context.Context, req *video.VideoSearchRequest
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) TrendingVideo(ctx context.Context, req *video.VideoTrendingRequest) (r *video.VideoTrendingResponse, err error) {
-	var _args video.VideoServiceTrendingVideoArgs
+func (p *kClient) TrendVideo(ctx context.Context, req *video.VideoTrendingRequest) (r *video.VideoTrendingResponse, err error) {
+	var _args video.VideoServiceTrendVideoArgs
 	_args.Req = req
-	var _result video.VideoServiceTrendingVideoResult
-	if err = p.c.Call(ctx, "TrendingVideo", &_args, &_result); err != nil {
+	var _result video.VideoServiceTrendVideoResult
+	if err = p.c.Call(ctx, "TrendVideo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

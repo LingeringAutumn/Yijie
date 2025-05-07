@@ -4,9 +4,11 @@ package videoservice
 
 import (
 	"context"
-	video "github.com/LingeringAutumn/Yijie/kitex_gen/video"
+
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
+
+	video "github.com/LingeringAutumn/Yijie/kitex_gen/video"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
@@ -14,7 +16,7 @@ type Client interface {
 	SubmitVideo(ctx context.Context, req *video.VideoSubmissionRequest, callOptions ...callopt.Option) (r *video.VideoSubmissionResponse, err error)
 	GetVideo(ctx context.Context, req *video.VideoDetailRequest, callOptions ...callopt.Option) (r *video.VideoDetailResponse, err error)
 	SearchVideo(ctx context.Context, req *video.VideoSearchRequest, callOptions ...callopt.Option) (r *video.VideoSearchResponse, err error)
-	TrendingVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error)
+	TrendVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -61,7 +63,7 @@ func (p *kVideoServiceClient) SearchVideo(ctx context.Context, req *video.VideoS
 	return p.kClient.SearchVideo(ctx, req)
 }
 
-func (p *kVideoServiceClient) TrendingVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error) {
+func (p *kVideoServiceClient) TrendVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.TrendingVideo(ctx, req)
+	return p.kClient.TrendVideo(ctx, req)
 }

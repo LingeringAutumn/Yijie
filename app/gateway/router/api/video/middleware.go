@@ -50,3 +50,8 @@ func _trendingvideoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _trendvideoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

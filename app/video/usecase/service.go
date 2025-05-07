@@ -4,13 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+
 	"github.com/IBM/sarama"
+
 	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/video/infrastructure/kafka"
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-	"log"
 )
 
 func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, videoData []byte) (videoId int64, videoUrl string, err error) {
@@ -121,6 +123,7 @@ func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.Vid
 
 	return videoProfile, nil
 }
+
 func (uc *videoUseCase) SearchVideo(ctx context.Context, keyword string, tags []string, pageNum int64, pageSize int64) ([]*model.VideoProfile, error) {
 	videoProfile, err := uc.svc.SearchVideo(ctx, keyword, tags, pageNum, pageSize)
 	if err != nil {
@@ -128,6 +131,7 @@ func (uc *videoUseCase) SearchVideo(ctx context.Context, keyword string, tags []
 	}
 	return videoProfile, nil
 }
+
 func (uc *videoUseCase) TrendVideo(ctx context.Context, pageNum int64, pageSize int64) ([]*model.VideoProfile, error) {
 	videoProfile, err := uc.svc.TrendVideo(ctx, pageNum, pageSize)
 	if err != nil {

@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+
 	"github.com/LingeringAutumn/Yijie/app/video/controllers/rpc/pack"
 	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/video/usecase"

@@ -84,5 +84,5 @@ service VideoService {
     VideoSubmissionResponse SubmitVideo(1: VideoSubmissionRequest req)
     VideoDetailResponse GetVideo(1: VideoDetailRequest req)
     VideoSearchResponse SearchVideo(1: VideoSearchRequest req)
-    VideoTrendingResponse TrendingVideo(1: VideoTrendingRequest req)
+    VideoTrendingResponse TrendVideo(1: VideoTrendingRequest req)
 }

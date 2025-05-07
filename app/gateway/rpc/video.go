@@ -55,10 +55,10 @@ func SearchVideoRPC(ctx context.Context, req *video.VideoSearchRequest) (*video.
 	return resp, nil
 }
 
-func TrendingVideoRPC(ctx context.Context, req *video.VideoTrendingRequest) (*video.VideoTrendingResponse, error) {
-	resp, err := videoClient.TrendingVideo(ctx, req)
+func TrendVideoRPC(ctx context.Context, req *video.VideoTrendingRequest) (*video.VideoTrendingResponse, error) {
+	resp, err := videoClient.TrendVideo(ctx, req)
 	if err != nil {
-		logger.Fatalf("TrendingVideoRPC: RPC called failed: %v", err.Error())
+		logger.Fatalf("TrendVideoRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.BaseResp) {

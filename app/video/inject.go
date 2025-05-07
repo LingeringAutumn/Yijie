@@ -1,13 +1,12 @@
 package video
 
 import (
-	"github.com/LingeringAutumn/Yijie/app/user/controllers/rpc"
-	"github.com/LingeringAutumn/Yijie/app/user/domain/service"
-	"github.com/LingeringAutumn/Yijie/app/user/infrastructure/mysql"
-	"github.com/LingeringAutumn/Yijie/app/user/infrastructure/redis"
-	"github.com/LingeringAutumn/Yijie/app/user/usecase"
+	"github.com/LingeringAutumn/Yijie/app/video/controllers/rpc"
+	"github.com/LingeringAutumn/Yijie/app/video/domain/service"
+	"github.com/LingeringAutumn/Yijie/app/video/infrastructure/mysql"
+	"github.com/LingeringAutumn/Yijie/app/video/infrastructure/redis"
+	"github.com/LingeringAutumn/Yijie/app/video/usecase"
 	"github.com/LingeringAutumn/Yijie/config"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/user"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/video"
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
@@ -30,7 +29,7 @@ func InjectVideoHandler() video.VideoService {
 		panic(err)
 	}
 	// 封装 Redis 存储对象
-	redisRepo := redis.NewUserRedis(redisClient)
+	redisRepo := redis.NewVideoRedis(redisClient)
 
 	// 初始化雪花接口
 	sf, err := utils.NewSnowflake(config.GetDataCenterID(), constants.WorkerOfUserService)
@@ -38,9 +37,9 @@ func InjectVideoHandler() video.VideoService {
 		panic(err)
 	}
 
-	db := mysql.NewUserDB(gormDB)
-	svc := service.NewUserService(db, redisRepo, sf)
-	uc := usecase.NewUserUseCase(db, svc, redisRepo)
+	db := mysql.NewVideoDB(gormDB)
+	svc := service.NewVideoService(db, redisRepo, sf)
+	uc := usecase.NewVideoUseCase(db, redisRepo, sf, svc)
 
 	return rpc.NewVideoHandler(uc)
 }

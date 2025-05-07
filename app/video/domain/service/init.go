@@ -12,7 +12,7 @@ type VideoService struct {
 	sf    *utils.Snowflake
 }
 
-func NewVideoService(db repository.VideoDB, redis repository.VideoRedis, sf *utils.Snowflake, rpc repository.VideoRPC) *VideoService {
+func NewVideoService(db repository.VideoDB, redis repository.VideoRedis, sf *utils.Snowflake) *VideoService {
 	if db == nil {
 		panic("videoService`s db should not be nil")
 	}
@@ -22,14 +22,10 @@ func NewVideoService(db repository.VideoDB, redis repository.VideoRedis, sf *uti
 	if sf == nil {
 		panic("videoService`s sf should not be nil")
 	}
-	if rpc == nil {
-		panic("videoervice`s rpc should not be nil")
-	}
 	svc := &VideoService{
 		db:    db,
 		redis: redis,
 		sf:    sf,
-		rpc:   rpc,
 	}
 	return svc
 }

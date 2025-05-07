@@ -3,8 +3,9 @@
 package video
 
 import (
-	video "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/video"
 	"github.com/cloudwego/hertz/pkg/app/server"
+
+	video "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/video"
 )
 
 /*
@@ -26,7 +27,7 @@ func Register(r *server.Hertz) {
 				_video.GET("/get", append(_getvideoMw(), video.GetVideo)...)
 				_video.GET("/search", append(_searchvideoMw(), video.SearchVideo)...)
 				_video.POST("/submit", append(_submitvideoMw(), video.SubmitVideo)...)
-				_video.GET("/trending", append(_trendingvideoMw(), video.TrendingVideo)...)
+				_video.GET("/trending", append(_trendvideoMw(), video.TrendVideo)...)
 			}
 		}
 	}

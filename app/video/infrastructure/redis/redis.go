@@ -4,15 +4,22 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
+	"github.com/LingeringAutumn/Yijie/app/video/domain/repository"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 
 	"github.com/redis/go-redis/v9"
-	"time"
 )
 
 type videoRedis struct {
 	client *redis.Client
+}
+
+func NewVideoRedis(client *redis.Client) repository.VideoRedis {
+	cli := videoRedis{client: client}
+	return &cli
 }
 
 func (v *videoRedis) GetVideoRedis(ctx context.Context, videoId int64) (*model.VideoProfile, error) {

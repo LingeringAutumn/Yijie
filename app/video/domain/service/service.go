@@ -3,9 +3,10 @@ package service
 import (
 	"context"
 	"fmt"
+	"math"
+
 	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
 	userData "github.com/LingeringAutumn/Yijie/pkg/base/context"
-	"math"
 )
 
 func (svc *VideoService) GetUserId(ctx context.Context) (uid int64, err error) {

@@ -12,6 +12,7 @@ import (
 	"github.com/LingeringAutumn/Yijie/kitex_gen/video"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
+
 	// kmodel "github.com/LingeringAutumn/Yijie/kitex_gen/model"
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -68,7 +69,6 @@ func GetVideo(ctx context.Context, c *app.RequestContext) {
 	resp, err := rpc.GetVideoRPC(ctx, &video.VideoDetailRequest{
 		VideoId: req.VideoID,
 	})
-
 	if err != nil {
 		pack.RespError(c, err)
 		return
@@ -92,7 +92,6 @@ func SearchVideo(ctx context.Context, c *app.RequestContext) {
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
 	})
-
 	if err != nil {
 		pack.RespError(c, err)
 		return
@@ -100,9 +99,9 @@ func SearchVideo(ctx context.Context, c *app.RequestContext) {
 	pack.RespData(c, resp)
 }
 
-// TrendingVideo .
+// TrendVideo .
 // @router api/v1/video/trending [GET]
-func TrendingVideo(ctx context.Context, c *app.RequestContext) {
+func TrendVideo(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req api.VideoTrendingRequest
 	err = c.BindAndValidate(&req)
@@ -110,11 +109,10 @@ func TrendingVideo(ctx context.Context, c *app.RequestContext) {
 		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
-	resp, err := rpc.TrendingVideoRPC(ctx, &video.VideoTrendingRequest{
+	resp, err := rpc.TrendVideoRPC(ctx, &video.VideoTrendingRequest{
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
 	})
-
 	if err != nil {
 		pack.RespError(c, err)
 		return

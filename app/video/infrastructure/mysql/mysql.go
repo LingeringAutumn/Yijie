@@ -3,11 +3,13 @@ package mysql
 import (
 	"context"
 	"fmt"
+
+	"gorm.io/gorm"
+
 	dmodel "github.com/LingeringAutumn/Yijie/app/video/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/video/domain/repository"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"gorm.io/gorm"
 )
 
 type videoDB struct {
@@ -24,6 +26,7 @@ func (db *videoDB) StoreVideo(ctx context.Context, video *dmodel.Video) error {
 	}
 	return nil
 }
+
 func (db *videoDB) GetVideoDB(ctx context.Context, videoId int64) (*dmodel.VideoProfile, error) {
 	var video dmodel.Video    // 存储视频主表信息
 	var stat dmodel.VideoStat // 存储视频统计信息
@@ -84,7 +87,6 @@ func (db *videoDB) SearchVideo(ctx context.Context, keyword string, tags []strin
 		Offset(offset).                                                                                      // 分页偏移
 		Limit(int(pageSize)).                                                                                // 限制结果数量
 		Scan(&results).Error                                                                                 // 结果扫描进结构体切片
-
 	if err != nil {
 		return nil, fmt.Errorf("search videos failed: %w", err)
 	}
@@ -110,7 +112,6 @@ func (db *videoDB) TrendVideo(ctx context.Context, pageNum, pageSize int64) ([]*
 		Offset(offset).
 		Limit(int(pageSize)).
 		Scan(&results).Error
-
 	if err != nil {
 		return nil, fmt.Errorf("fetch trending videos failed: %w", err)
 	}

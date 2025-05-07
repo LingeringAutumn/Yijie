@@ -5,8 +5,10 @@ package video
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
+
 	"github.com/apache/thrift/lib/go/thrift"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 )
 
 /**
@@ -2017,7 +2019,7 @@ type VideoService interface {
 
 	SearchVideo(ctx context.Context, req *VideoSearchRequest) (r *VideoSearchResponse, err error)
 
-	TrendingVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error)
+	TrendVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error)
 }
 
 type VideoServiceClient struct {
@@ -2073,11 +2075,11 @@ func (p *VideoServiceClient) SearchVideo(ctx context.Context, req *VideoSearchRe
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *VideoServiceClient) TrendingVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error) {
-	var _args VideoServiceTrendingVideoArgs
+func (p *VideoServiceClient) TrendVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error) {
+	var _args VideoServiceTrendVideoArgs
 	_args.Req = req
-	var _result VideoServiceTrendingVideoResult
-	if err = p.Client_().Call(ctx, "TrendingVideo", &_args, &_result); err != nil {
+	var _result VideoServiceTrendVideoResult
+	if err = p.Client_().Call(ctx, "TrendVideo", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -2106,7 +2108,7 @@ func NewVideoServiceProcessor(handler VideoService) *VideoServiceProcessor {
 	self.AddToProcessorMap("SubmitVideo", &videoServiceProcessorSubmitVideo{handler: handler})
 	self.AddToProcessorMap("GetVideo", &videoServiceProcessorGetVideo{handler: handler})
 	self.AddToProcessorMap("SearchVideo", &videoServiceProcessorSearchVideo{handler: handler})
-	self.AddToProcessorMap("TrendingVideo", &videoServiceProcessorTrendingVideo{handler: handler})
+	self.AddToProcessorMap("TrendVideo", &videoServiceProcessorTrendVideo{handler: handler})
 	return self
 }
 func (p *VideoServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -2271,16 +2273,16 @@ func (p *videoServiceProcessorSearchVideo) Process(ctx context.Context, seqId in
 	return true, err
 }
 
-type videoServiceProcessorTrendingVideo struct {
+type videoServiceProcessorTrendVideo struct {
 	handler VideoService
 }
 
-func (p *videoServiceProcessorTrendingVideo) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := VideoServiceTrendingVideoArgs{}
+func (p *videoServiceProcessorTrendVideo) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := VideoServiceTrendVideoArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("TrendingVideo", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("TrendVideo", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -2289,11 +2291,11 @@ func (p *videoServiceProcessorTrendingVideo) Process(ctx context.Context, seqId 
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := VideoServiceTrendingVideoResult{}
+	result := VideoServiceTrendVideoResult{}
 	var retval *VideoTrendingResponse
-	if retval, err2 = p.handler.TrendingVideo(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing TrendingVideo: "+err2.Error())
-		oprot.WriteMessageBegin("TrendingVideo", thrift.EXCEPTION, seqId)
+	if retval, err2 = p.handler.TrendVideo(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing TrendVideo: "+err2.Error())
+		oprot.WriteMessageBegin("TrendVideo", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -2301,7 +2303,7 @@ func (p *videoServiceProcessorTrendingVideo) Process(ctx context.Context, seqId 
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("TrendingVideo", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("TrendVideo", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3195,35 +3197,35 @@ func (p *VideoServiceSearchVideoResult) String() string {
 
 }
 
-type VideoServiceTrendingVideoArgs struct {
+type VideoServiceTrendVideoArgs struct {
 	Req *VideoTrendingRequest `thrift:"req,1"`
 }
 
-func NewVideoServiceTrendingVideoArgs() *VideoServiceTrendingVideoArgs {
-	return &VideoServiceTrendingVideoArgs{}
+func NewVideoServiceTrendVideoArgs() *VideoServiceTrendVideoArgs {
+	return &VideoServiceTrendVideoArgs{}
 }
 
-func (p *VideoServiceTrendingVideoArgs) InitDefault() {
+func (p *VideoServiceTrendVideoArgs) InitDefault() {
 }
 
-var VideoServiceTrendingVideoArgs_Req_DEFAULT *VideoTrendingRequest
+var VideoServiceTrendVideoArgs_Req_DEFAULT *VideoTrendingRequest
 
-func (p *VideoServiceTrendingVideoArgs) GetReq() (v *VideoTrendingRequest) {
+func (p *VideoServiceTrendVideoArgs) GetReq() (v *VideoTrendingRequest) {
 	if !p.IsSetReq() {
-		return VideoServiceTrendingVideoArgs_Req_DEFAULT
+		return VideoServiceTrendVideoArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-var fieldIDToName_VideoServiceTrendingVideoArgs = map[int16]string{
+var fieldIDToName_VideoServiceTrendVideoArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *VideoServiceTrendingVideoArgs) IsSetReq() bool {
+func (p *VideoServiceTrendVideoArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *VideoServiceTrendingVideoArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoArgs) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 
@@ -3268,7 +3270,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoServiceTrendingVideoArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoServiceTrendVideoArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3278,7 +3280,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *VideoServiceTrendVideoArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewVideoTrendingRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3287,9 +3289,9 @@ func (p *VideoServiceTrendingVideoArgs) ReadField1(iprot thrift.TProtocol) error
 	return nil
 }
 
-func (p *VideoServiceTrendingVideoArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("TrendingVideo_args"); err != nil {
+	if err = oprot.WriteStructBegin("TrendVideo_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -3315,7 +3317,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -3332,43 +3334,43 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoArgs) String() string {
+func (p *VideoServiceTrendVideoArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("VideoServiceTrendingVideoArgs(%+v)", *p)
+	return fmt.Sprintf("VideoServiceTrendVideoArgs(%+v)", *p)
 
 }
 
-type VideoServiceTrendingVideoResult struct {
+type VideoServiceTrendVideoResult struct {
 	Success *VideoTrendingResponse `thrift:"success,0,optional"`
 }
 
-func NewVideoServiceTrendingVideoResult() *VideoServiceTrendingVideoResult {
-	return &VideoServiceTrendingVideoResult{}
+func NewVideoServiceTrendVideoResult() *VideoServiceTrendVideoResult {
+	return &VideoServiceTrendVideoResult{}
 }
 
-func (p *VideoServiceTrendingVideoResult) InitDefault() {
+func (p *VideoServiceTrendVideoResult) InitDefault() {
 }
 
-var VideoServiceTrendingVideoResult_Success_DEFAULT *VideoTrendingResponse
+var VideoServiceTrendVideoResult_Success_DEFAULT *VideoTrendingResponse
 
-func (p *VideoServiceTrendingVideoResult) GetSuccess() (v *VideoTrendingResponse) {
+func (p *VideoServiceTrendVideoResult) GetSuccess() (v *VideoTrendingResponse) {
 	if !p.IsSetSuccess() {
-		return VideoServiceTrendingVideoResult_Success_DEFAULT
+		return VideoServiceTrendVideoResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-var fieldIDToName_VideoServiceTrendingVideoResult = map[int16]string{
+var fieldIDToName_VideoServiceTrendVideoResult = map[int16]string{
 	0: "success",
 }
 
-func (p *VideoServiceTrendingVideoResult) IsSetSuccess() bool {
+func (p *VideoServiceTrendVideoResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *VideoServiceTrendingVideoResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoResult) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 
@@ -3413,7 +3415,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoServiceTrendingVideoResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoServiceTrendVideoResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -3423,7 +3425,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *VideoServiceTrendVideoResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewVideoTrendingResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -3432,9 +3434,9 @@ func (p *VideoServiceTrendingVideoResult) ReadField0(iprot thrift.TProtocol) err
 	return nil
 }
 
-func (p *VideoServiceTrendingVideoResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("TrendingVideo_result"); err != nil {
+	if err = oprot.WriteStructBegin("TrendVideo_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -3460,7 +3462,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *VideoServiceTrendVideoResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -3479,10 +3481,10 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *VideoServiceTrendingVideoResult) String() string {
+func (p *VideoServiceTrendVideoResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("VideoServiceTrendingVideoResult(%+v)", *p)
+	return fmt.Sprintf("VideoServiceTrendVideoResult(%+v)", *p)
 
 }
