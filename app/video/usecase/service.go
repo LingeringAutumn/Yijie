@@ -53,6 +53,7 @@ func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, vid
 	// 5. 构建 Kafka 配置，用于生产者发送任务。
 	// 包括启用 SASL 用户认证、设置协议版本、是否启用 TLS、ACK 级别等。
 	// 封装在 kafka.NewProducerConfig() 函数中，避免主流程中出现大量配置代码。
+	log.Printf("当前 Kafka 用户名为：%s", config.Kafka.SASLUser)
 	kafkaCfg, err := kafka.NewProducerConfig()
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to build kafka config: %w", err)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net"
 
 	"github.com/LingeringAutumn/Yijie/app/video"
@@ -32,10 +33,12 @@ func main() {
 	if err != nil {
 		logger.Fatalf("Video: new etcd registry failed, err: %v", err)
 	}
+
 	listenAddr, err := utils.GetAvailablePort()
 	if err != nil {
 		logger.Fatalf("Video: get available port failed, err: %v", err)
 	}
+	log.Printf("video main running !!!!")
 	addr, err := net.ResolveTCPAddr("tcp", listenAddr)
 	if err != nil {
 		logger.Fatalf("Video: resolve tcp addr failed, err: %v", err)
@@ -63,6 +66,7 @@ func main() {
 		server.WithMiddleware(middleware.Respond()),
 	)
 	logger.Infof("Video: server listening at %s", addr)
+
 	if err = svr.Run(); err != nil {
 		logger.Fatalf("Video: run server failed, err: %v", err)
 	}

@@ -11,7 +11,7 @@ type Video struct {
 	CoverURL        string     `json:"cover_url" gorm:"column:cover_url"`               // 封面图URL
 	VideoURL        string     `json:"video_url" gorm:"column:video_url"`               // 视频播放URL
 	DurationSeconds int64      `json:"duration_seconds" gorm:"column:duration_seconds"` // 视频时长（单位：秒）
-	Status          string     `json:"status" gorm:"column:status"`                     // 状态：published/deleted/draft
+	Status          string     `json:"status" gorm:"column:status;default:published"`   // 状态：published/deleted/draft
 	CreatedAt       time.Time  `json:"created_at" gorm:"column:created_at"`             // 发布时间
 	UpdatedAt       time.Time  `json:"updated_at" gorm:"column:updated_at"`             // 更新时间
 	DeletedAt       *time.Time `json:"deleted_at,omitempty" gorm:"column:deleted_at"`   // 逻辑删除时间，可空

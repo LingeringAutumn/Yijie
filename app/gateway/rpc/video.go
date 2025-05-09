@@ -22,11 +22,11 @@ func InitVideoRPC() {
 func SubmitVideoRPC(ctx context.Context, req *video.VideoSubmissionRequest) (*video.VideoSubmissionResponse, error) {
 	resp, err := videoClient.SubmitVideo(ctx, req)
 	if err != nil {
-		logger.Fatalf("SubmitVideoRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("SubmitVideoRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.BaseResp) {
-		return nil, errno.InternalServiceError.WithError(err)
+		return nil, errno.InternalServiceError.WithMessage(resp.BaseResp.Msg)
 	}
 	return resp, nil
 }
@@ -34,11 +34,11 @@ func SubmitVideoRPC(ctx context.Context, req *video.VideoSubmissionRequest) (*vi
 func GetVideoRPC(ctx context.Context, req *video.VideoDetailRequest) (*video.VideoDetailResponse, error) {
 	resp, err := videoClient.GetVideo(ctx, req)
 	if err != nil {
-		logger.Fatalf("SubmitVideoRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("SubmitVideoRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.BaseResp) {
-		return nil, errno.InternalServiceError.WithError(err)
+		return nil, errno.InternalServiceError.WithMessage(resp.BaseResp.Msg)
 	}
 	return resp, nil
 }
@@ -46,11 +46,11 @@ func GetVideoRPC(ctx context.Context, req *video.VideoDetailRequest) (*video.Vid
 func SearchVideoRPC(ctx context.Context, req *video.VideoSearchRequest) (*video.VideoSearchResponse, error) {
 	resp, err := videoClient.SearchVideo(ctx, req)
 	if err != nil {
-		logger.Fatalf("SearchVideoRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("SearchVideoRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.BaseResp) {
-		return nil, errno.InternalServiceError.WithError(err)
+		return nil, errno.InternalServiceError.WithMessage(resp.BaseResp.Msg)
 	}
 	return resp, nil
 }
@@ -58,11 +58,11 @@ func SearchVideoRPC(ctx context.Context, req *video.VideoSearchRequest) (*video.
 func TrendVideoRPC(ctx context.Context, req *video.VideoTrendingRequest) (*video.VideoTrendingResponse, error) {
 	resp, err := videoClient.TrendVideo(ctx, req)
 	if err != nil {
-		logger.Fatalf("TrendVideoRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("TrendVideoRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.BaseResp) {
-		return nil, errno.InternalServiceError.WithError(err)
+		return nil, errno.InternalServiceError.WithMessage(resp.BaseResp.Msg)
 	}
 	return resp, nil
 }

@@ -61,26 +61,26 @@ services:
     addr:
       - 0.0.0.0:20002
 
-  interface:
-    name: interface
+  video:
+    name: video
     load-balance: false
     addr:
       - 0.0.0.0:20003
       -
-  community:
-    name: community
+  comment:
+    name: comment
     load-balance: false
     addr:
       - 0.0.0.0:20004
 
-  chat:
-    name: chat
+  user_behaviour:
+    name: user_behaviour
     load-balance: false
     addr:
       - 0.0.0.0:20005
 
-  group:
-    name: group
+  chat:
+    name: chat
     load-balance: false
     addr:
       - 0.0.0.0:20006

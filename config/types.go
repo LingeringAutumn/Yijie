@@ -44,14 +44,14 @@ type redis struct {
 }
 
 type kafka struct {
-	Broker          string `yaml:"broker"`            // Kafka broker 地址（主机:端口）
-	Topic           string `yaml:"topic"`             // 主题名
-	ConsumerGroup   string `yaml:"consumer_group"`    // 消费者组名
-	MaxConnections  int    `yaml:"max_connections"`   // 最大连接数
-	MaxQPS          int    `yaml:"max_qps"`           // 最大每秒请求数
-	AutoOffsetReset string `yaml:"auto_offset_reset"` // earliest/latest
-	SASLUser        string `yaml:"sasl_user"`         // SASL 用户名（如需认证）
-	SASLPassword    string `yaml:"sasl_password"`     // SASL 密码
+	Broker          string `mapstructure:"broker"`
+	Topic           string `mapstructure:"topic"`
+	ConsumerGroup   string `mapstructure:"consumer_group"`
+	MaxConnections  int    `mapstructure:"max_connections"`
+	MaxQPS          int    `mapstructure:"max_qps"`
+	AutoOffsetReset string `mapstructure:"auto_offset_reset"`
+	SASLUser        string `mapstructure:"sasl_user"`
+	SASLPassword    string `mapstructure:"sasl_password"`
 }
 
 type minio struct {

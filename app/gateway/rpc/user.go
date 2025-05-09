@@ -26,7 +26,7 @@ func RegisterRPC(ctx context.Context, req *user.RegisterRequest) (response *api.
 	// 这里的 err 是属于 RPC 间调用的错误，例如 network error
 	// 而业务错误则是封装在 resp.base 当中的
 	if err != nil {
-		logger.Fatal("RegisterRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("RegisterRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	// 用中间件去判断resp.Base里是否有错误
@@ -40,7 +40,7 @@ func RegisterRPC(ctx context.Context, req *user.RegisterRequest) (response *api.
 func LoginRPC(ctx context.Context, req *user.LoginRequest) (response *api.LoginResponse, err error) {
 	resp, err := userClient.Login(ctx, req)
 	if err != nil {
-		logger.Fatal("LoginRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("LoginRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.Base) {
@@ -59,7 +59,7 @@ func LoginRPC(ctx context.Context, req *user.LoginRequest) (response *api.LoginR
 func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileRequest) (response *api.UpdateUserProfileResponse, err error) {
 	resp, err := userClient.UpdateProfile(ctx, req)
 	if err != nil {
-		logger.Fatalf("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
+		logger.Errorf("UpdateUserProfileRPC: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.Base) {
@@ -83,7 +83,7 @@ func UpdateUserProfileRPC(ctx context.Context, req *user.UpdateUserProfileReques
 func GetUserProfileRPC(ctx context.Context, req *user.GetUserProfileRequest) (response *api.GetUserProfileResponse, err error) {
 	resp, err := userClient.GetProfile(ctx, req)
 	if err != nil {
-		logger.Fatal("GetUserProfile: RPC called failed: %v", err.Error())
+		logger.Errorf("GetUserProfile: RPC called failed: %v", err.Error())
 		return nil, errno.InternalServiceError.WithError(err)
 	}
 	if !utils.IsSuccess(resp.Base) {
