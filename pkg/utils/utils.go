@@ -232,9 +232,6 @@ func CheckVideoFileType(header *multipart.FileHeader) (string, bool) {
 	case types.Get("mp4"):
 		// 若为 mp4 类型，返回 "mp4" 和 true
 		return "mp4", true
-	case types.Get("avi"):
-		// 若为 avi 类型，返回 "avi" 和 true
-		return "avi", true
 	default:
 		// 若不是 mp4 或 avi 类型，返回空字符串和 false
 		return "", false

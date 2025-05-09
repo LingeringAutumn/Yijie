@@ -38,6 +38,14 @@ func (svc *VideoService) StoreVideo(ctx context.Context, video *model.Video) (er
 	return err
 }
 
+func (svc *VideoService) StoreVideoStats(ctx context.Context, stat *model.VideoStat) error {
+	err := svc.db.StoreVideoStats(ctx, stat)
+	if err != nil {
+		return fmt.Errorf("store video stats failed: %w", err)
+	}
+	return nil
+}
+
 func (svc *VideoService) GetVideoDB(ctx context.Context, videoId int64) (*model.VideoProfile, error) {
 	return svc.db.GetVideoDB(ctx, videoId)
 }

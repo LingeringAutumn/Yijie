@@ -20,26 +20,34 @@ import (
 // SubmitVideo .
 // @router api/v1/video/submit [POST]
 func SubmitVideo(ctx context.Context, c *app.RequestContext) {
-	var err error
 	var req api.VideoSubmissionRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
+
+	// 1. 绑定参数（title、description、durationSeconds）
+	if err := c.BindAndValidate(&req); err != nil {
 		pack.RespError(c, errno.ParamVerifyError.WithError(err))
 		return
 	}
-	var videoData []byte
-	videoFile, err := c.FormFile("video")
+	// 2. 获取视频文件表单
+	fileHeader, err := c.FormFile("video")
 	if err != nil {
-		if _, ok := utils.CheckVideoFileType(videoFile); !ok {
-			pack.RespError(c, errno.FileUploadError.WithError(err))
-			return
-		}
-		videoData, err = utils.FileToBytes(videoFile)
-		if err != nil {
-			pack.RespError(c, errno.FileUploadError.WithError(err))
-			return
-		}
+		pack.RespError(c, errno.FileUploadError.WithError(err))
+		return
 	}
+
+	// 3. 校验视频格式
+	if _, ok := utils.CheckVideoFileType(fileHeader); !ok {
+		pack.RespError(c, errno.FileUploadError.WithError(err))
+		return
+	}
+
+	// 4. 读取视频内容为字节流
+	videoData, err := utils.FileToBytes(fileHeader)
+	if err != nil {
+		pack.RespError(c, errno.FileUploadError.WithError(err))
+		return
+	}
+
+	// 5. 发起 RPC 请求
 	resp, err := rpc.SubmitVideoRPC(ctx, &video.VideoSubmissionRequest{
 		UserId:          req.UserID,
 		Title:           req.Title,

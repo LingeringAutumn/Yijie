@@ -27,6 +27,13 @@ func (db *videoDB) StoreVideo(ctx context.Context, video *dmodel.Video) error {
 	return nil
 }
 
+func (db *videoDB) StoreVideoStats(ctx context.Context, stat *dmodel.VideoStat) error {
+	if err := db.client.WithContext(ctx).Table(constants.VideoStatsTableName).Create(&stat).Error; err != nil {
+		return errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to store video_stats: %v", err)
+	}
+	return nil
+}
+
 func (db *videoDB) GetVideoDB(ctx context.Context, videoId int64) (*dmodel.VideoProfile, error) {
 	var video dmodel.Video    // 存储视频主表信息
 	var stat dmodel.VideoStat // 存储视频统计信息

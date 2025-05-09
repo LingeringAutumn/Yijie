@@ -38,6 +38,7 @@ func (handler *VideoHandler) SubmitVideo(ctx context.Context, req *video.VideoSu
 		resp.BaseResp = base.BuildBaseResp(err)
 		return
 	}
+	resp.BaseResp = base.BuildBaseResp(err)
 	resp.VideoId = videoId
 	resp.VideoUrl = videoUrl
 	return
@@ -50,6 +51,7 @@ func (handler *VideoHandler) GetVideo(ctx context.Context, req *video.VideoDetai
 		resp.BaseResp = base.BuildBaseResp(err)
 		return
 	}
+	resp.BaseResp = base.BuildBaseResp(err)
 	resp.Video = pack.BuildVideo(videoProfile)
 	return
 }
@@ -61,6 +63,7 @@ func (handler *VideoHandler) SearchVideo(ctx context.Context, req *video.VideoSe
 		resp.BaseResp = base.BuildBaseResp(err)
 		return
 	}
+	resp.BaseResp = base.BuildBaseResp(err)
 	resp.Videos = pack.BuildVideoList(videoList)
 	return
 }
@@ -72,6 +75,7 @@ func (handler *VideoHandler) TrendVideo(ctx context.Context, req *video.VideoTre
 		resp.BaseResp = base.BuildBaseResp(err)
 		return
 	}
+	resp.BaseResp = base.BuildBaseResp(err)
 	resp.Videos = pack.BuildVideoList(videoList)
 	return
 }
