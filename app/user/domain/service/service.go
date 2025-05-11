@@ -48,9 +48,9 @@ func (svc *UserService) CreateUser(ctx context.Context, u *model.User) (int64, e
 	return uid, nil
 }
 
-// GetUserByName  这个是核对密码的时候获取密码的
-func (svc *UserService) GetUserByName(ctx context.Context, name string) (*model.User, error) {
-	u, err := svc.db.GetUserByName(ctx, name)
+// GetUserById 这个是核对密码的时候获取密码的
+func (svc *UserService) GetUserById(ctx context.Context, uid int64) (*model.User, error) {
+	u, err := svc.db.GetUserById(ctx, uid)
 	if err != nil {
 		return nil, fmt.Errorf("get user failed: %w", err)
 	}

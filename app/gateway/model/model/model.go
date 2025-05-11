@@ -4,6 +4,7 @@ package model
 
 import (
 	"fmt"
+
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -970,13 +971,11 @@ func (p *UserProfileResp) String() string {
 
 }
 
-// 传进来的头像avatar是二进制文件本身
 type UserProfileReq struct {
 	Username string `thrift:"username,1" form:"username" json:"username" query:"username"`
 	Email    string `thrift:"email,2" form:"email" json:"email" query:"email"`
 	Phone    string `thrift:"phone,3" form:"phone" json:"phone" query:"phone"`
-	Avatar   []byte `thrift:"avatar,4" form:"avatar" json:"avatar" query:"avatar"`
-	Bio      string `thrift:"bio,5" form:"bio" json:"bio" query:"bio"`
+	Bio      string `thrift:"bio,4" form:"bio" json:"bio" query:"bio"`
 }
 
 func NewUserProfileReq() *UserProfileReq {
@@ -998,10 +997,6 @@ func (p *UserProfileReq) GetPhone() (v string) {
 	return p.Phone
 }
 
-func (p *UserProfileReq) GetAvatar() (v []byte) {
-	return p.Avatar
-}
-
 func (p *UserProfileReq) GetBio() (v string) {
 	return p.Bio
 }
@@ -1010,8 +1005,7 @@ var fieldIDToName_UserProfileReq = map[int16]string{
 	1: "username",
 	2: "email",
 	3: "phone",
-	4: "avatar",
-	5: "bio",
+	4: "bio",
 }
 
 func (p *UserProfileReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1059,14 +1053,6 @@ func (p *UserProfileReq) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1136,17 +1122,6 @@ func (p *UserProfileReq) ReadField3(iprot thrift.TProtocol) error {
 }
 func (p *UserProfileReq) ReadField4(iprot thrift.TProtocol) error {
 
-	var _field []byte
-	if v, err := iprot.ReadBinary(); err != nil {
-		return err
-	} else {
-		_field = []byte(v)
-	}
-	p.Avatar = _field
-	return nil
-}
-func (p *UserProfileReq) ReadField5(iprot thrift.TProtocol) error {
-
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -1177,10 +1152,6 @@ func (p *UserProfileReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -1250,23 +1221,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 func (p *UserProfileReq) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("avatar", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteBinary([]byte(p.Avatar)); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-func (p *UserProfileReq) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("bio", thrift.STRING, 5); err != nil {
+	if err = oprot.WriteFieldBegin("bio", thrift.STRING, 4); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Bio); err != nil {
@@ -1277,9 +1232,9 @@ func (p *UserProfileReq) writeField5(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *UserProfileReq) String() string {

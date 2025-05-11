@@ -39,7 +39,7 @@ func main() {
 	if err != nil {
 		logger.Fatalf("User: resolve tcp addr failed, err: %v", err)
 	}
-	err = utils.InitMinioClient(config.Minio.Addr, config.Minio.AccessKeyID, config.Minio.AccessKey)
+	err = utils.InitMinioClient(config.Minio.Endpoint, config.Minio.AccessKey, config.Minio.SecretKey)
 	if err != nil {
 		logger.Fatalf("User: new minio client failed, err: %v", err)
 	}

@@ -18,7 +18,6 @@ func BuildUserProfileRequest(user *dmodel.UserProfileRequest) *kmodel.UserProfil
 		Username: user.Username,
 		Email:    user.Email,
 		Phone:    user.Phone,
-		Avatar:   user.Avatar,
 		Bio:      user.Bio,
 	}
 }

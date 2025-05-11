@@ -1,12 +1,12 @@
 package constants
 
 const (
-	GatewayServiceName      = "gateway"
-	UserServiceName         = "user"
-	VideoServiceName        = "video"
-	CommentServiceName      = "comment"
-	UserBehaviorServiceName = "user-behavior"
-	ChatServiceName         = "chat"
+	GatewayServiceName       = "gateway"
+	UserServiceName          = "user"
+	VideoServiceName         = "video"
+	CommentServiceName       = "comment"
+	UserBehaviourServiceName = "user-behaviour"
+	ChatServiceName          = "chat"
 )
 
 // UserService

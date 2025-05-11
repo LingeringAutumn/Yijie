@@ -31,6 +31,7 @@ struct LoginResponse {
 struct UpdateUserProfileRequest{
     1: required i64 uid,
     2: required model.UserProfileReq userProfileReq,
+    3: required binary avatar
 }
 
 struct UpdateUserProfileResponse{
