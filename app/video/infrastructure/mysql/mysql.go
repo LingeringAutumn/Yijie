@@ -34,45 +34,34 @@ func (db *videoDB) StoreVideoStats(ctx context.Context, stat *dmodel.VideoStat) 
 	return nil
 }
 
+// GetVideoDB 查询视频主信息 + 统计信息，使用 LEFT JOIN 容忍统计表无记录
 func (db *videoDB) GetVideoDB(ctx context.Context, videoId int64) (*dmodel.VideoProfile, error) {
-	var video dmodel.Video    // 存储视频主表信息
-	var stat dmodel.VideoStat // 存储视频统计信息
+	var result dmodel.VideoProfile
 
-	// 查询视频主表（videos），根据 video_id 精确查找
 	err := db.client.WithContext(ctx).
-		Table(constants.VideoTableName).
-		Where("video_id = ?", videoId).
-		First(&video).Error
+		Table(fmt.Sprintf("%s AS v", constants.VideoTableName)).
+		Select(`
+			v.video_id, v.user_id, v.title, v.description, v.cover_url, v.video_url,
+			v.duration_seconds, UNIX_TIMESTAMP(v.created_at) AS created_at,
+			IFNULL(vs.views, 0) AS views,
+			IFNULL(vs.likes, 0) AS likes,
+			IFNULL(vs.comments, 0) AS comments,
+			IFNULL(vs.hot_score, 0) AS hot_score
+		`).
+		Joins(fmt.Sprintf("LEFT JOIN %s AS vs ON v.video_id = vs.video_id", constants.VideoStatsTableName)).
+		Where("v.video_id = ? AND v.deleted_at IS NULL", videoId).
+		Scan(&result).Error
+
 	if err != nil {
 		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "query videos failed: %v", err)
 	}
 
-	// 查询视频统计表（video_stats），同样根据 video_id 精确查找
-	err = db.client.WithContext(ctx).
-		Table(constants.VideoStatsTableName).
-		Where("video_id = ?", videoId).
-		First(&stat).Error
-	if err != nil {
-		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "query video_stats failed: %v", err)
+	// ✅ 判断是否查到数据
+	if result.VideoID == 0 {
+		return nil, errno.Errorf(errno.DBNotFound, "video %d not found", videoId)
 	}
 
-	// 聚合主表 + 统计表信息，构造返回结果结构体
-	profile := &dmodel.VideoProfile{
-		VideoID:         video.VideoID,
-		UserID:          video.UserID,
-		Title:           video.Title,
-		Description:     video.Description,
-		CoverURL:        video.CoverURL,
-		VideoURL:        video.VideoURL,
-		DurationSeconds: video.DurationSeconds,
-		Views:           stat.Views,
-		Likes:           stat.Likes,
-		Comments:        stat.Comments,
-		HotScore:        stat.HotScore,
-		CreatedAt:       video.CreatedAt.Unix(), // 转换为时间戳（秒）
-	}
-
-	return profile, nil
+	return &result, nil
 }
 
 func (db *videoDB) SearchVideo(ctx context.Context, keyword string, tags []string, pageNum, pageSize int64) ([]*dmodel.VideoProfile, error) {

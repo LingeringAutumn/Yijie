@@ -106,6 +106,7 @@ func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.Vid
 	}
 
 	// 2. 缓存未命中，从数据库查询
+	log.Printf("video id:%d", videoId)
 	videoProfile, err = uc.svc.GetVideoDB(ctx, videoId)
 	if err != nil {
 		return nil, fmt.Errorf("get video from db failed: %w", err)

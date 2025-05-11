@@ -25,6 +25,7 @@ const (
 	AuthNoOperatePermissionCode // 没有操作权限
 	AuthMissingTokenCode        // 缺少 token
 	IllegalOperatorCode         // 不合格的操作(比如传入 payment status时传入了一个不存在的 status)
+	DBNotFound
 )
 
 // 内部错误,服务级别的错误

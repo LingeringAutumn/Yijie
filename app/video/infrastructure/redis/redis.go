@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -21,28 +22,49 @@ func NewVideoRedis(client *redis.Client) repository.VideoRedis {
 	cli := videoRedis{client: client}
 	return &cli
 }
-
 func (v *videoRedis) GetVideoRedis(ctx context.Context, videoId int64) (*model.VideoProfile, error) {
 	key := fmt.Sprintf("video:%d", videoId)
 
-	var video model.VideoProfile
-	err := v.client.Get(ctx, key).Scan(&video)
+	// 从 Redis 获取数据
+	result, err := v.client.Get(ctx, key).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
 			return nil, fmt.Errorf("video not found in cache: %w", err)
 		}
 		return nil, fmt.Errorf("redis get failed: %w", err)
 	}
+
+	// 反序列化 JSON
+	var video model.VideoProfile
+	err = json.Unmarshal([]byte(result), &video)
+	if err != nil {
+		return nil, fmt.Errorf("json unmarshal failed: %w", err)
+	}
+
+	// ✅ 空结构校验
+	if video.VideoID == 0 {
+		return nil, fmt.Errorf("redis cache hit empty video")
+	}
+
 	return &video, nil
 }
 
 func (v *videoRedis) SetVideoRedis(ctx context.Context, videoProfile *model.VideoProfile) error {
+	if videoProfile == nil || videoProfile.VideoID == 0 {
+		return fmt.Errorf("refuse to cache empty video profile")
+	}
+
 	key := fmt.Sprintf("video:%d", videoProfile.VideoID)
 
-	// 设置缓存，超时时间30分钟
-	err := v.client.Set(ctx, key, videoProfile, constants.RedisHalfHour*time.Minute).Err()
+	videoJSON, err := json.Marshal(videoProfile)
+	if err != nil {
+		return fmt.Errorf("json marshal failed: %w", err)
+	}
+
+	err = v.client.Set(ctx, key, videoJSON, constants.RedisHalfHour*time.Minute).Err()
 	if err != nil {
 		return fmt.Errorf("redis set failed: %w", err)
 	}
+
 	return nil
 }
