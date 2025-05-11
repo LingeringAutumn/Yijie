@@ -1,0 +1,22 @@
+package usecase
+
+import (
+	"context"
+	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/repository"
+	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/service"
+)
+
+type UserBehaviourUseCase interface {
+	LikeVideo(ctx context.Context, userId int64, videoId int64, isLike bool) error
+}
+type userBehaviourUseCase struct {
+	db  repository.UserBehaviourDB
+	svc *service.UserBehaviourService
+}
+
+func NewUserBehaviourUseCase(db repository.UserBehaviourDB, svc *service.UserBehaviourService) UserBehaviourUseCase {
+	return &userBehaviourUseCase{
+		db:  db,
+		svc: svc,
+	}
+}

@@ -13,6 +13,7 @@ import (
 
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user/userservice"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour/likeservice"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 )
 
@@ -45,4 +46,8 @@ func InitUserRPC() (*userservice.Client, error) {
 
 func InitVideoRPC() (*videoservice.Client, error) {
 	return initRPCClient(constants.VideoServiceName, videoservice.NewClient)
+}
+
+func InitUserBehaviourRPC() (*likeservice.Client, error) {
+	return initRPCClient(constants.UserBehaviourServiceName, likeservice.NewClient)
 }

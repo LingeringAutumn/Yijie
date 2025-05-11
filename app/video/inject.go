@@ -13,7 +13,7 @@ import (
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
-// InjectUserHandler 用于依赖注入
+// InjectVideoHandler 用于依赖注入
 // 从这个文件的位置就可以看出来极其特殊, 独立于架构之外, 服务于业务
 func InjectVideoHandler() video.VideoService {
 	// 初始化数据库存储
