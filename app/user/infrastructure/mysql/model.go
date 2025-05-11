@@ -27,7 +27,6 @@ type UserProfileRequest struct {
 	Username string `json:"username"` // 用户名
 	Email    string `json:"email"`    // 邮箱
 	Phone    string `json:"phone"`    // 手机号
-	Avatar   []byte `json:"avatar"`   // 上传的头像文件本体
 	Bio      string `json:"bio"`      // 个人简介
 }
 

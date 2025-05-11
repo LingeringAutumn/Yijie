@@ -68,7 +68,6 @@ func CreateAllToken(uid int64) (string, string, error) {
 	if err != nil {
 		return "", "", fmt.Errorf("failed to create access token: %w", err)
 	}
-
 	// 创建刷新令牌
 	refreshToken, err := CreateToken(constants.TypeRefreshToken, uid)
 	if err != nil {

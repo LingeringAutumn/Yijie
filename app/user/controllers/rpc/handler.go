@@ -1,8 +1,9 @@
 package rpc
 
 import (
-	"github.com/LingeringAutumn/Yijie/pkg/logger"
 	"golang.org/x/net/context"
+
+	"github.com/LingeringAutumn/Yijie/pkg/logger"
 
 	"github.com/LingeringAutumn/Yijie/app/user/controllers/rpc/pack"
 	"github.com/LingeringAutumn/Yijie/app/user/domain/model"
@@ -62,11 +63,11 @@ func (handler *UserHandler) UpdateProfile(ctx context.Context, req *user.UpdateU
 		Username: req.UserProfileReq.Username,
 		Email:    req.UserProfileReq.Email,
 		Phone:    req.UserProfileReq.Phone,
-		Avatar:   req.UserProfileReq.Avatar,
 		Bio:      req.UserProfileReq.Bio,
 	}
+	avatar := req.Avatar
 	// TODO team,membershipLevel和point应该在UpdateUserProfile函数里处理，这些东西不应该由前端传过来
-	userProfile, err := handler.useCase.UpdateUserProfile(ctx, u)
+	userProfile, err := handler.useCase.UpdateUserProfile(ctx, u, avatar)
 	if err != nil {
 		r.Base = base.BuildBaseResp(err)
 		return

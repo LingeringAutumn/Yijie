@@ -27,13 +27,11 @@ struct UserProfileResp {
     8: string team,
 }
 
-// 传进来的头像avatar是二进制文件本身
 struct UserProfileReq {
     1: string username,
     2: string email,
     3: string phone,
-    4: binary avatar,
-    5: string bio,
+    4: string bio,
 }
 
 struct Image{

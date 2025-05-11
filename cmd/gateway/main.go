@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/LingeringAutumn/Yijie/pkg/utils"
 	"github.com/cloudwego/hertz/pkg/app/server"
+
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 
 	"github.com/LingeringAutumn/Yijie/app/gateway/router"
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"

@@ -66,17 +66,17 @@ func (db *userDB) IsUserExist(ctx context.Context, username string) (bool, error
 	return true, nil
 }
 
-func (db *userDB) GetUserById(ctx context.Context, uid int64) (*model.User, error) {
+func (db *userDB) GetUserByName(ctx context.Context, name string) (*model.User, error) {
 	var user User
-	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&user).Error
+	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("username = ?", name).First(&user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errno.Errorf(errno.ServiceUserNotExist, "mysql: user %d not exist", uid)
+			return nil, errno.Errorf(errno.ServiceUserNotExist, "mysql: user %s not exist", name)
 		}
 		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to query user: %v", err)
 	}
 	resp := &model.User{
-		Uid:      uid,
+		Uid:      user.Uid,
 		Username: user.Username,
 		Password: user.Password,
 		Email:    user.Email,
