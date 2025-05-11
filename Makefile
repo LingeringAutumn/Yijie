@@ -24,7 +24,7 @@ OUTPUT_PATH = $(DIR)/output
 API_PATH= $(DIR)/cmd/api
 
 # 服务名
-SERVICES := gateway user video comment user_behaviour chat
+SERVICES := gateway user video comment user_behavior chat
 service = $(word 1, $@)
 
 EnvironmentStartEnv=YIJIE_ENVIRONMENT_STARTED

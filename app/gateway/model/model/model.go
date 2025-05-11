@@ -4,7 +4,6 @@ package model
 
 import (
 	"fmt"
-
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
@@ -971,6 +970,7 @@ func (p *UserProfileResp) String() string {
 
 }
 
+// 传进来的头像avatar是二进制文件本身
 type UserProfileReq struct {
 	Username string `thrift:"username,1" form:"username" json:"username" query:"username"`
 	Email    string `thrift:"email,2" form:"email" json:"email" query:"email"`

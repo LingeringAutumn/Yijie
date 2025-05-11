@@ -103,8 +103,8 @@ services:
     addr:
       - 0.0.0.0:20004
 
-  user_behaviour:
-    name: user_behaviour
+  user_behavior:
+    name: user_behavior
     load-balance: false
     addr:
       - 0.0.0.0:20005
