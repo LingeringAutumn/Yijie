@@ -83,7 +83,11 @@ func (svc *VideoService) TrendVideo(ctx context.Context, pageNum, pageSize int64
 		if !ok {
 			continue // 跳过非法 ID
 		}
-		videoID := utils.ParseInt64(videoIDStr)
+		videoID, err := strconv.ParseInt(videoIDStr, 10, 64)
+		if err != nil {
+			continue // 跳过非法 ID
+		}
+
 		profile, err := svc.redis.GetVideoRedis(ctx, videoID)
 		if err != nil {
 			// Redis 未命中，查 DB
@@ -95,6 +99,7 @@ func (svc *VideoService) TrendVideo(ctx context.Context, pageNum, pageSize int64
 			_ = svc.redis.SetVideoRedis(ctx, profile)
 		}
 		profile.HotScore = item.Score // 从 ZSet 中带出的分数
+		profile.Views, _ = svc.GetViews(ctx, videoID)
 		results = append(results, profile)
 	}
 
@@ -118,7 +123,8 @@ func (svc *VideoService) SearchVideo(ctx context.Context, keyword string, tags [
 	// 写入缓存，设置过期时间 5 分钟
 	_ = svc.redis.SetSearchCache(ctx, cacheKey, dbResult, 5*time.Minute)
 
-	re
+	return dbResult, nil
+}
 
 func (svc *VideoService) IncrViews(ctx context.Context, videoId int64) (int64, error) {
 	return svc.redis.IncrViews(ctx, videoId)
