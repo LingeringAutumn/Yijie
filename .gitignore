@@ -1,41 +1,107 @@
+##################################
+# Go 编译相关临时文件
+##################################
 *.o
 *.a
 *.so
+*.exe
+*.exe~
+*.test
+*.prof
+*.out
+
 _obj
 _test
-*.[568vq]
-[568vq].out
 *.cgo1.go
 *.cgo2.c
 _cgo_defun.c
 _cgo_gotypes.go
 _cgo_export.*
 _testmain.go
-*.exe
-*.exe~
-*.test
-*.prof
-*.rar
-*.zip
-*.gz
-*.psd
-*.bmd
-*.cfg
-*.pptx
-*.log
-*nohup.out
-*settings.pyc
+
+# 可选忽略 Go vendor 目录（若使用 go mod vendor）
+/vendor/
+
+
+##################################
+# 编辑器与操作系统临时文件
+##################################
+.DS_Store
+.idea/
+.vscode/
 *.sublime-project
 *.sublime-workspace
-!.gitkeep
-.DS_Store
-/.idea
-/.vscode
-/output
+nohup.out
+*.log
 *.local.yml
+*.cfg
+*.tmp
+*.bak
+
+# JetBrains 系列 IDE 配置
+*.iml
+out/
+*.ipr
+*.iws
+
+
+##################################
+# Hertz / Kitex 输出目录
+##################################
+/output/
+
+# Hertz 远程配置
 dumped_hertz_remote_config.json
 
-# 忽略 MySQL 数据文件
-docker/data/mysql/
 
-		  
+##################################
+# Docker 挂载数据目录
+##################################
+docker/data/redis/         # Redis 持久化数据
+docker/data/mysql/         # MySQL 数据
+docker/data/etcd/          # ETCD 数据
+docker/data/kafka-data/    # Kafka 数据
+docker/data/minio-data/    # MinIO 数据（含元数据、上传文件等）
+
+# 如果你只想忽略 MinIO 系统文件（保留用户数据），可用：
+# docker/data/minio-data/.minio.sys/
+
+
+##################################
+# Docker 脚本缓存文件（可选）
+##################################
+docker/script/*.log
+docker/script/*.pid
+docker/script/*.tmp
+
+
+##################################
+# 配置文件（按需忽略）
+##################################
+.env
+.env.*
+*.env
+config/*.log
+config/*.tmp
+config/*.bak
+
+
+##################################
+# Python 相关缓存（如混合项目）
+##################################
+*.pyc
+__pycache__/
+
+
+##################################
+# NodeJS 项目（若有前端部分）
+##################################
+node_modules/
+dist/
+*.lock
+
+
+##################################
+# 特殊保留空目录标志文件
+##################################
+!.gitkeep

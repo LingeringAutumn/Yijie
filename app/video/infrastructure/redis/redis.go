@@ -22,6 +22,7 @@ func NewVideoRedis(client *redis.Client) repository.VideoRedis {
 	cli := videoRedis{client: client}
 	return &cli
 }
+
 func (v *videoRedis) GetVideoRedis(ctx context.Context, videoId int64) (*model.VideoProfile, error) {
 	key := fmt.Sprintf("video:%d", videoId)
 
@@ -67,4 +68,76 @@ func (v *videoRedis) SetVideoRedis(ctx context.Context, videoProfile *model.Vide
 	}
 
 	return nil
+}
+
+// IncrViews 播放量 +1，返回新值
+func (v *videoRedis) IncrViews(ctx context.Context, videoID int64) (int64, error) {
+	key := fmt.Sprintf("video:views:%d", videoID)
+	return v.client.Incr(ctx, key).Result()
+}
+
+// GetViews 获取当前播放量
+func (v *videoRedis) GetViews(ctx context.Context, videoID int64) (int64, error) {
+	key := fmt.Sprintf("video:views:%d", videoID)
+	val, err := v.client.Get(ctx, key).Int64()
+	if err != nil && !errors.Is(err, redis.Nil) {
+		return 0, fmt.Errorf("get views from redis failed: %w", err)
+	}
+	if errors.Is(err, redis.Nil) {
+		return 0, nil
+	}
+	return val, nil
+}
+
+// ScanViewKeys 扫描所有 video:views:* 的 Redis 键
+func (v *videoRedis) ScanViewKeys(ctx context.Context) ([]string, error) {
+	iter := v.client.Scan(ctx, 0, "video:views:*", 0).Iterator()
+	var keys []string
+	for iter.Next(ctx) {
+		keys = append(keys, iter.Val())
+	}
+	if err := iter.Err(); err != nil {
+		return nil, err
+	}
+	return keys, nil
+}
+
+func (v *videoRedis) UpdateHotRank(ctx context.Context, videoID int64, hotScore float64) error {
+	return v.client.ZAdd(ctx, constants.HotRankKey, redis.Z{
+		Score:  hotScore,
+		Member: videoID,
+	}).Err()
+}
+
+// GetHotRankRange 热榜读取
+func (v *videoRedis) GetHotRankRange(ctx context.Context, start, end int64) ([]redis.Z, error) {
+	return v.client.ZRevRangeWithScores(ctx, "video:hot_rank", start, end).Result()
+}
+
+// GetSearchCache 搜索缓存读取
+func (v *videoRedis) GetSearchCache(ctx context.Context, key string) ([]*model.VideoProfile, error) {
+	val, err := v.client.Get(ctx, key).Result()
+	if err != nil {
+		return nil, err
+	}
+	if val == "" {
+		return nil, nil
+	}
+	var result []*model.VideoProfile
+	if err := json.Unmarshal([]byte(val), &result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// SetSearchCache 搜索缓存写入
+func (v *videoRedis) SetSearchCache(ctx context.Context, key string, data []*model.VideoProfile, ttl time.Duration) error {
+	if len(data) == 0 {
+		return nil // 空结果不缓存
+	}
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	return v.client.Set(ctx, key, bytes, ttl).Err()
 }

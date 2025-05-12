@@ -1,0 +1,258 @@
+.
+├── app
+│   ├── gateway
+│   │   ├── handler
+│   │   │   └── api
+│   │   ├── model
+│   │   │   ├── api
+│   │   │   └── model
+│   │   ├── mw
+│   │   │   └── auth.go
+│   │   ├── pack
+│   │   │   └── base.go
+│   │   ├── router
+│   │   │   ├── api
+│   │   │   └── register.go
+│   │   └── rpc
+│   │       ├── init.go
+│   │       ├── user_behaviour.go
+│   │       ├── user.go
+│   │       └── video.go
+│   ├── user
+│   │   ├── controllers
+│   │   │   └── rpc
+│   │   ├── domain
+│   │   │   ├── model
+│   │   │   ├── repository
+│   │   │   └── service
+│   │   ├── infrastructure
+│   │   │   ├── mysql
+│   │   │   └── redis
+│   │   ├── inject.go
+│   │   └── usecase
+│   │       ├── service.go
+│   │       └── usecase.go
+│   ├── user_behaviour
+│   │   ├── controllers
+│   │   │   └── rpc
+│   │   ├── domain
+│   │   │   ├── model
+│   │   │   ├── repository
+│   │   │   └── service
+│   │   ├── infrastructure
+│   │   │   └── mysql
+│   │   ├── inject.go
+│   │   └── usecase
+│   │       ├── service.go
+│   │       └── usecase.go
+│   └── video
+│       ├── controllers
+│       │   └── rpc
+│       ├── domain
+│       │   ├── model
+│       │   ├── repository
+│       │   └── service
+│       ├── infrastructure
+│       │   ├── kafka
+│       │   ├── mysql
+│       │   └── redis
+│       ├── inject.go
+│       └── usecase
+│           ├── service.go
+│           └── usecase.go
+├── cmd
+│   ├── gateway
+│   │   └── main.go
+│   ├── user
+│   │   └── main.go
+│   ├── user_behaviour
+│   │   └── main.go
+│   └── video
+│       └── main.go
+├── config
+│   ├── config.go
+│   ├── config.yaml
+│   ├── config.yaml.bak
+│   ├── sql
+│   │   ├── 01_user.sql
+│   │   ├── 02_video.sql
+│   │   ├── 04_user_behaviour.sql
+│   │   ├── 06_interface.sql
+│   │   ├── 07_community.sql
+│   │   ├── 08_chat.sql
+│   │   └── 08_team.sql
+│   └── types.go
+├── docker
+│   ├── data
+│   │   ├── etcd
+│   │   ├── kafka-data
+│   │   │   ├── bootstrap.checkpoint
+│   │   │   ├── cleaner-offset-checkpoint
+│   │   │   ├── __cluster_metadata-0
+│   │   │   ├── log-start-offset-checkpoint
+│   │   │   ├── meta.properties
+│   │   │   ├── recovery-point-offset-checkpoint
+│   │   │   ├── replication-offset-checkpoint
+│   │   │   └── yijie-0
+│   │   ├── minio-data
+│   │   │   ├── avatar
+│   │   │   └── video
+│   │   ├── mysql
+│   │   │   ├── auto.cnf
+│   │   │   ├── binlog.000001
+│   │   │   ├── binlog.000002
+│   │   │   ├── binlog.index
+│   │   │   ├── ca-key.pem
+│   │   │   ├── ca.pem
+│   │   │   ├── client-cert.pem
+│   │   │   ├── client-key.pem
+│   │   │   ├── #ib_16384_0.dblwr
+│   │   │   ├── #ib_16384_1.dblwr
+│   │   │   ├── ib_buffer_pool
+│   │   │   ├── ibdata1
+│   │   │   ├── ibtmp1
+│   │   │   ├── #innodb_redo
+│   │   │   ├── #innodb_temp
+│   │   │   ├── mysql
+│   │   │   ├── mysql.ibd
+│   │   │   ├── mysql.sock -> /var/run/mysqld/mysqld.sock
+│   │   │   ├── mysql_upgrade_history
+│   │   │   ├── performance_schema
+│   │   │   ├── private_key.pem
+│   │   │   ├── public_key.pem
+│   │   │   ├── server-cert.pem
+│   │   │   ├── server-key.pem
+│   │   │   ├── sys
+│   │   │   ├── undo_001
+│   │   │   ├── undo_002
+│   │   │   └── Yijie
+│   │   └── redis
+│   │       └── dump.rdb
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── env
+│   │   ├── etcd.env
+│   │   ├── kafka.env
+│   │   ├── kafka-ui.env
+│   │   ├── minio.env
+│   │   ├── mysql.env
+│   │   └── redis.env
+│   └── script
+│       ├── build.sh
+│       ├── entrypoint.sh
+│       └── etcd-monitor.sh
+├── docs
+│   ├── FrontDoc.md
+│   ├── resource
+│   │   ├── classroom.mp4
+│   │   └── yijie.png
+│   └── TODO.md
+├── go.mod
+├── go.sum
+├── idl
+│   ├── api
+│   │   ├── user_behaviour.thrift
+│   │   ├── user.thrift
+│   │   └── video.thrift
+│   ├── model.thrift
+│   ├── user_behaviour.thrift
+│   ├── user.thrift
+│   └── video.thrift
+├── kitex_gen
+│   ├── model
+│   │   ├── k-consts.go
+│   │   ├── k-model.go
+│   │   └── model.go
+│   ├── user
+│   │   ├── k-consts.go
+│   │   ├── k-user.go
+│   │   ├── user.go
+│   │   └── userservice
+│   │       ├── client.go
+│   │       ├── server.go
+│   │       └── userservice.go
+│   ├── user_behaviour
+│   │   ├── k-consts.go
+│   │   ├── k-user_behaviour.go
+│   │   ├── likeservice
+│   │   │   ├── client.go
+│   │   │   ├── likeservice.go
+│   │   │   └── server.go
+│   │   └── user_behaviour.go
+│   └── video
+│       ├── k-consts.go
+│       ├── k-video.go
+│       ├── video.go
+│       └── videoservice
+│           ├── client.go
+│           ├── server.go
+│           └── videoservice.go
+├── Makefile
+├── output
+│   ├── gateway
+│   │   └── yijie-gateway
+│   ├── log
+│   │   ├── gateway
+│   │   │   ├── 2025-05-11
+│   │   │   └── 2025-05-12
+│   │   ├── user
+│   │   │   ├── 2025-05-11
+│   │   │   └── 2025-05-12
+│   │   ├── user_behaviour
+│   │   │   ├── 2025-05-11
+│   │   │   └── 2025-05-12
+│   │   └── video
+│   │       └── 2025-05-11
+│   ├── user
+│   │   └── yijie-user
+│   ├── user_behaviour
+│   │   └── yijie-user_behaviour
+│   └── video
+│       └── yijie-video
+├── pkg
+│   ├── base
+│   │   ├── client
+│   │   │   ├── db.go
+│   │   │   ├── redis.go
+│   │   │   └── rpc.go
+│   │   ├── context
+│   │   │   ├── context.go
+│   │   │   └── login_data.go
+│   │   └── pack.go
+│   ├── constants
+│   │   ├── db.go
+│   │   ├── gateway.go
+│   │   ├── image.go
+│   │   ├── log.go
+│   │   ├── membership.go
+│   │   ├── minio.go
+│   │   ├── redis.go
+│   │   ├── rpc.go
+│   │   ├── service.go
+│   │   ├── snowflake.go
+│   │   ├── token.go
+│   │   └── video.go
+│   ├── errno
+│   │   ├── code.go
+│   │   ├── code_service.go
+│   │   ├── default.go
+│   │   └── errno.go
+│   ├── logger
+│   │   ├── config.go
+│   │   ├── klog.go
+│   │   ├── logger.go
+│   │   ├── mysql.go
+│   │   ├── output.go
+│   │   └── redis.go
+│   ├── middleware
+│   │   └── respond.go
+│   └── utils
+│       ├── jwt.go
+│       ├── minio.go
+│       ├── rpc.go
+│       ├── snowflake.go
+│       └── utils.go
+├── README.md
+└── test.txt
+
+110 directories, 146 files

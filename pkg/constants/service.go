@@ -5,7 +5,7 @@ const (
 	UserServiceName          = "user"
 	VideoServiceName         = "video"
 	CommentServiceName       = "comment"
-	UserBehaviourServiceName = "user-behaviour"
+	UserBehaviourServiceName = "user_behaviour"
 	ChatServiceName          = "chat"
 )
 

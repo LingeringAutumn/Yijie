@@ -1,5 +1,5 @@
 -- 视频点赞表（用户行为）
--- 如果系统后期添加更多用户行为（如收藏、转发等），建议拆成 user_behavior.sql 单独维护
+-- 如果系统后期添加更多用户行为（如收藏、转发等），建议拆成 user_behaviour.sql 单独维护
 CREATE TABLE video_likes (
                              user_id BIGINT NOT NULL COMMENT '用户ID',
                              video_id BIGINT NOT NULL COMMENT '视频ID',

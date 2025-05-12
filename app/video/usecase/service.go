@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"time"
 
 	"github.com/IBM/sarama"
 
@@ -83,39 +83,62 @@ func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, vid
 		return 0, "", fmt.Errorf("store video meta failed: %w", err)
 	}
 
-	// 8. 初始化 video_stats 数据（防止后续查询不到）
+	// 8. 初始化热度值
+	createdAt := time.Now()
+	hot := utils.ComputeHotScore(0, 0, createdAt)
+
+	// 9. 写入 video_stats（含热度）
 	stat := &model.VideoStat{
 		VideoID:  videoId,
 		Views:    0,
 		Likes:    0,
 		Comments: 0,
-		HotScore: 0,
+		HotScore: hot,
 	}
 	if err := uc.svc.StoreVideoStats(ctx, stat); err != nil {
 		return 0, "", fmt.Errorf("store video stats failed: %w", err)
 	}
 
+	// 🔥 同步热度写入 Redis ZSet 排行榜
+	_ = uc.svc.UpdateHotRank(ctx, videoId, hot)
+
 	return videoId, videoUrl, nil
 }
 
 func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.VideoProfile, error) {
-	// 1. 优先从 Redis 中获取缓存数据
+	// 1. 优先从 Redis 获取缓存
 	videoProfile, err := uc.svc.GetVideoRedis(ctx, videoId)
 	if err == nil && videoProfile != nil {
-		return videoProfile, nil // 命中缓存
+		// 获取播放量（合并最新 Redis 值）
+		views, _ := uc.svc.GetViews(ctx, videoId)
+		videoProfile.Views = views
+
+		// ✅ 合并 hot_score：从 DB 查一次
+		dbProfile, err := uc.svc.GetVideoDB(ctx, videoId)
+		if err == nil {
+			videoProfile.HotScore = dbProfile.HotScore
+		}
+
+		// 异步播放量 + 热度更新
+		uc.asyncIncrViews(videoId, videoProfile.CreatedAt)
+		return videoProfile, nil
 	}
 
-	// 2. 缓存未命中，从数据库查询
-	log.Printf("video id:%d", videoId)
+	// 2. Redis 未命中，查数据库
 	videoProfile, err = uc.svc.GetVideoDB(ctx, videoId)
 	if err != nil {
-		return nil, fmt.Errorf("get video from db failed: %w", err)
+		return nil, err
 	}
 
-	// 3. 回写 Redis 缓存（设置过期时间）
-	if err := uc.svc.SetVideoRedis(ctx, videoProfile); err != nil {
-		log.Printf("warning: failed to set video cache for id %d: %v", videoId, err)
-	}
+	// 写入 Redis 缓存
+	_ = uc.svc.SetVideoRedis(ctx, videoProfile)
+
+	// 获取 Redis 播放量并合并
+	views, _ := uc.svc.GetViews(ctx, videoId)
+	videoProfile.Views = views
+
+	// 异步播放量 + 热度更新
+	uc.asyncIncrViews(videoId, videoProfile.CreatedAt)
 
 	return videoProfile, nil
 }
@@ -134,4 +157,24 @@ func (uc *videoUseCase) TrendVideo(ctx context.Context, pageNum int64, pageSize 
 		return nil, err
 	}
 	return videoProfile, nil
+}
+
+func (uc *videoUseCase) asyncIncrViews(videoId int64, createdAtUnix int64) {
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Printf("panic recovered in async view incr: %v\n", r)
+			}
+		}()
+		views, err := uc.svc.IncrViews(context.Background(), videoId)
+		if err != nil {
+			fmt.Printf("async incr views failed: %v\n", err)
+			return
+		}
+		likes := int64(0) // 点赞缓存未实现，暂填0
+		createdAt := time.Unix(createdAtUnix, 0)
+		hot := utils.ComputeHotScore(views, likes, createdAt)
+		_ = uc.svc.UpdateHotRank(context.Background(), videoId, hot)
+		_ = uc.svc.UpdateHotScore(context.Background(), videoId, hot)
+	}()
 }
