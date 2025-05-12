@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/model"
 )
 

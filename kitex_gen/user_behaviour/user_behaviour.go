@@ -5,6 +5,7 @@ package user_behaviour
 import (
 	"context"
 	"fmt"
+
 	"github.com/LingeringAutumn/Yijie/kitex_gen/model"
 )
 

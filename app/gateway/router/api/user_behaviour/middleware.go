@@ -3,8 +3,9 @@
 package user_behaviour
 
 import (
-	"github.com/LingeringAutumn/Yijie/app/gateway/mw"
 	"github.com/cloudwego/hertz/pkg/app"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/mw"
 )
 
 func rootMw() []app.HandlerFunc {

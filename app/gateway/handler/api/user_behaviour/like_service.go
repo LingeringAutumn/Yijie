@@ -4,13 +4,15 @@ package user_behaviour
 
 import (
 	"context"
+
 	"github.com/LingeringAutumn/Yijie/app/gateway/pack"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 
+	"github.com/cloudwego/hertz/pkg/app"
+
 	api "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user_behaviour"
 	"github.com/LingeringAutumn/Yijie/app/gateway/rpc"
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 // LikeVideo .

@@ -13,9 +13,14 @@ import (
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
-// InjectVideoHandler 用于依赖注入
-// 从这个文件的位置就可以看出来极其特殊, 独立于架构之外, 服务于业务
-func InjectVideoHandler() video.VideoService {
+// Components 封装 Handler 与 Service，用于依赖注入
+type Components struct {
+	Handler video.VideoService
+	Service *service.VideoService
+}
+
+// InjectComponents 构建视频服务所有依赖并返回组件集合
+func InjectComponents() *Components {
 	// 初始化数据库存储
 	gormDB, err := client.InitMySQL()
 	if err != nil {
@@ -23,12 +28,10 @@ func InjectVideoHandler() video.VideoService {
 	}
 
 	// 初始化 Redis 客户端
-	// 初始化 Redis，使用指定的 Redis DB
 	redisClient, err := client.InitRedis(constants.RedisDBUser)
 	if err != nil {
 		panic(err)
 	}
-	// 封装 Redis 存储对象
 	redisRepo := redis.NewVideoRedis(redisClient)
 
 	// 初始化雪花接口
@@ -40,6 +43,10 @@ func InjectVideoHandler() video.VideoService {
 	db := mysql.NewVideoDB(gormDB)
 	svc := service.NewVideoService(db, redisRepo, sf)
 	uc := usecase.NewVideoUseCase(db, redisRepo, sf, svc)
+	handler := rpc.NewVideoHandler(uc)
 
-	return rpc.NewVideoHandler(uc)
+	return &Components{
+		Handler: handler,
+		Service: svc,
+	}
 }

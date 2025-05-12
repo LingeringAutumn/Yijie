@@ -1,10 +1,11 @@
-package user_behaviour
+package main
 
 import (
-	"github.com/LingeringAutumn/Yijie/app/user_behaviour"
-	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour/likeservice"
 	"log"
 	"net"
+
+	"github.com/LingeringAutumn/Yijie/app/user_behaviour"
+	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour/likeservice"
 
 	"github.com/LingeringAutumn/Yijie/config"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"

@@ -3,11 +3,14 @@ package mysql
 import (
 	"context"
 	"errors"
+	"log"
+
+	"gorm.io/gorm"
+
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/repository"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
-	"gorm.io/gorm"
 )
 
 type userBehaviourDB struct {
@@ -18,7 +21,7 @@ func NewUserBehaviourDB(client *gorm.DB) repository.UserBehaviourDB {
 	return &userBehaviourDB{client: client}
 }
 
-func (db *userBehaviourDB) LikeVideoDB(ctx context.Context, userID int64, videoID int64, isLike bool) error {
+func (db *userBehaviourDB) LikeVideoDB(ctx context.Context, videoID int64, userID int64, isLike bool) error {
 	var existing model.VideoLike
 
 	// 1. 查询是否已有点赞记录
@@ -40,6 +43,7 @@ func (db *userBehaviourDB) LikeVideoDB(ctx context.Context, userID int64, videoI
 				VideoID: videoID,
 				IsLiked: true,
 			}
+			log.Printf("[Debug] LikeVideo: userID=%d, videoID=%d, isLike=%v", userID, videoID, isLike)
 			if err := db.client.WithContext(ctx).
 				Table(model.VideoLike{}.TableName()).
 				Create(&newLike).Error; err != nil {

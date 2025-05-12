@@ -57,6 +57,15 @@ func (svc *UserService) GetUserById(ctx context.Context, uid int64) (*model.User
 	return u, nil
 }
 
+// GetUserById 这个是核对密码的时候获取密码的
+func (svc *UserService) GetUserByName(ctx context.Context, username string) (*model.User, error) {
+	u, err := svc.db.GetUserByName(ctx, username)
+	if err != nil {
+		return nil, fmt.Errorf("get user failed: %w", err)
+	}
+	return u, nil
+}
+
 // GetUserProfileInfoById 这个是查询和更新个人信息的时候来获取个人信息的
 func (svc *UserService) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	userInfo, err := svc.db.GetUserProfileInfoById(ctx, uid)

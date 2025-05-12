@@ -2,8 +2,9 @@
 package likeservice
 
 import (
-	user_behaviour "github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 	server "github.com/cloudwego/kitex/server"
+
+	user_behaviour "github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 )
 
 // NewServer creates a server.Server with the given handler and options.

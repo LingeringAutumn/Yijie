@@ -2,6 +2,8 @@ package rpc
 
 import (
 	"context"
+
+	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/model"
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/usecase"
 
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
@@ -18,7 +20,12 @@ func NewUserBehaviourHandler(useCase usecase.UserBehaviourUseCase) *UserBehaviou
 
 func (handler *UserBehaviourHandler) LikeVideo(ctx context.Context, req *user_behaviour.VideoLikeRequest) (resp *user_behaviour.VideoLikeResponse, err error) {
 	resp = new(user_behaviour.VideoLikeResponse)
-	err = handler.useCase.LikeVideo(ctx, req.VideoId, req.UserId, req.IsLike)
+	videoLike := &model.VideoLike{
+		VideoID: req.VideoId,
+		UserID:  req.UserId,
+		IsLiked: req.IsLike,
+	}
+	err = handler.useCase.LikeVideo(ctx, videoLike)
 	if err != nil {
 		resp.BaseResp = base.BuildBaseResp(err)
 		return

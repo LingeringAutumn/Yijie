@@ -2,11 +2,13 @@ package rpc
 
 import (
 	"context"
+
+	"github.com/bytedance/gopkg/util/logger"
+
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
 	"github.com/LingeringAutumn/Yijie/pkg/errno"
 	"github.com/LingeringAutumn/Yijie/pkg/utils"
-	"github.com/bytedance/gopkg/util/logger"
 )
 
 func InitUserBehaviourRPC() {

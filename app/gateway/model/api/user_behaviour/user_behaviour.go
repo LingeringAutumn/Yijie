@@ -5,8 +5,10 @@ package user_behaviour
 import (
 	"context"
 	"fmt"
-	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
+
 	"github.com/apache/thrift/lib/go/thrift"
+
+	"github.com/LingeringAutumn/Yijie/app/gateway/model/model"
 )
 
 /**

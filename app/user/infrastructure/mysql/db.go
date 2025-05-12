@@ -85,6 +85,25 @@ func (db *userDB) GetUserByName(ctx context.Context, name string) (*model.User, 
 	return resp, nil
 }
 
+func (db *userDB) GetUserById(ctx context.Context, uid int64) (*model.User, error) {
+	var user User
+	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errno.Errorf(errno.ServiceUserNotExist, "mysql: user %d not exist", uid)
+		}
+		return nil, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to query user: %v", err)
+	}
+	resp := &model.User{
+		Uid:      uid,
+		Username: user.Username,
+		Password: user.Password,
+		Email:    user.Email,
+		Phone:    user.Phone,
+	}
+	return resp, nil
+}
+
 func (db *userDB) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	var userProfileResp UserProfileResponse
 	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&userProfileResp).Error

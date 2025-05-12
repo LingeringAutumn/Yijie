@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/LingeringAutumn/Yijie/app/video/domain/service"
 
 	"github.com/LingeringAutumn/Yijie/app/video"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/video/videoservice"
@@ -27,6 +33,19 @@ func init() {
 	logger.Init(serviceName, config.GetLoggerLevel())
 }
 
+func waitForExitAndFlush(svc *service.VideoService) {
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	<-sigs
+	logger.Infof("Video: Received an exit signal, writing the view count immediately")
+	if err := svc.SyncViewsToDB(context.Background()); err != nil {
+		logger.Errorf("Video: Failed to write the view count: %v", err)
+	} else {
+		logger.Infof("Video: Successfully wrote the view count, exiting")
+	}
+	os.Exit(0)
+}
+
 func main() {
 	logger.Infof("starting video service")
 	r, err := etcd.NewEtcdRegistry([]string{config.Etcd.Addr})
@@ -48,9 +67,13 @@ func main() {
 		logger.Fatalf("Video: new minio client failed, err: %v", err)
 	}
 
+	components := video.InjectComponents()
+
+	components.Service.StartBackgroundTasks()
+
 	svr := videoservice.NewServer(
 		// 注入依赖
-		video.InjectVideoHandler(),
+		components.Handler,
 		server.WithSuite(tracing.NewServerSuite()),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: serviceName,

@@ -3,8 +3,9 @@
 package user_behaviour
 
 import (
-	user_behaviour "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user_behaviour"
 	"github.com/cloudwego/hertz/pkg/app/server"
+
+	user_behaviour "github.com/LingeringAutumn/Yijie/app/gateway/handler/api/user_behaviour"
 )
 
 /*

@@ -5,9 +5,11 @@ package likeservice
 import (
 	"context"
 	"errors"
-	user_behaviour "github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
+
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
+
+	user_behaviour "github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 )
 
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
