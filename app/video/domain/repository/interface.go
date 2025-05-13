@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"github.com/redis/go-redis/v9"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 
 	dmodel "github.com/LingeringAutumn/Yijie/app/video/domain/model"
 )

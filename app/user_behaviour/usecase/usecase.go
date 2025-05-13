@@ -12,13 +12,15 @@ type UserBehaviourUseCase interface {
 	LikeVideo(ctx context.Context, userBehaviour *model.VideoLike) (err error)
 }
 type userBehaviourUseCase struct {
-	db  repository.UserBehaviourDB
-	svc *service.UserBehaviourService
+	db    repository.UserBehaviourDB
+	redis repository.UserBehaviourRedis
+	svc   *service.UserBehaviourService
 }
 
-func NewUserBehaviourUseCase(db repository.UserBehaviourDB, svc *service.UserBehaviourService) UserBehaviourUseCase {
+func NewUserBehaviourUseCase(db repository.UserBehaviourDB, redis repository.UserBehaviourRedis, svc *service.UserBehaviourService) UserBehaviourUseCase {
 	return &userBehaviourUseCase{
-		db:  db,
-		svc: svc,
+		db:    db,
+		redis: redis,
+		svc:   svc,
 	}
 }

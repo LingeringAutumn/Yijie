@@ -94,3 +94,14 @@ func (db *userBehaviourDB) LikeVideoDB(ctx context.Context, videoID int64, userI
 
 	return nil
 }
+
+func (db *userBehaviourDB) UpdateHotScore(ctx context.Context, videoID int64, score float64) error {
+	err := db.client.WithContext(ctx).
+		Table(constants.VideoStatsTableName).
+		Where("video_id = ?", videoID).
+		Update("hot_score", score).Error
+	if err != nil {
+		return errno.Errorf(errno.InternalDatabaseErrorCode, "update hot_score failed: %v", err)
+	}
+	return nil
+}
