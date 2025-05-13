@@ -4,7 +4,7 @@ import "context"
 
 type UserBehaviourDB interface {
 	LikeVideoDB(ctx context.Context, userID int64, videoID int64, isLike bool) (err error)
-	UpdateHotScore(ctx context.Context, videoID int64, score float64) errorc c
+	UpdateHotScore(ctx context.Context, videoID int64, score float64) error
 }
 
 type UserBehaviourRedis interface {
