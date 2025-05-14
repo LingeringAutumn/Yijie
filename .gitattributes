@@ -1,8 +1,7 @@
-*.sh text eol=lf      # 所有 .sh 脚本强制使用 LF（Linux风格换行符）
-*.go text eol=lf      # 所有 Go 文件强制使用 LF
-*.yaml text eol=lf    # 所有 YAML 文件使用 LF
-*.yml text eol=lf     # 支持 .yml 后缀的 YAML 文件也使用 LF
-*.thrift text eol=lf  # Thrift 接口文件使用 LF
-*.proto text eol=lf   # Protocol Buffers 文件使用 LF
-Makefile text eol=lf  # Makefile 强制 LF，确保在非 Windows 系统下正确执行
-
+*.sh text eol=lf
+*.go text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.thrift text eol=lf
+*.proto text eol=lf
+Makefile text eol=lf
