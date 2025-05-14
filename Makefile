@@ -123,39 +123,39 @@ ifndef BUILD_ONLY
 	@tmux select-pane -t yijie-$(service).1
 endif
 
-
-# 格式化代码，我们使用 gofumpt，是 fmt 的严格超集
+# 格式化代码（gofumpt 是 gofmt 的超集，自动修正代码格式）
 .PHONY: fmt
 fmt:
 	gofumpt -l -w .
 
-# 优化 import 顺序结构
+# 优化 import 顺序结构（按 local-prefix 分组）
 .PHONY: import
 import:
 	goimports -w -local github.com/LingeringAutumn .
 
-# 检查可能的错误
+# 静态分析：官方 go vet
 .PHONY: vet
 vet:
 	go vet ./...
 
-# 代码格式校验
+# Lint（调用 golangci-lint，执行自定义规则）
 .PHONY: lint
 lint:
 	golangci-lint run --config=./.golangci.yml --tests --allow-parallel-runners --sort-results --show-stats --print-resources-usage
 
-# 检查依赖漏洞
+# 安全漏洞检查（Go 官方安全扫描工具）
 .PHONY: vulncheck
 vulncheck:
 	govulncheck ./...
 
+# 自动整理 go.mod 和 go.sum
 .PHONY: tidy
 tidy:
 	go mod tidy
 
-# 一键修正规范并执行代码检查，同时运行 license 检查
-# TODO lint要加进去
+# 一键规范检查命令（推荐用于 pre-commit 和 CI，包含全部检查）
 .PHONY: verify
-verify:  vet fmt import vulncheck tidy
+verify: fmt import tidy vet lint vulncheck
+
 
 # TODO tmux换成直接好容器化测试调试

@@ -4,9 +4,11 @@ package likeservice
 
 import (
 	"context"
-	user_behavior "github.com/LingeringAutumn/Yijie/kitex_gen/user_behavior"
+
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
+
+	user_behavior "github.com/LingeringAutumn/Yijie/kitex_gen/user_behavior"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.

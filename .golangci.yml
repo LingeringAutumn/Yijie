@@ -1,44 +1,71 @@
-  ❯ make verify
-    
-    go vet ./...
-    gofumpt -l -w .
-    app/gateway/handler/api/user/user_service.go
-    goimports -w -local github.com/LingeringAutumn .
-    govulncheck ./...
-    === Symbol Results ===
-    
-    Vulnerability #1: GO-2025-3553
-    Excessive memory allocation during header parsing in
-    github.com/golang-jwt/jwt
-  More info: https://pkg.go.dev/vuln/GO-2025-3553
-  Module: github.com/golang-jwt/jwt
-    Found in: github.com/golang-jwt/jwt@v3.2.2+incompatible
-    Fixed in: N/A
-    Example traces found:
-    #1: pkg/utils/jwt.go:46:28: utils.CreateToken calls jwt.NewWithClaims
-    #2: pkg/utils/jwt.go:124:49: utils.parsePrivateKey calls jwt.ParseEdPrivateKeyFromPEM
-    #3: pkg/utils/jwt.go:136:47: utils.parsePublicKey calls jwt.ParseEdPublicKeyFromPEM
-    #4: pkg/utils/jwt.go:166:41: utils.verifyToken calls jwt.ParseWithClaims
-    #5: pkg/utils/jwt.go:148:56: utils.parseUnverifiedClaims calls jwt.Parser.ParseUnverified
-    #6: pkg/utils/jwt.go:54:40: utils.CreateToken calls jwt.Token.SignedString
-    #7: app/gateway/rpc/user.go:86:66: rpc.GetUserProfileRPC calls jwt.ValidationError.Error
-    #8: pkg/utils/jwt.go:9:2: utils.init calls jwt.init
+# -------------------------------
+# golangci-lint 配置文件（简化版）
+# 推荐用于本地开发 + CI 检查，避免过多无关 warning
+# -------------------------------
 
-    Vulnerability #2: GO-2025-3540
-    Potential out of order responses when CLIENT SETINFO times out during
-    connection establishment in github.com/redis/go-redis
-  More info: https://pkg.go.dev/vuln/GO-2025-3540
-  Module: github.com/redis/go-redis/v9
-    Found in: github.com/redis/go-redis/v9@v9.5.1
-    Fixed in: github.com/redis/go-redis/v9@v9.6.3
-    Example traces found:
-    #1: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
-    #2: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
-    #3: pkg/base/client/redis.go:53:23: client.InitRedis calls redis.cmdable.Ping, which eventually calls redis.baseClient.initConn
+run:
+    concurrency: 16           # 并发任务数（建议设为 CPU 核数）
+    timeout: 10m              # 超时时间（适配大项目）
+    issues-exit-code: 1       # 发现问题则退出码为 1，适配 CI 判断失败
+    tests: true               # 检查测试代码（*_test.go）
 
-    Your code is affected by 2 vulnerabilities from 2 modules.
-    This scan also found 1 vulnerability in packages you import and 2
-    vulnerabilities in modules you require, but your code doesn't appear to call
-    these vulnerabilities.
-    Use '-show verbose' for more details.
-  make: *** [Makefile:150：vulncheck] 错误 3
+output:
+    format: colored-line-number  # 彩色输出格式（开发友好）
+    print-issued-lines: true     # 输出问题对应的代码行
+    print-linter-name: true      # 每个问题后显示对应 linter 名称
+
+# 👇 各个 linter 的具体配置
+linters-settings:
+
+    gofmt:
+        simplify: true  # 启用 gofmt -s，自动简化表达式
+
+    goimports:
+        local-prefixes: github.com/LingeringAutumn  # 本地包前缀，排序时靠后
+
+    staticcheck:
+        checks:
+            - all          # 启用所有规则
+            - -SA1019      # 禁用对弃用 API 的提示（必要时仍会使用）
+
+    misspell:
+        locale: UK       # 使用英式拼写检查（如 behaviour）
+
+    nakedret:
+        max-func-lines: 31  # 超过 31 行的函数禁止裸 return
+
+    lll:
+        line-length: 160    # 最大行长度限制，防止代码太长难读
+        tab-width: 1        # tab 宽度设为 1，适配 gofmt
+
+    errorlint:
+        errorf: true        # 检查 fmt.Errorf 中是否正确使用 %w
+        errorf-multi: true  # 支持 Go 1.20 多个 %w
+        asserts: true       # 检查类型断言相关错误处理
+        comparison: true    # 检查错误比较写法是否规范
+
+    gci:
+        sections:           # import 分组设置
+            - standard        # 标准库
+            - default         # 第三方库
+            - prefix(github.com/LingeringAutumn)  # 本地包
+        skip-generated: true   # 忽略自动生成文件
+        custom-order: true     # 按 sections 顺序排序
+        no-lex-order: true     # 禁止在 section 内按字母排序（按定义顺序即可）
+
+# 👇 启用的 linter 列表
+linters:
+    fast: false           # 不跳过慢的 linter，全面检查
+    disable-all: true     # 默认关闭全部，再手动启用下方这些常用规则
+
+    enable:
+        - errcheck          # 检查错误是否被处理（常见如 file.Close()）
+        - staticcheck       # 强大的静态分析器（逻辑错误、废弃 API）
+        - unused            # 检查未使用的变量、常量、函数、类型
+        - misspell          # 拼写错误检查（注释/变量名）
+        - goimports         # 检查 import 排序和空行
+        - nakedret          # 检查函数体过大时是否使用裸 return
+        - gosimple          # 建议使用更简洁写法（如 x == false -> !x）
+        - govet             # Go 官方 vet 工具（安全、并发、边界等问题）
+        - errorlint         # 错误包装、比较的规范性检查
+        - gci               # import 分组控制（比 goimports 更灵活）

@@ -85,7 +85,6 @@ func (db *userDB) GetUserByName(ctx context.Context, name string) (*model.User, 
 	return resp, nil
 }
 
-
 func (db *userDB) GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error) {
 	var userProfileResp UserProfileResponse
 	err := db.client.WithContext(ctx).Table(constants.UserTableName).Where("id = ?", uid).First(&userProfileResp).Error

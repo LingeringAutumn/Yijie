@@ -10,7 +10,7 @@ import (
 
 func (svc *UserBehaviourService) LikeVideo(ctx context.Context, userID int64, videoID int64, isLike bool) error {
 	// 1. 写入数据库
-	if err := svc.db.LikeVideoDB(ctx, videoID, userID, isLike); err != nil {
+	if err := svc.db.LikeVideoDB(ctx, userID, videoID, isLike); err != nil {
 		return fmt.Errorf("domain:like video failed: %w", err)
 	}
 

@@ -85,7 +85,7 @@ func (uc *videoUseCase) SubmitVideo(ctx context.Context, video *model.Video, vid
 
 	// 8. 初始化热度值
 	createdAt := time.Now()
-	hot := utils.ComputeHotScore(0, 0, createdAt)
+	hot := utils.DefaultComputeHotScore(0, 0, createdAt)
 
 	// 9. 写入 video_stats（含热度）
 	stat := &model.VideoStat{
