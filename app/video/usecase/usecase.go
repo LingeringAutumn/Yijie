@@ -14,6 +14,7 @@ type VideoUseCase interface {
 	GetVideo(ctx context.Context, videoId int64) (*model.VideoProfile, error)
 	SearchVideo(ctx context.Context, keyword string, tags []string, pageNum int64, pageSize int64) ([]*model.VideoProfile, error)
 	TrendVideo(ctx context.Context, pageNum int64, pageSize int64) ([]*model.VideoProfile, error)
+	UpdateVideoHot(ctx context.Context, videoID int64) error
 }
 
 type videoUseCase struct {

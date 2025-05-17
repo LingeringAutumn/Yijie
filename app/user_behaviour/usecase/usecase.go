@@ -15,12 +15,14 @@ type userBehaviourUseCase struct {
 	db    repository.UserBehaviourDB
 	redis repository.UserBehaviourRedis
 	svc   *service.UserBehaviourService
+	rpc   repository.UserBehaviourRPC
 }
 
-func NewUserBehaviourUseCase(db repository.UserBehaviourDB, redis repository.UserBehaviourRedis, svc *service.UserBehaviourService) UserBehaviourUseCase {
+func NewUserBehaviourUseCase(db repository.UserBehaviourDB, redis repository.UserBehaviourRedis, svc *service.UserBehaviourService, rpc repository.UserBehaviourRPC) UserBehaviourUseCase {
 	return &userBehaviourUseCase{
 		db:    db,
 		redis: redis,
 		svc:   svc,
+		rpc:   rpc,
 	}
 }

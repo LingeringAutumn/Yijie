@@ -43,6 +43,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"UpdateVideoHot": kitex.NewMethodInfo(
+		updateVideoHotHandler,
+		newVideoServiceUpdateVideoHotArgs,
+		newVideoServiceUpdateVideoHotResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -181,6 +188,24 @@ func newVideoServiceTrendVideoResult() interface{} {
 	return video.NewVideoServiceTrendVideoResult()
 }
 
+func updateVideoHotHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*video.VideoServiceUpdateVideoHotArgs)
+	realResult := result.(*video.VideoServiceUpdateVideoHotResult)
+	success, err := handler.(video.VideoService).UpdateVideoHot(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newVideoServiceUpdateVideoHotArgs() interface{} {
+	return video.NewVideoServiceUpdateVideoHotArgs()
+}
+
+func newVideoServiceUpdateVideoHotResult() interface{} {
+	return video.NewVideoServiceUpdateVideoHotResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -226,6 +251,16 @@ func (p *kClient) TrendVideo(ctx context.Context, req *video.VideoTrendingReques
 	_args.Req = req
 	var _result video.VideoServiceTrendVideoResult
 	if err = p.c.Call(ctx, "TrendVideo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateVideoHot(ctx context.Context, req *video.VideoHotUpdateRequest) (r *video.VideoHotUpdateResponse, err error) {
+	var _args video.VideoServiceUpdateVideoHotArgs
+	_args.Req = req
+	var _result video.VideoServiceUpdateVideoHotResult
+	if err = p.c.Call(ctx, "UpdateVideoHot", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

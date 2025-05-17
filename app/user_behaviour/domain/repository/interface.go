@@ -16,3 +16,7 @@ type UserBehaviourRedis interface {
 	UpdateHotRank(ctx context.Context, videoID int64, hotScore float64) error
 	GetViews(ctx context.Context, videoID int64) (int64, error)
 }
+
+type UserBehaviourRPC interface {
+	UserBehaviourUpdateVideoHot(ctx context.Context, videoId int64) (err error)
+}

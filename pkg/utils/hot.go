@@ -21,5 +21,5 @@ func DefaultComputeHotScore(views, likes int64, createdAt time.Time) float64 {
 	activity := float64(views + likes + 1)
 	age := float64(time.Now().Unix() - createdAt.Unix())
 	result := math.Log10(activity) - age/DF
-	return result + constants.DecayFactor
+	return result + constants.DefaultHotScoreDelta
 }

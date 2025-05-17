@@ -29,6 +29,7 @@ type VideoRedis interface {
 	GetHotRankRange(ctx context.Context, start, end int64) ([]redis.Z, error)
 	SetSearchCache(ctx context.Context, key string, data []*dmodel.VideoProfile, ttl time.Duration) error
 	GetSearchCache(ctx context.Context, key string) ([]*dmodel.VideoProfile, error)
+	GetLikes(ctx context.Context, videoID int64) (int64, error)
 }
 
 type VideoRPC interface{}

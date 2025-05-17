@@ -134,6 +134,10 @@ func (svc *VideoService) GetViews(ctx context.Context, videoId int64) (int64, er
 	return svc.redis.GetViews(ctx, videoId)
 }
 
+func (svc *VideoService) GetLikes(ctx context.Context, videoId int64) (int64, error) {
+	return svc.redis.GetLikes(ctx, videoId)
+}
+
 func (svc *VideoService) UpdateHotRank(ctx context.Context, videoId int64, score float64) error {
 	return svc.redis.UpdateHotRank(ctx, videoId, score)
 }

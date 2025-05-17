@@ -80,9 +80,21 @@ struct VideoTrendingResponse {
  * 视频服务接口定义
  * 支持视频投稿、查询详情、关键词搜索、热榜获取等
  */
+
+
+struct VideoHotUpdateRequest{
+    1:required i64 video_id
+}
+
+struct VideoHotUpdateResponse{
+    1: required model.BaseResp base_resp
+}
+
+
 service VideoService {
     VideoSubmissionResponse SubmitVideo(1: VideoSubmissionRequest req)
     VideoDetailResponse GetVideo(1: VideoDetailRequest req)
     VideoSearchResponse SearchVideo(1: VideoSearchRequest req)
     VideoTrendingResponse TrendVideo(1: VideoTrendingRequest req)
+    VideoHotUpdateResponse UpdateVideoHot(1:VideoHotUpdateRequest req)
 }

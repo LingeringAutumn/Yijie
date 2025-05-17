@@ -178,3 +178,25 @@ func (uc *videoUseCase) asyncIncrViews(videoId int64, createdAtUnix int64) {
 		_ = uc.svc.UpdateHotScore(context.Background(), videoId, hot)
 	}()
 }
+
+// UpdateVideoHot 根据播放量/点赞数/创建时间，更新热度
+func (uc *videoUseCase) UpdateVideoHot(ctx context.Context, videoID int64) error {
+	views, _ := uc.svc.GetViews(ctx, videoID)
+	likes, _ := uc.svc.GetLikes(ctx, videoID)
+
+	profile, err := uc.svc.GetVideoDB(ctx, videoID)
+	if err != nil {
+		return err
+	}
+	createdAt := time.Unix(profile.CreatedAt, 0)
+	hot := utils.ComputeHotScore(views, likes, createdAt)
+
+	if err := uc.svc.UpdateHotRank(ctx, videoID, hot); err != nil {
+		return err
+	}
+	if err := uc.svc.UpdateHotScore(ctx, videoID, hot); err != nil {
+		return err
+	}
+
+	return nil
+}
