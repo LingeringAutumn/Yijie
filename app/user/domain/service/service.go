@@ -48,7 +48,6 @@ func (svc *UserService) CreateUser(ctx context.Context, u *model.User) (int64, e
 	return uid, nil
 }
 
-
 func (svc *UserService) GetUserByName(ctx context.Context, username string) (*model.User, error) {
 	u, err := svc.db.GetUserByName(ctx, username)
 	if err != nil {

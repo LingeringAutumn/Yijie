@@ -755,6 +755,113 @@ var fieldIDToName_VideoTrendingResponse = map[int16]string{
 	2: "videos",
 }
 
+type VideoHotUpdateRequest struct {
+	VideoId int64 `thrift:"video_id,1,required" frugal:"1,required,i64" json:"video_id"`
+}
+
+func NewVideoHotUpdateRequest() *VideoHotUpdateRequest {
+	return &VideoHotUpdateRequest{}
+}
+
+func (p *VideoHotUpdateRequest) InitDefault() {
+}
+
+func (p *VideoHotUpdateRequest) GetVideoId() (v int64) {
+	return p.VideoId
+}
+func (p *VideoHotUpdateRequest) SetVideoId(val int64) {
+	p.VideoId = val
+}
+
+func (p *VideoHotUpdateRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoHotUpdateRequest(%+v)", *p)
+}
+
+func (p *VideoHotUpdateRequest) DeepEqual(ano *VideoHotUpdateRequest) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.VideoId) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoHotUpdateRequest) Field1DeepEqual(src int64) bool {
+
+	if p.VideoId != src {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_VideoHotUpdateRequest = map[int16]string{
+	1: "video_id",
+}
+
+type VideoHotUpdateResponse struct {
+	BaseResp *model.BaseResp `thrift:"base_resp,1,required" frugal:"1,required,model.BaseResp" json:"base_resp"`
+}
+
+func NewVideoHotUpdateResponse() *VideoHotUpdateResponse {
+	return &VideoHotUpdateResponse{}
+}
+
+func (p *VideoHotUpdateResponse) InitDefault() {
+}
+
+var VideoHotUpdateResponse_BaseResp_DEFAULT *model.BaseResp
+
+func (p *VideoHotUpdateResponse) GetBaseResp() (v *model.BaseResp) {
+	if !p.IsSetBaseResp() {
+		return VideoHotUpdateResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+func (p *VideoHotUpdateResponse) SetBaseResp(val *model.BaseResp) {
+	p.BaseResp = val
+}
+
+func (p *VideoHotUpdateResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *VideoHotUpdateResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoHotUpdateResponse(%+v)", *p)
+}
+
+func (p *VideoHotUpdateResponse) DeepEqual(ano *VideoHotUpdateResponse) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoHotUpdateResponse) Field1DeepEqual(src *model.BaseResp) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_VideoHotUpdateResponse = map[int16]string{
+	1: "base_resp",
+}
+
 type VideoService interface {
 	SubmitVideo(ctx context.Context, req *VideoSubmissionRequest) (r *VideoSubmissionResponse, err error)
 
@@ -763,6 +870,8 @@ type VideoService interface {
 	SearchVideo(ctx context.Context, req *VideoSearchRequest) (r *VideoSearchResponse, err error)
 
 	TrendVideo(ctx context.Context, req *VideoTrendingRequest) (r *VideoTrendingResponse, err error)
+
+	UpdateVideoHot(ctx context.Context, req *VideoHotUpdateRequest) (r *VideoHotUpdateResponse, err error)
 }
 
 type VideoServiceSubmitVideoArgs struct {
@@ -1226,5 +1335,121 @@ func (p *VideoServiceTrendVideoResult) Field0DeepEqual(src *VideoTrendingRespons
 }
 
 var fieldIDToName_VideoServiceTrendVideoResult = map[int16]string{
+	0: "success",
+}
+
+type VideoServiceUpdateVideoHotArgs struct {
+	Req *VideoHotUpdateRequest `thrift:"req,1" frugal:"1,default,VideoHotUpdateRequest" json:"req"`
+}
+
+func NewVideoServiceUpdateVideoHotArgs() *VideoServiceUpdateVideoHotArgs {
+	return &VideoServiceUpdateVideoHotArgs{}
+}
+
+func (p *VideoServiceUpdateVideoHotArgs) InitDefault() {
+}
+
+var VideoServiceUpdateVideoHotArgs_Req_DEFAULT *VideoHotUpdateRequest
+
+func (p *VideoServiceUpdateVideoHotArgs) GetReq() (v *VideoHotUpdateRequest) {
+	if !p.IsSetReq() {
+		return VideoServiceUpdateVideoHotArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *VideoServiceUpdateVideoHotArgs) SetReq(val *VideoHotUpdateRequest) {
+	p.Req = val
+}
+
+func (p *VideoServiceUpdateVideoHotArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *VideoServiceUpdateVideoHotArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoServiceUpdateVideoHotArgs(%+v)", *p)
+}
+
+func (p *VideoServiceUpdateVideoHotArgs) DeepEqual(ano *VideoServiceUpdateVideoHotArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoServiceUpdateVideoHotArgs) Field1DeepEqual(src *VideoHotUpdateRequest) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_VideoServiceUpdateVideoHotArgs = map[int16]string{
+	1: "req",
+}
+
+type VideoServiceUpdateVideoHotResult struct {
+	Success *VideoHotUpdateResponse `thrift:"success,0,optional" frugal:"0,optional,VideoHotUpdateResponse" json:"success,omitempty"`
+}
+
+func NewVideoServiceUpdateVideoHotResult() *VideoServiceUpdateVideoHotResult {
+	return &VideoServiceUpdateVideoHotResult{}
+}
+
+func (p *VideoServiceUpdateVideoHotResult) InitDefault() {
+}
+
+var VideoServiceUpdateVideoHotResult_Success_DEFAULT *VideoHotUpdateResponse
+
+func (p *VideoServiceUpdateVideoHotResult) GetSuccess() (v *VideoHotUpdateResponse) {
+	if !p.IsSetSuccess() {
+		return VideoServiceUpdateVideoHotResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *VideoServiceUpdateVideoHotResult) SetSuccess(x interface{}) {
+	p.Success = x.(*VideoHotUpdateResponse)
+}
+
+func (p *VideoServiceUpdateVideoHotResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *VideoServiceUpdateVideoHotResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoServiceUpdateVideoHotResult(%+v)", *p)
+}
+
+func (p *VideoServiceUpdateVideoHotResult) DeepEqual(ano *VideoServiceUpdateVideoHotResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoServiceUpdateVideoHotResult) Field0DeepEqual(src *VideoHotUpdateResponse) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+var fieldIDToName_VideoServiceUpdateVideoHotResult = map[int16]string{
 	0: "success",
 }

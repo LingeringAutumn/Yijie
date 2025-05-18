@@ -17,6 +17,7 @@ type Client interface {
 	GetVideo(ctx context.Context, req *video.VideoDetailRequest, callOptions ...callopt.Option) (r *video.VideoDetailResponse, err error)
 	SearchVideo(ctx context.Context, req *video.VideoSearchRequest, callOptions ...callopt.Option) (r *video.VideoSearchResponse, err error)
 	TrendVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error)
+	UpdateVideoHot(ctx context.Context, req *video.VideoHotUpdateRequest, callOptions ...callopt.Option) (r *video.VideoHotUpdateResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -66,4 +67,9 @@ func (p *kVideoServiceClient) SearchVideo(ctx context.Context, req *video.VideoS
 func (p *kVideoServiceClient) TrendVideo(ctx context.Context, req *video.VideoTrendingRequest, callOptions ...callopt.Option) (r *video.VideoTrendingResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.TrendVideo(ctx, req)
+}
+
+func (p *kVideoServiceClient) UpdateVideoHot(ctx context.Context, req *video.VideoHotUpdateRequest, callOptions ...callopt.Option) (r *video.VideoHotUpdateResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateVideoHot(ctx, req)
 }

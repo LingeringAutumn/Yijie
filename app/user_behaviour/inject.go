@@ -4,9 +4,14 @@ import (
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/controllers/rpc"
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/service"
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/infrastructure/mysql"
+	"github.com/LingeringAutumn/Yijie/app/user_behaviour/infrastructure/redis"
+	videoRpcPkg "github.com/LingeringAutumn/Yijie/app/user_behaviour/infrastructure/rpc"
 	"github.com/LingeringAutumn/Yijie/app/user_behaviour/usecase"
 	"github.com/LingeringAutumn/Yijie/kitex_gen/user_behaviour"
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
+	"github.com/LingeringAutumn/Yijie/pkg/constants"
+	"github.com/LingeringAutumn/Yijie/pkg/logger"
+
 )
 
 // InjectUserBehaviourHandler 用于依赖注入
@@ -17,25 +22,21 @@ func InjectUserBehaviourHandler() user_behaviour.LikeService {
 	if err != nil {
 		panic(err)
 	}
-
-	/*// 初始化 Redis 客户端
 	// 初始化 Redis，使用指定的 Redis DB
 	redisClient, err := client.InitRedis(constants.RedisDBUser)
 	if err != nil {
 		panic(err)
 	}
 	// 封装 Redis 存储对象
-	redisRepo := redis.NewVideoRedis(redisClient)
-
-	// 初始化雪花接口
-	sf, err := utils.NewSnowflake(config.GetDataCenterID(), constants.WorkerOfUserService)
+	redisRepo := redis.NewUserBehaviourRedis(redisClient)
+	c, err := client.InitVideoRPC()
 	if err != nil {
-		panic(err)
-	}*/
-
+		logger.Fatalf("api.rpc.video InitVideoRPC failed, err is %v", err)
+	}
+	videoRpc := videoRpcPkg.NewUserBehaviourRPC(*c)
 	db := mysql.NewUserBehaviourDB(gormDB)
-	svc := service.NewUserBehaviourService(db)
-	uc := usecase.NewUserBehaviourUseCase(db, svc)
+	svc := service.NewUserBehaviourService(db, redisRepo, videoRpc)
+	uc := usecase.NewUserBehaviourUseCase(db, redisRepo, svc, videoRpc)
 
 	return rpc.NewUserBehaviourHandler(uc)
 }

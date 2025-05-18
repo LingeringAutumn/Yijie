@@ -71,7 +71,6 @@ func (svc *VideoService) TrendVideo(ctx context.Context, pageNum, pageSize int64
 	start := (pageNum - 1) * pageSize
 	end := start + pageSize - 1
 
-	// 1. 从 Redis ZSet 获取热度排序前 N 的 video_id
 	idsWithScores, err := svc.redis.GetHotRankRange(ctx, start, end)
 	if err != nil {
 		return nil, fmt.Errorf("redis hot_rank fetch failed: %w", err)
@@ -81,25 +80,25 @@ func (svc *VideoService) TrendVideo(ctx context.Context, pageNum, pageSize int64
 	for _, item := range idsWithScores {
 		videoIDStr, ok := item.Member.(string)
 		if !ok {
-			continue // 跳过非法 ID
+			continue
 		}
 		videoID, err := strconv.ParseInt(videoIDStr, 10, 64)
 		if err != nil {
-			continue // 跳过非法 ID
+			continue
 		}
 
 		profile, err := svc.redis.GetVideoRedis(ctx, videoID)
 		if err != nil {
-			// Redis 未命中，查 DB
 			profile, err = svc.db.GetVideoDB(ctx, videoID)
 			if err != nil {
 				continue
 			}
-			// 回写缓存
 			_ = svc.redis.SetVideoRedis(ctx, profile)
 		}
-		profile.HotScore = item.Score // 从 ZSet 中带出的分数
+
+		profile.HotScore = item.Score
 		profile.Views, _ = svc.GetViews(ctx, videoID)
+		profile.Likes, _ = svc.GetLikes(ctx, videoID) //
 		results = append(results, profile)
 	}
 
@@ -111,18 +110,26 @@ func (svc *VideoService) SearchVideo(ctx context.Context, keyword string, tags [
 	cacheKey := fmt.Sprintf("video:search:%s:%d:%d", keyword, pageNum, pageSize)
 	cached, err := svc.redis.GetSearchCache(ctx, cacheKey)
 	if err == nil && cached != nil {
+		// 合并播放量 + 点赞数
+		for _, v := range cached {
+			v.Views, _ = svc.GetViews(ctx, v.VideoID)
+			v.Likes, _ = svc.GetLikes(ctx, v.VideoID)
+		}
 		return cached, nil
 	}
 
-	// SQL 模糊搜索
 	dbResult, err := svc.db.SearchVideo(ctx, keyword, tags, pageNum, pageSize)
 	if err != nil {
 		return nil, err
 	}
 
-	// 写入缓存，设置过期时间 5 分钟
-	_ = svc.redis.SetSearchCache(ctx, cacheKey, dbResult, 5*time.Minute)
+	// 合并播放量 + 点赞数
+	for _, v := range dbResult {
+		v.Views, _ = svc.GetViews(ctx, v.VideoID)
+		v.Likes, _ = svc.GetLikes(ctx, v.VideoID)
+	}
 
+	_ = svc.redis.SetSearchCache(ctx, cacheKey, dbResult, 5*time.Minute)
 	return dbResult, nil
 }
 
@@ -132,6 +139,10 @@ func (svc *VideoService) IncrViews(ctx context.Context, videoId int64) (int64, e
 
 func (svc *VideoService) GetViews(ctx context.Context, videoId int64) (int64, error) {
 	return svc.redis.GetViews(ctx, videoId)
+}
+
+func (svc *VideoService) GetLikes(ctx context.Context, videoId int64) (int64, error) {
+	return svc.redis.GetLikes(ctx, videoId)
 }
 
 func (svc *VideoService) UpdateHotRank(ctx context.Context, videoId int64, score float64) error {
@@ -156,6 +167,7 @@ func (svc *VideoService) SyncViewsToDB(ctx context.Context) error {
 		}
 
 		views, err := svc.redis.GetViews(ctx, videoID)
+		//views += 1
 		if err != nil {
 			continue // 跳过读取失败
 		}

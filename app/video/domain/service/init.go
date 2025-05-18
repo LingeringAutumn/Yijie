@@ -17,7 +17,7 @@ func NewVideoService(db repository.VideoDB, redis repository.VideoRedis, sf *uti
 		panic("videoService`s db should not be nil")
 	}
 	if redis == nil {
-		panic("videoervice`s redis should not be nil")
+		panic("videoService`s redis should not be nil")
 	}
 	if sf == nil {
 		panic("videoService`s sf should not be nil")

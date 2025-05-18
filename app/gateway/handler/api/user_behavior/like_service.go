@@ -5,9 +5,10 @@ package user_behavior
 import (
 	"context"
 
-	user_behavior "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user_behavior"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+
+	user_behavior "github.com/LingeringAutumn/Yijie/app/gateway/model/api/user_behavior"
 )
 
 // LikeVideo .

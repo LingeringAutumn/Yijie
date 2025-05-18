@@ -1,0 +1,18 @@
+root = true                # 表示这是项目根目录的 EditorConfig 文件
+
+[*]
+charset = utf-8            # 文件使用 UTF-8 编码
+insert_final_newline = true # 文件末尾强制添加一个换行符（POSIX 标准）
+end_of_line = lf           # 使用 Unix 风格的换行符（LF）
+indent_style = space       # 使用空格缩进（Go 推荐）
+indent_size = 4            # 默认缩进 4 个空格
+trim_trailing_whitespace = true # 保存时删除行末空白
+
+[*.go]
+indent_size = 4     # Go 使用 4 个空格缩进
+
+[*.yaml]
+indent_size = 2     # YAML 通常使用 2 个空格缩进
+
+[Makefile]
+indent_style = tab  # Makefile 必须使用 Tab 缩进，否则会报错

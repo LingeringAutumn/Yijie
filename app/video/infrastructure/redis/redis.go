@@ -141,3 +141,15 @@ func (v *videoRedis) SetSearchCache(ctx context.Context, key string, data []*mod
 	}
 	return v.client.Set(ctx, key, bytes, ttl).Err()
 }
+
+func (r *videoRedis) GetLikes(ctx context.Context, videoID int64) (int64, error) {
+	key := fmt.Sprintf("video:likes:%d", videoID)
+	val, err := r.client.Get(ctx, key).Int64()
+	if err != nil && !errors.Is(err, redis.Nil) {
+		return 0, fmt.Errorf("redis get likes failed: %w", err)
+	}
+	if errors.Is(err, redis.Nil) {
+		return 0, nil
+	}
+	return val, nil
+}
