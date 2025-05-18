@@ -109,17 +109,16 @@ func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.Vid
 	// 1. 优先从 Redis 获取缓存
 	videoProfile, err := uc.svc.GetVideoRedis(ctx, videoId)
 	if err == nil && videoProfile != nil {
-		// 获取播放量（合并最新 Redis 值）
 		views, _ := uc.svc.GetViews(ctx, videoId)
+		likes, _ := uc.svc.GetLikes(ctx, videoId) // ✅ 新增：获取点赞数
 		videoProfile.Views = views
+		videoProfile.Likes = likes // ✅ 合并点赞数
 
-		// ✅ 合并 hot_score：从 DB 查一次
 		dbProfile, err := uc.svc.GetVideoDB(ctx, videoId)
 		if err == nil {
 			videoProfile.HotScore = dbProfile.HotScore
 		}
 
-		// 异步播放量 + 热度更新
 		uc.asyncIncrViews(videoId, videoProfile.CreatedAt)
 		return videoProfile, nil
 	}
@@ -129,17 +128,14 @@ func (uc *videoUseCase) GetVideo(ctx context.Context, videoId int64) (*model.Vid
 	if err != nil {
 		return nil, err
 	}
-
-	// 写入 Redis 缓存
 	_ = uc.svc.SetVideoRedis(ctx, videoProfile)
 
-	// 获取 Redis 播放量并合并
 	views, _ := uc.svc.GetViews(ctx, videoId)
+	likes, _ := uc.svc.GetLikes(ctx, videoId) //
 	videoProfile.Views = views
+	videoProfile.Likes = likes //
 
-	// 异步播放量 + 热度更新
 	uc.asyncIncrViews(videoId, videoProfile.CreatedAt)
-
 	return videoProfile, nil
 }
 
