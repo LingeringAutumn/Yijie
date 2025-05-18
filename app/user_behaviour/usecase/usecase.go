@@ -3,26 +3,32 @@ package usecase
 import (
 	"context"
 
-	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/model"
-	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/repository"
-	"github.com/LingeringAutumn/Yijie/app/user_behaviour/domain/service"
+	"github.com/LingeringAutumn/Yijie/app/video/domain/model"
+	"github.com/LingeringAutumn/Yijie/app/video/domain/repository"
+	"github.com/LingeringAutumn/Yijie/app/video/domain/service"
+	"github.com/LingeringAutumn/Yijie/pkg/utils"
 )
 
-type UserBehaviourUseCase interface {
-	LikeVideo(ctx context.Context, userBehaviour *model.VideoLike) (err error)
-}
-type userBehaviourUseCase struct {
-	db    repository.UserBehaviourDB
-	redis repository.UserBehaviourRedis
-	svc   *service.UserBehaviourService
-	rpc   repository.UserBehaviourRPC
+type VideoUseCase interface {
+	SubmitVideo(ctx context.Context, video *model.Video, videoData []byte) (videoId int64, videoUrl string, err error)
+	GetVideo(ctx context.Context, videoId int64) (*model.VideoProfile, error)
+	SearchVideo(ctx context.Context, keyword string, tags []string, pageNum int64, pageSize int64) ([]*model.VideoProfile, error)
+	TrendVideo(ctx context.Context, pageNum int64, pageSize int64) ([]*model.VideoProfile, error)
+	UpdateVideoHot(ctx context.Context, videoID int64) error
 }
 
-func NewUserBehaviourUseCase(db repository.UserBehaviourDB, redis repository.UserBehaviourRedis, svc *service.UserBehaviourService, rpc repository.UserBehaviourRPC) UserBehaviourUseCase {
-	return &userBehaviourUseCase{
+type videoUseCase struct {
+	db    repository.VideoDB
+	redis repository.VideoRedis
+	sf    *utils.Snowflake
+	svc   *service.VideoService
+}
+
+func NewVideoUseCase(db repository.VideoDB, redis repository.VideoRedis, sf *utils.Snowflake, svc *service.VideoService) VideoUseCase {
+	return &videoUseCase{
 		db:    db,
 		redis: redis,
+		sf:    sf,
 		svc:   svc,
-		rpc:   rpc,
 	}
 }

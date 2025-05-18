@@ -11,6 +11,7 @@ type UserDB interface {
 	CreateUser(ctx context.Context, u *model.User) (int64, error)
 	GetUserByName(ctx context.Context, name string) (*model.User, error)
 	GetUserProfileInfoById(ctx context.Context, uid int64) (*model.UserProfileResponse, error)
+	GetUserById(ctx context.Context, uid int64) (*model.User, error)
 	StoreUserAvatar(ctx context.Context, image *model.Image) error
 	StoreUserProfile(ctx context.Context, userProfileRequest *model.UserProfileRequest, uid int64, image *model.Image) (*model.UserProfileResponse, error)
 }

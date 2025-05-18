@@ -11,6 +11,7 @@ import (
 	"github.com/LingeringAutumn/Yijie/pkg/base/client"
 	"github.com/LingeringAutumn/Yijie/pkg/constants"
 	"github.com/LingeringAutumn/Yijie/pkg/logger"
+
 )
 
 // InjectUserBehaviourHandler 用于依赖注入
@@ -21,8 +22,6 @@ func InjectUserBehaviourHandler() user_behaviour.LikeService {
 	if err != nil {
 		panic(err)
 	}
-
-	// 初始化 Redis 客户端
 	// 初始化 Redis，使用指定的 Redis DB
 	redisClient, err := client.InitRedis(constants.RedisDBUser)
 	if err != nil {
