@@ -76,6 +76,7 @@
 │       ├── inject.go
 │       └── usecase
 │           ├── service.go
+│           ├── service_test.go
 │           └── usecase.go
 ├── cmd
 │   ├── chat
@@ -214,8 +215,8 @@
 │           └── videoservice.go
 ├── Makefile
 ├── output
-│   └── chat
-│       └── yijie-chat
+│   └── gateway
+│       └── yijie-gateway
 ├── pkg
 │   ├── base
 │   │   ├── client
@@ -263,4 +264,4 @@
 ├── README.md
 └── test.txt
 
-109 directories, 155 files
+109 directories, 156 files
