@@ -1,5 +1,20 @@
 .
 ├── app
+│   ├── chat
+│   │   ├── controllers
+│   │   │   └── ws.go
+│   │   ├── domain
+│   │   │   ├── model
+│   │   │   ├── repository
+│   │   │   └── service
+│   │   ├── infrastructure
+│   │   │   ├── mysql
+│   │   │   └── redis
+│   │   ├── inject.go
+│   │   ├── router
+│   │   │   └── router.go
+│   │   └── usecase
+│   │       └── usecase.go
 │   ├── gateway
 │   │   ├── handler
 │   │   │   └── api
@@ -40,7 +55,9 @@
 │   │   │   ├── repository
 │   │   │   └── service
 │   │   ├── infrastructure
-│   │   │   └── mysql
+│   │   │   ├── mysql
+│   │   │   ├── redis
+│   │   │   └── rpc
 │   │   ├── inject.go
 │   │   └── usecase
 │   │       ├── service.go
@@ -59,11 +76,16 @@
 │       ├── inject.go
 │       └── usecase
 │           ├── service.go
+│           ├── service_test.go
 │           └── usecase.go
 ├── cmd
+│   ├── chat
+│   │   └── main.go
 │   ├── gateway
 │   │   └── main.go
 │   ├── user
+│   │   └── main.go
+│   ├── user_behavior
 │   │   └── main.go
 │   ├── user_behaviour
 │   │   └── main.go
@@ -77,9 +99,9 @@
 │   │   ├── 01_user.sql
 │   │   ├── 02_video.sql
 │   │   ├── 04_user_behaviour.sql
+│   │   ├── 05_chat.sql
 │   │   ├── 06_interface.sql
 │   │   ├── 07_community.sql
-│   │   ├── 08_chat.sql
 │   │   └── 08_team.sql
 │   └── types.go
 ├── docker
@@ -92,11 +114,8 @@
 │   │   │   ├── log-start-offset-checkpoint
 │   │   │   ├── meta.properties
 │   │   │   ├── recovery-point-offset-checkpoint
-│   │   │   ├── replication-offset-checkpoint
-│   │   │   └── yijie-0
+│   │   │   └── replication-offset-checkpoint
 │   │   ├── minio-data
-│   │   │   ├── avatar
-│   │   │   └── video
 │   │   ├── mysql
 │   │   │   ├── auto.cnf
 │   │   │   ├── binlog.000001
@@ -127,7 +146,6 @@
 │   │   │   ├── undo_002
 │   │   │   └── Yijie
 │   │   └── redis
-│   │       └── dump.rdb
 │   ├── docker-compose.yml
 │   ├── Dockerfile
 │   ├── env
@@ -171,6 +189,14 @@
 │   │       ├── client.go
 │   │       ├── server.go
 │   │       └── userservice.go
+│   ├── user_behavior
+│   │   ├── k-consts.go
+│   │   ├── k-user_behavior.go
+│   │   ├── likeservice
+│   │   │   ├── client.go
+│   │   │   ├── likeservice.go
+│   │   │   └── server.go
+│   │   └── user_behavior.go
 │   ├── user_behaviour
 │   │   ├── k-consts.go
 │   │   ├── k-user_behaviour.go
@@ -189,26 +215,8 @@
 │           └── videoservice.go
 ├── Makefile
 ├── output
-│   ├── gateway
-│   │   └── yijie-gateway
-│   ├── log
-│   │   ├── gateway
-│   │   │   ├── 2025-05-11
-│   │   │   └── 2025-05-12
-│   │   ├── user
-│   │   │   ├── 2025-05-11
-│   │   │   └── 2025-05-12
-│   │   ├── user_behaviour
-│   │   │   ├── 2025-05-11
-│   │   │   └── 2025-05-12
-│   │   └── video
-│   │       └── 2025-05-11
-│   ├── user
-│   │   └── yijie-user
-│   ├── user_behaviour
-│   │   └── yijie-user_behaviour
-│   └── video
-│       └── yijie-video
+│   └── gateway
+│       └── yijie-gateway
 ├── pkg
 │   ├── base
 │   │   ├── client
@@ -247,6 +255,7 @@
 │   ├── middleware
 │   │   └── respond.go
 │   └── utils
+│       ├── hot.go
 │       ├── jwt.go
 │       ├── minio.go
 │       ├── rpc.go
@@ -255,4 +264,4 @@
 ├── README.md
 └── test.txt
 
-110 directories, 146 files
+109 directories, 156 files

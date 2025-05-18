@@ -8,6 +8,7 @@ require (
 	github.com/IBM/sarama v1.45.1
 	github.com/apache/thrift v0.21.0
 	github.com/bytedance/gopkg v0.1.1
+	github.com/bytedance/mockey v1.2.12
 	github.com/cloudwego/gopkg v0.1.4
 	github.com/cloudwego/hertz v0.9.6
 	github.com/cloudwego/kitex v0.12.3
@@ -15,10 +16,12 @@ require (
 	github.com/go-redsync/redsync/v4 v4.13.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/h2non/filetype v1.1.3
+	github.com/hertz-contrib/websocket v0.2.0
 	github.com/kitex-contrib/obs-opentelemetry v0.2.9
 	github.com/kitex-contrib/registry-etcd v0.2.6
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/redis/go-redis/v9 v9.5.1
+	github.com/smartystreets/goconvey v1.6.4
 	github.com/spf13/viper v1.20.0
 	github.com/spf13/viper/remote v1.20.0
 	go.uber.org/zap v1.26.0
@@ -73,6 +76,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.14.1 // indirect
+	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/hashicorp/consul/api v1.29.4 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -93,6 +97,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -112,6 +117,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/sagikazarmark/crypt v0.26.0 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
+	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.12.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
